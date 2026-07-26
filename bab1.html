@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BAB 1 — Review Dasar Jaringan Komputer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Inter', 'sans-serif'] },
+        colors: {
+          primary: '#1e40af',
+          secondary: '#3b82f6',
+          accent: '#f59e0b',
+          dark: '#1e293b',
+          light: '#f8fafc',
+        }
+      }
+    }
+  }
+</script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f8fafc;
+    --bg-panel:#ffffff;
+    --bg-panel-2:#f1f5f9;
+    --ink:#1e293b;
+    --ink-dim:#64748b;
+    --ink-faint:#94a3b8;
+    --signal:#3b82f6;
+    --signal-dim:#1e40af;
+    --amber:#f59e0b;
+    --line:#e2e8f0;
+    --line-soft:#f1f5f9;
+    --radius:14px;
+    --primary:#1e40af;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Inter', sans-serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    margin:0 0 .5em 0;
+  }
+  code, .mono{ font-family:'IBM Plex Mono', monospace; }
+  a{color:var(--signal);}
+  ::selection{ background:var(--signal); color:#ffffff; }
+
+  /* ---------- top navbar (consistent with roadmap) ---------- */
+  .glass-card{
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  }
+
+  /* ---------- layout scaffold ---------- */
+  .app{
+    display:grid;
+    grid-template-columns: 260px 1fr;
+    min-height:100vh;
+    padding-top:64px;
+  }
+  @media (max-width: 880px){
+    .app{ grid-template-columns: 1fr; }
+    nav.sidebar{ display:none; }
+  }
+
+  nav.sidebar{
+    position:sticky; top:64px; height:calc(100vh - 64px);
+    border-right:1px solid var(--line);
+    padding:28px 20px;
+    overflow-y:auto;
+    background:linear-gradient(180deg, var(--bg-panel), var(--bg));
+  }
+  .brand{
+    font-family:'Inter'; font-weight:700;
+    font-size:13px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    margin-bottom:26px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .brand .dot{ width:8px;height:8px;border-radius:50%;background:var(--signal); box-shadow:0 0 8px var(--signal); }
+  .back-link{
+    display:flex; align-items:center; gap:8px;
+    font-size:12.5px; color:var(--ink-dim);
+    text-decoration:none;
+    margin-bottom:22px;
+    padding:8px 10px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    transition: all .15s ease;
+  }
+  .back-link:hover{ color:var(--primary); border-color:var(--signal); background:var(--bg-panel-2); }
+
+  .navlist{ list-style:none; margin:0; padding:0; }
+  .navlist li{ margin-bottom:2px; }
+  .navlist a{
+    display:flex; align-items:center; gap:10px;
+    text-decoration:none;
+    color:var(--ink-dim);
+    font-size:13.5px;
+    padding:8px 10px;
+    border-radius:8px;
+    transition: all .15s ease;
+    border-left:2px solid transparent;
+  }
+  .navlist a .port{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--line);
+    flex-shrink:0;
+    transition: all .2s ease;
+  }
+  .navlist a:hover{ color:var(--ink); background:var(--bg-panel-2); }
+  .navlist a.active{ color:var(--signal); border-left-color:var(--signal); background:var(--bg-panel-2); }
+  .navlist a.active .port{ background:var(--signal); box-shadow:0 0 6px var(--signal); }
+
+  main{ padding: 0 0 120px 0; }
+  .section{
+    max-width:760px;
+    margin:0 auto;
+    padding:80px 32px 0 32px;
+    scroll-margin-top: 20px;
+  }
+  .section:first-of-type{ padding-top:56px; }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono';
+    font-size:12px;
+    color:var(--signal);
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    margin-bottom:10px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{ content:''; width:18px; height:1px; background:var(--signal); }
+
+  p{ color:var(--ink); }
+  .lede{ color:var(--ink-dim); font-size:17px; }
+
+  .panel{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    margin:18px 0;
+  }
+  .panel-title{
+    font-family:'IBM Plex Mono';
+    font-size:12px;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    margin-bottom:10px;
+  }
+
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:640px){ .grid2{ grid-template-columns:1fr; } }
+
+  table{ width:100%; border-collapse:collapse; font-size:14.5px; }
+  th,td{ text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); }
+  th{ color:var(--ink-dim); font-family:'IBM Plex Mono'; font-weight:500; font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+  tr:last-child td{ border-bottom:none; }
+
+  ul.plain{ padding-left:0; list-style:none; }
+  ul.plain li{ padding:6px 0 6px 22px; position:relative; color:var(--ink-dim); }
+  ul.plain li::before{ content:'—'; position:absolute; left:0; color:var(--signal); }
+
+  .check-yes::before{ content:'✓ '; color:var(--signal); }
+  .check-no::before{ content:'✕ '; color:#ef4444; }
+
+  /* ---------- hero ---------- */
+  .hero-band{
+    background: linear-gradient(to bottom right, #1e3a8a, #1e40af, #312e81);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero{
+    padding:64px 32px 56px 32px;
+    max-width:760px;
+    margin:0 auto;
+    position:relative;
+    z-index:10;
+  }
+  .hero .eyebrow{ margin-bottom:16px; color:#bfdbfe; }
+  .hero .eyebrow::before{ background:#bfdbfe; }
+  .hero h1{ font-size:clamp(30px, 5vw, 44px); line-height:1.08; color:#ffffff; }
+  .hero .lede{ color:#dbeafe; }
+  .hero .meta{
+    display:flex; gap:18px; flex-wrap:wrap;
+    margin-top:18px;
+    font-family:'IBM Plex Mono';
+    font-size:12.5px;
+    color:#bfdbfe;
+  }
+  .hero .meta span{ display:flex; align-items:center; gap:6px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); padding:6px 10px; border-radius:8px; }
+
+  /* signature: animated packet on OSI stack, used in hero */
+  .stack-wrap{ margin-top:36px; }
+  .stack-wrap .panel-title{ color:#bfdbfe; }
+  .stack{
+    position:relative;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.18);
+    border-radius:var(--radius);
+    padding:18px;
+    overflow:hidden;
+    backdrop-filter: blur(6px);
+  }
+  .stack-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 14px;
+    border-radius:8px;
+    font-family:'IBM Plex Mono';
+    font-size:12.5px;
+    color:#dbeafe;
+    position:relative;
+    z-index:2;
+  }
+  .stack-row .num{ color:#93c5fd; width:18px; display:inline-block; }
+  .stack-row + .stack-row{ margin-top:4px; }
+  .packet{
+    position:absolute;
+    left:18px; right:18px;
+    height:38px;
+    border-radius:8px;
+    background:linear-gradient(90deg, rgba(245,158,11,0.22), rgba(245,158,11,0.06));
+    border:1px solid rgba(245,158,11,0.6);
+    z-index:1;
+    animation: travel 6s ease-in-out infinite;
+  }
+  @keyframes travel{
+    0%   { transform: translateY(0); }
+    12%  { transform: translateY(0); }
+    16%  { transform: translateY(52px); }
+    28%  { transform: translateY(52px); }
+    32%  { transform: translateY(104px); }
+    44%  { transform: translateY(104px); }
+    48%  { transform: translateY(156px); }
+    60%  { transform: translateY(156px); }
+    64%  { transform: translateY(208px); }
+    76%  { transform: translateY(208px); }
+    80%  { transform: translateY(260px); }
+    92%  { transform: translateY(260px); }
+    96%  { transform: translateY(312px); }
+    100% { transform: translateY(312px); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .packet{ animation:none; top:0; }
+  }
+
+  /* ---------- roadmap ---------- */
+  .roadmap{
+    display:flex; flex-direction:column; align-items:flex-start;
+    gap:0;
+    font-family:'IBM Plex Mono'; font-size:13px;
+  }
+  .roadmap .node{
+    display:flex; align-items:center; gap:10px;
+    padding:6px 0;
+    color:var(--ink);
+  }
+  .roadmap .node .marker{ width:9px;height:9px;border-radius:50%; background:var(--line); border:1px solid var(--signal-dim); flex-shrink:0;}
+  .roadmap .connector{ width:1px; height:16px; background:var(--line); margin-left:4px; }
+
+  /* ---------- OSI interactive cards ---------- */
+  .osi-card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    margin-bottom:10px;
+    overflow:hidden;
+    cursor:pointer;
+  }
+  .osi-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 20px;
+  }
+  .osi-head-left{ display:flex; align-items:center; gap:14px; }
+  .osi-layer-num{
+    font-family:'IBM Plex Mono'; font-size:20px; color:var(--signal);
+    width:34px; text-align:center;
+  }
+  .osi-name{ font-family:'Inter'; font-weight:700; font-size:16px; font-weight:600; }
+  .osi-chevron{ color:var(--ink-dim); transition: transform .2s ease; font-family:'IBM Plex Mono'; }
+  .osi-card.open .osi-chevron{ transform:rotate(90deg); color:var(--signal); }
+  .osi-body{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .25s ease;
+    padding:0 20px;
+  }
+  .osi-card.open .osi-body{ max-height:200px; padding-bottom:18px; }
+  .osi-body .label{ font-family:'IBM Plex Mono'; font-size:11px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.05em; margin-top:8px; }
+  .osi-body .examples{ color:var(--ink-dim); font-size:14px; margin-top:4px;}
+
+  /* ---------- CIDR / pizza analogy ---------- */
+  .pizza-row{ display:flex; gap:10px; margin:18px 0; flex-wrap:wrap; }
+  .pizza{
+    flex:1; min-width:70px;
+    aspect-ratio:1;
+    border-radius:50%;
+    border:2px solid var(--signal-dim);
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono'; font-size:11px; color:var(--ink-dim);
+    background: conic-gradient(var(--bg-panel-2) 0deg, var(--bg-panel-2) 360deg);
+  }
+  .pizza span{ position:absolute; bottom:-22px; font-size:11px; }
+
+  /* ---------- subnet calculator ---------- */
+  .calc{
+    display:grid; grid-template-columns: 1fr 1fr; gap:14px;
+  }
+  @media (max-width:560px){ .calc{ grid-template-columns:1fr; } }
+  .calc label{ font-family:'IBM Plex Mono'; font-size:11px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.05em; display:block; margin-bottom:6px; }
+  .calc select, .calc input{
+    width:100%;
+    background:var(--bg-panel-2);
+    border:1px solid var(--line);
+    color:var(--ink);
+    font-family:'IBM Plex Mono';
+    font-size:14px;
+    padding:10px 12px;
+    border-radius:8px;
+  }
+  .calc-result{
+    grid-column:1/-1;
+    margin-top:6px;
+    background:var(--bg-panel-2);
+    border:1px dashed var(--line);
+    border-radius:10px;
+    padding:14px 16px;
+    font-family:'IBM Plex Mono';
+    font-size:13.5px;
+  }
+  .calc-result .r-line{ display:flex; justify-content:space-between; padding:3px 0; color:var(--ink-dim); }
+  .calc-result .r-line b{ color:var(--signal); font-weight:500; }
+
+  /* ---------- reflection ---------- */
+  .reflect-item{ margin-bottom:20px; }
+  .reflect-q{ font-size:15px; margin-bottom:8px; }
+  .reflect-q .qnum{ color:var(--signal); font-family:'IBM Plex Mono'; margin-right:8px;}
+  textarea{
+    width:100%;
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    color:var(--ink);
+    font-family:'Inter';
+    font-size:14px;
+    padding:12px 14px;
+    resize:vertical;
+    min-height:64px;
+  }
+  textarea:focus, select:focus, input:focus{ outline:2px solid var(--signal); outline-offset:1px; }
+  .hint{ font-size:12.5px; color:var(--ink-faint); margin-top:6px; }
+
+  /* ---------- quiz ---------- */
+  .quiz-card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px 22px;
+    margin-bottom:14px;
+  }
+  .quiz-q{ font-size:15px; margin-bottom:14px; font-weight:500; }
+  .quiz-opts{ display:flex; flex-direction:column; gap:8px; }
+  .quiz-opt{
+    display:flex; align-items:center; gap:10px;
+    padding:10px 14px;
+    border:1px solid var(--line);
+    border-radius:9px;
+    cursor:pointer;
+    font-size:14px;
+    color:var(--ink-dim);
+    transition: all .12s ease;
+  }
+  .quiz-opt:hover{ border-color:var(--signal-dim); color:var(--ink); }
+  .quiz-opt .letter{
+    font-family:'IBM Plex Mono'; font-size:12px;
+    width:22px;height:22px; border-radius:50%;
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .quiz-opt.correct{ border-color:var(--signal); background:rgba(59,130,246,0.08); color:var(--ink); }
+  .quiz-opt.correct .letter{ background:var(--signal); border-color:var(--signal); color:#ffffff; }
+  .quiz-opt.wrong{ border-color:#ef4444; background:rgba(239,68,68,0.08); color:var(--ink); }
+  .quiz-opt.wrong .letter{ background:#ef4444; border-color:#ef4444; color:#ffffff; }
+  .quiz-opt.disabled{ pointer-events:none; }
+
+  .quiz-summary{
+    position:sticky; bottom:20px;
+    max-width:760px; margin:24px auto 0 auto;
+    background:var(--bg-panel);
+    border:1px solid var(--signal-dim);
+    border-radius:var(--radius);
+    padding:16px 20px;
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:'IBM Plex Mono'; font-size:13.5px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+  .quiz-summary .score{ color:var(--signal); font-size:16px; }
+
+  .reveal-btn{
+    margin-top:10px;
+    background:transparent;
+    border:1px solid var(--signal-dim);
+    color:var(--signal);
+    font-family:'IBM Plex Mono';
+    font-size:12.5px;
+    padding:8px 14px;
+    border-radius:8px;
+    cursor:pointer;
+  }
+  .reveal-btn:hover{ background:rgba(59,130,246,0.08); }
+  .reveal-box{
+    margin-top:12px;
+    padding:14px 16px;
+    background:var(--bg-panel-2);
+    border-left:2px solid var(--signal);
+    border-radius:0 8px 8px 0;
+    font-size:14px;
+    color:var(--ink-dim);
+    display:none;
+  }
+  .reveal-box.show{ display:block; }
+
+  footer{
+    max-width:760px; margin:60px auto 0 auto; padding:24px 32px;
+    color:var(--ink-faint); font-size:12.5px;
+    font-family:'IBM Plex Mono';
+    border-top:1px solid var(--line-soft);
+  }
+
+  .progress-track{
+    position:fixed; top:0; left:0; height:2px; width:100%;
+    background:var(--line-soft); z-index:50;
+  }
+  .progress-fill{ height:100%; width:0%; background:var(--signal); transition:width .1s linear; }
+</style>
+</head>
+<body class="bg-slate-50">
+
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+<!-- Navigation (consistent with roadmap) -->
+<nav class="fixed w-full z-50 glass-card top-0 left-0" style="height:64px;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+        <div class="flex justify-between items-center h-16">
+            <a href="index.html" class="flex-shrink-0 flex items-center gap-3">
+                <div class="bg-primary text-white p-2 rounded-lg">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <span class="font-bold text-xl text-primary tracking-tight">TLJ Roadmap</span>
+            </a>
+            <a href="index.html" class="hidden sm:flex items-center gap-2 text-slate-600 hover:text-primary font-medium transition">
+                <i class="fas fa-arrow-left text-sm"></i> Kembali ke Roadmap
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="app">
+  <nav class="sidebar">
+    <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Roadmap TLJ XII</a>
+    <div class="brand"><span class="dot"></span> ASJ · TLJ XII</div>
+    <ul class="navlist" id="navlist">
+      <li><a href="#tujuan"><span class="port"></span>Tujuan Pembelajaran</a></li>
+      <li><a href="#pengantar"><span class="port"></span>Mengapa Belajar Ini</a></li>
+      <li><a href="#jaringan"><span class="port"></span>Apa Itu Jaringan</a></li>
+      <li><a href="#osi"><span class="port"></span>OSI Model</a></li>
+      <li><a href="#tcpip"><span class="port"></span>TCP/IP</a></li>
+      <li><a href="#ipv4"><span class="port"></span>IPv4</a></li>
+      <li><a href="#ipv6"><span class="port"></span>IPv6</a></li>
+      <li><a href="#subnetting"><span class="port"></span>Subnetting</a></li>
+      <li><a href="#cidr"><span class="port"></span>CIDR</a></li>
+      <li><a href="#vlsm"><span class="port"></span>VLSM</a></li>
+      <li><a href="#ringkasan"><span class="port"></span>Ringkasan</a></li>
+      <li><a href="#refleksi"><span class="port"></span>Refleksi</a></li>
+      <li><a href="#kuis"><span class="port"></span>Kuis Ringan</a></li>
+      <li><a href="#tantangan"><span class="port"></span>Tantangan Mini</a></li>
+      <li><a href="#evaluasi"><span class="port"></span>Evaluasi Akhir (25 Soal)</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <div class="hero-band">
+    <div class="hero">
+      <div class="eyebrow">Bab 1 · Administrasi Sistem Jaringan</div>
+      <h1>Review Dasar Jaringan Komputer</h1>
+      <p class="lede">Sebelum membangun jaringan sekolah dengan belasan ruang, seorang network engineer harus hafal di luar kepala: bagaimana lapisan OSI bekerja, bagaimana alamat IP dibagi, dan bagaimana subnetting membuat semuanya tertata rapi.</p>
+      <div class="meta">
+        <span>⏱ ± 2 × 45 Menit</span>
+        <span>📘 Kelas XII SMK</span>
+        <span>🎯 8 Topik Inti</span>
+      </div>
+
+      <div class="stack-wrap">
+        <div class="panel-title">Perjalanan satu paket data — Layer 7 menuju Layer 1</div>
+        <div class="stack">
+          <div class="packet" aria-hidden="true"></div>
+          <div class="stack-row"><span><span class="num">7</span>Application</span><span>Browser, Email</span></div>
+          <div class="stack-row"><span><span class="num">6</span>Presentation</span><span>Enkripsi, JPEG</span></div>
+          <div class="stack-row"><span><span class="num">5</span>Session</span><span>Login, Zoom</span></div>
+          <div class="stack-row"><span><span class="num">4</span>Transport</span><span>TCP, UDP</span></div>
+          <div class="stack-row"><span><span class="num">3</span>Network</span><span>IP Address</span></div>
+          <div class="stack-row"><span><span class="num">2</span>Data Link</span><span>MAC Address</span></div>
+          <div class="stack-row"><span><span class="num">1</span>Physical</span><span>Kabel, Fiber</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- TUJUAN -->
+    <section class="section" id="tujuan">
+      <div class="eyebrow">Tujuan Pembelajaran</div>
+      <h2>Setelah bab ini, kamu mampu</h2>
+      <ul class="plain">
+        <li>Mengingat kembali konsep dasar jaringan komputer.</li>
+        <li>Menjelaskan fungsi OSI Model dan TCP/IP.</li>
+        <li>Membedakan IPv4 dan IPv6.</li>
+        <li>Menghitung subnetting sederhana.</li>
+        <li>Memahami konsep CIDR.</li>
+        <li>Memahami dasar VLSM.</li>
+      </ul>
+    </section>
+
+    <!-- PENGANTAR -->
+    <section class="section" id="pengantar">
+      <div class="eyebrow">Mengapa Kita Belajar Ini?</div>
+      <h2>Bayangkan kamu seorang Network Engineer</h2>
+      <p>Bosmu berkata:</p>
+      <div class="panel">
+        <p style="margin:0; font-style:italic; color:var(--ink-dim);">"Bangun jaringan untuk sekolah yang memiliki 12 ruang."</p>
+      </div>
+      <p>Kalau kamu tidak memahami OSI, IP Address, Subnetting, dan VLSM — jaringan yang kamu bangun akan berantakan. Karena itu, seluruh materi kelas XII dimulai dari review dasar ini.</p>
+
+      <div class="panel">
+        <div class="panel-title">Roadmap Bab 1</div>
+        <div class="roadmap">
+          <div class="node"><span class="marker"></span>Review Dasar</div>
+          <div class="connector"></div>
+          <div class="node"><span class="marker"></span>OSI Model</div>
+          <div class="connector"></div>
+          <div class="node"><span class="marker"></span>TCP/IP</div>
+          <div class="connector"></div>
+          <div class="node"><span class="marker"></span>IPv4</div>
+          <div class="connector"></div>
+          <div class="node"><span class="marker"></span>IPv6</div>
+          <div class="connector"></div>
+          <div class="node"><span class="marker"></span>Subnetting</div>
+          <div class="connector"></div>
+          <div class="node"><span class="marker"></span>CIDR</div>
+          <div class="connector"></div>
+          <div class="node"><span class="marker" style="background:var(--signal); border-color:var(--signal);"></span>VLSM</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JARINGAN -->
+    <section class="section" id="jaringan">
+      <div class="eyebrow">Bagian 1</div>
+      <h2>Apa itu Jaringan Komputer?</h2>
+      <p>Jaringan komputer adalah kumpulan dua atau lebih perangkat yang saling terhubung untuk bertukar data — misalnya laptop, switch, server, hingga internet, semua tersambung dalam satu rantai komunikasi.</p>
+
+      <div class="grid2">
+        <div class="panel">
+          <div class="panel-title">Contoh di Sekolah</div>
+          <ul class="plain">
+            <li>Laboratorium komputer</li>
+            <li>WiFi sekolah</li>
+            <li>Server CBT</li>
+            <li>Printer bersama</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Tanpa vs Dengan Jaringan</div>
+          <p style="font-size:13.5px; color:var(--ink-dim); margin:0 0 6px 0;" class="check-no">File harus pakai flashdisk</p>
+          <p style="font-size:13.5px; color:var(--ink-dim); margin:0 0 6px 0;" class="check-no">Printer hanya satu komputer</p>
+          <p style="font-size:13.5px; color:var(--ink-dim); margin:0 0 6px 0;" class="check-yes">Berbagi internet & printer</p>
+          <p style="font-size:13.5px; color:var(--ink-dim); margin:0;" class="check-yes">Komunikasi lebih cepat</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- OSI -->
+    <section class="section" id="osi">
+      <div class="eyebrow">Bagian 2</div>
+      <h2>OSI Model</h2>
+      <p>OSI (<i>Open System Interconnection</i>) adalah model komunikasi jaringan yang memiliki <b>7 layer</b>. Klik setiap layer untuk melihat fungsinya.</p>
+
+      <div id="osiList"></div>
+
+      <div class="panel">
+        <div class="panel-title">Cara Mudah Mengingat (Mnemonic)</div>
+        <p class="mono" style="color:var(--ink-dim); margin:0;">All People Seem To Need Data Processing</p>
+      </div>
+    </section>
+
+    <!-- TCP/IP -->
+    <section class="section" id="tcpip">
+      <div class="eyebrow">Bagian 3</div>
+      <h2>Model TCP/IP</h2>
+      <p>Model yang benar-benar dipakai internet. Hanya memiliki <b>4 layer</b>: Application, Transport, Internet, dan Network Access.</p>
+      <div class="panel">
+        <div class="panel-title">Perbandingan OSI vs TCP/IP</div>
+        <table>
+          <tr><th>OSI</th><th>TCP/IP</th></tr>
+          <tr><td>7 Layer</td><td>4 Layer</td></tr>
+          <tr><td>Teori</td><td>Implementasi</td></tr>
+          <tr><td>Standar</td><td>Digunakan Internet</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- IPv4 -->
+    <section class="section" id="ipv4">
+      <div class="eyebrow">Bagian 4</div>
+      <h2>IPv4</h2>
+      <p>IPv4 menggunakan <b>32 bit</b>, ditulis dalam 4 oktet seperti <code>192.168.1.1</code>, dengan rentang dari <code>0.0.0.0</code> hingga <code>255.255.255.255</code>.</p>
+
+      <div class="grid2">
+        <div class="panel">
+          <div class="panel-title">Private IP (dipakai di sekolah)</div>
+          <p class="mono" style="color:var(--ink-dim); margin:0;">10.0.0.0<br>172.16.0.0<br>192.168.0.0</p>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Public IP (diberikan ISP)</div>
+          <p style="color:var(--ink-dim); margin:0;">IndiHome, Biznet, MyRepublic</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Contoh Pemisahan Network & Host</div>
+        <p class="mono" style="margin:0; color:var(--ink-dim);">192.168.10.20 → Network: <span style="color:var(--signal)">192.168.10</span> · Host: <span style="color:var(--amber)">20</span></p>
+      </div>
+    </section>
+
+    <!-- IPv6 -->
+    <section class="section" id="ipv6">
+      <div class="eyebrow">Bagian 5</div>
+      <h2>IPv6</h2>
+      <p>Karena IPv4 hampir habis, IPv6 dibuat menggunakan <b>128 bit</b>, contohnya <code>2001:db8:85a3::8a2e:370:7334</code>.</p>
+      <div class="panel">
+        <table>
+          <tr><th>IPv4</th><th>IPv6</th></tr>
+          <tr><td>32 bit</td><td>128 bit</td></tr>
+          <tr><td>4 Oktet</td><td>8 Blok</td></tr>
+          <tr><td>Terbatas</td><td>Sangat Banyak</td></tr>
+        </table>
+      </div>
+      <div class="grid2">
+        <div class="panel"><div class="panel-title">IPv4</div><p style="color:var(--ink-dim); margin:0;">Rumah dengan nomor terbatas</p></div>
+        <div class="panel"><div class="panel-title">IPv6</div><p style="color:var(--ink-dim); margin:0;">Kota baru dengan jutaan alamat</p></div>
+      </div>
+    </section>
+
+    <!-- SUBNETTING -->
+    <section class="section" id="subnetting">
+      <div class="eyebrow">Bagian 6</div>
+      <h2>Subnetting</h2>
+      <p>Subnetting adalah proses membagi satu jaringan menjadi beberapa jaringan kecil — berguna untuk memisahkan Guru, TU, Laboratorium, dan CCTV agar lebih aman dan terkelola.</p>
+      <div class="panel">
+        <div class="panel-title">Contoh Perhitungan</div>
+        <p class="mono" style="color:var(--ink-dim); margin:0 0 6px 0;">192.168.1.0/24 → Subnet Mask 255.255.255.0</p>
+        <p class="mono" style="color:var(--ink-dim); margin:0;">Jumlah Host = 2⁸ − 2 = <span style="color:var(--signal)">254</span></p>
+      </div>
+      <p>Jika <code>192.168.10.0/24</code> dibagi dua, hasilnya <code>192.168.10.0/25</code> dan <code>192.168.10.128/25</code>, masing-masing menampung 126 host.</p>
+    </section>
+
+    <!-- CIDR -->
+    <section class="section" id="cidr">
+      <div class="eyebrow">Bagian 7</div>
+      <h2>CIDR</h2>
+      <p><b>Classless Inter-Domain Routing</b> ditulis sebagai <code>/24</code>, <code>/25</code>, <code>/26</code>, dan seterusnya. Semakin besar angkanya, semakin sedikit host yang tersedia — seperti memotong satu pizza menjadi bagian yang lebih kecil.</p>
+
+      <div class="pizza-row">
+        <div class="pizza" style="background:conic-gradient(var(--signal-dim) 0deg 360deg);">/24<span>254 host</span></div>
+        <div class="pizza" style="background:conic-gradient(var(--signal-dim) 0deg 180deg, var(--bg-panel-2) 180deg 360deg);">/25<span>126 host</span></div>
+        <div class="pizza" style="background:conic-gradient(var(--signal-dim) 0deg 90deg, var(--bg-panel-2) 90deg 360deg);">/26<span>62 host</span></div>
+        <div class="pizza" style="background:conic-gradient(var(--signal-dim) 0deg 45deg, var(--bg-panel-2) 45deg 360deg);">/27<span>30 host</span></div>
+      </div>
+
+      <div class="panel" style="margin-top:30px;">
+        <div class="panel-title">Tabel CIDR</div>
+        <table>
+          <tr><th>CIDR</th><th>Host</th></tr>
+          <tr><td>/24</td><td>254</td></tr>
+          <tr><td>/25</td><td>126</td></tr>
+          <tr><td>/26</td><td>62</td></tr>
+          <tr><td>/27</td><td>30</td></tr>
+          <tr><td>/28</td><td>14</td></tr>
+        </table>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Coba Sendiri — Kalkulator CIDR Mini</div>
+        <div class="calc">
+          <div>
+            <label for="cidrSelect">Pilih CIDR</label>
+            <select id="cidrSelect">
+              <option value="24">/24</option>
+              <option value="25">/25</option>
+              <option value="26">/26</option>
+              <option value="27">/27</option>
+              <option value="28">/28</option>
+              <option value="29">/29</option>
+              <option value="30">/30</option>
+            </select>
+          </div>
+          <div>
+            <label for="netInput">Network Address</label>
+            <input type="text" id="netInput" value="192.168.10.0" class="mono">
+          </div>
+          <div class="calc-result" id="calcResult"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VLSM -->
+    <section class="section" id="vlsm">
+      <div class="eyebrow">Bagian 8</div>
+      <h2>VLSM</h2>
+      <p><b>Variable Length Subnet Mask</b> berarti setiap jaringan boleh memiliki ukuran subnet yang berbeda-beda, sesuai kebutuhan host — supaya alamat IP tidak terbuang percuma.</p>
+
+      <div class="panel">
+        <div class="panel-title">Studi Kasus — Sekolah dengan 5 Ruangan</div>
+        <table>
+          <tr><th>Ruangan</th><th>Kebutuhan Host</th><th>CIDR</th></tr>
+          <tr><td>Lab 1</td><td>100</td><td class="mono" style="color:var(--signal)">/25</td></tr>
+          <tr><td>Lab 2</td><td>60</td><td class="mono" style="color:var(--signal)">/26</td></tr>
+          <tr><td>Guru</td><td>20</td><td class="mono" style="color:var(--signal)">/27</td></tr>
+          <tr><td>TU</td><td>10</td><td class="mono" style="color:var(--signal)">/28</td></tr>
+          <tr><td>CCTV</td><td>6</td><td class="mono" style="color:var(--signal)">/29</td></tr>
+        </table>
+      </div>
+      <p>Kalau semua ruangan diberi <code>/24</code>, akan sangat boros IP. Dengan VLSM, setiap ruangan mendapat ukuran yang pas dengan kebutuhannya.</p>
+    </section>
+
+    <!-- RINGKASAN -->
+    <section class="section" id="ringkasan">
+      <div class="eyebrow">Ringkasan Bab</div>
+      <h2>Yang Perlu Kamu Ingat</h2>
+      <ul class="plain">
+        <li>OSI memiliki 7 layer, TCP/IP memiliki 4 layer.</li>
+        <li>IPv4 menggunakan 32 bit, IPv6 menggunakan 128 bit.</li>
+        <li>Subnetting membagi satu jaringan menjadi beberapa jaringan kecil.</li>
+        <li>CIDR menentukan ukuran subnet lewat notasi seperti /24 atau /27.</li>
+        <li>VLSM membuat penggunaan alamat IP jadi lebih efisien.</li>
+      </ul>
+    </section>
+
+    <!-- REFLEKSI -->
+    <section class="section" id="refleksi">
+      <div class="eyebrow">Refleksi</div>
+      <h2>Jawab Secara Singkat</h2>
+      <p class="hint" style="margin-bottom:16px;">Jawabanmu hanya tersimpan sementara di halaman ini dan tidak dikirim ke mana pun — tulis dulu, lalu diskusikan dengan gurumu.</p>
+      <div id="reflectList"></div>
+    </section>
+
+    <!-- KUIS -->
+    <section class="section" id="kuis">
+      <div class="eyebrow">Kuis Ringan</div>
+      <h2>Uji Pemahamanmu</h2>
+      <p>10 soal pilihan ganda — klik jawabanmu untuk melihat apakah benar.</p>
+      <div id="quizList"></div>
+    </section>
+
+    <!-- TANTANGAN -->
+    <section class="section" id="tantangan">
+      <div class="eyebrow">Tantangan Mini</div>
+      <h2>Studi Kasus Akhir</h2>
+      <div class="panel">
+        <p><b>Kasus:</b> Sebuah sekolah memiliki jaringan <code>192.168.100.0/24</code> dengan kebutuhan:</p>
+        <ul class="plain">
+          <li>Lab Komputer: 100 perangkat</li>
+          <li>Ruang Guru: 20 perangkat</li>
+          <li>Tata Usaha: 10 perangkat</li>
+          <li>CCTV: 6 perangkat</li>
+        </ul>
+        <p style="margin-bottom:6px;"><b>Tugas:</b></p>
+        <ol style="color:var(--ink-dim); padding-left:20px;">
+          <li>Tentukan CIDR yang sesuai untuk masing-masing bagian.</li>
+          <li>Jelaskan mengapa tidak semua bagian menggunakan subnet /24.</li>
+          <li>Menurutmu, apa keuntungan menggunakan VLSM pada kasus ini?</li>
+        </ol>
+        <button class="reveal-btn" id="revealChallenge">Tampilkan Jawaban yang Diharapkan</button>
+        <div class="reveal-box" id="challengeBox">
+          Lab → <b style="color:var(--signal)">/25</b>, Guru → <b style="color:var(--signal)">/27</b>, TU → <b style="color:var(--signal)">/28</b>, CCTV → <b style="color:var(--signal)">/29</b>. VLSM menghemat alamat IP dan membuat pengelolaan jaringan lebih efisien karena setiap ruangan hanya diberi alamat sebanyak yang benar-benar dibutuhkan.
+        </div>
+      </div>
+    </section>
+
+    <!-- EVALUASI AKHIR (25 SOAL, DINILAI GURU) -->
+    <section class="section" id="evaluasi">
+      <div class="eyebrow">Evaluasi Akhir Bab 1</div>
+      <h2>Uji Kompetensi — 25 Soal</h2>
+      <p>Jawab seluruh soal di bawah ini. Jawaban baru dinilai benar/salah setelah kamu menekan tombol <b>"Kumpulkan Jawaban"</b> di akhir. Skor akhir yang muncul di layar akan dinilai secara manual oleh guru pengampu.</p>
+
+      <div class="panel" id="evalIdentity">
+        <div class="panel-title">Identitas Siswa</div>
+        <div class="grid2">
+          <div>
+            <label style="font-family:'IBM Plex Mono'; font-size:11px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.05em; display:block; margin-bottom:6px;">Nama Lengkap</label>
+            <input type="text" id="evalNama" placeholder="Tulis nama lengkapmu" style="width:100%; background:var(--bg-panel-2); border:1px solid var(--line); color:var(--ink); font-family:'Inter'; font-size:14px; padding:10px 12px; border-radius:8px;">
+          </div>
+          <div>
+            <label style="font-family:'IBM Plex Mono'; font-size:11px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.05em; display:block; margin-bottom:6px;">Kelas</label>
+            <input type="text" id="evalKelas" placeholder="Contoh: XII TKJ 1" style="width:100%; background:var(--bg-panel-2); border:1px solid var(--line); color:var(--ink); font-family:'Inter'; font-size:14px; padding:10px 12px; border-radius:8px;">
+          </div>
+        </div>
+      </div>
+
+      <div id="evalList"></div>
+
+      <div class="panel" style="text-align:center;">
+        <button class="reveal-btn" id="evalSubmitBtn" style="font-size:14px; padding:12px 28px;">Kumpulkan Jawaban</button>
+        <p class="hint" id="evalHint">Pastikan semua 25 soal sudah dijawab sebelum mengumpulkan.</p>
+      </div>
+
+      <div class="panel" id="evalResultBox" style="display:none; text-align:center; border-color:var(--signal);">
+        <div class="panel-title">Hasil Evaluasi</div>
+        <div style="font-family:'IBM Plex Mono'; font-size:42px; font-weight:600; color:var(--signal); margin:10px 0;" id="evalScoreBig">0 / 25</div>
+        <div style="font-family:'IBM Plex Mono'; font-size:15px; color:var(--ink-dim); margin-bottom:14px;" id="evalScorePercent">Nilai: 0</div>
+        <p id="evalStudentSummary" style="color:var(--ink-dim); font-size:14px;"></p>
+        <p style="color:var(--ink-dim); font-size:13.5px; margin-top:10px;">Tunjukkan atau screenshot layar ini kepada guru pengampu, <b style="color:var(--ink);">Khalid Nabawi, S.Kom.</b>, untuk penilaian resmi.</p>
+      </div>
+    </section>
+
+    <footer>
+      BAB 1 · Review Dasar Jaringan Komputer — Administrasi Sistem Jaringan / TLJ Kelas XII SMK
+    </footer>
+  </main>
+</div>
+
+<!-- Footer (consistent with roadmap) -->
+<footer class="bg-dark text-slate-400 py-8 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="text-center md:text-left">
+            <p class="text-white font-semibold mb-1">SMK Bintang Raudloh</p>
+            <p class="text-sm">Teknik Komputer dan Jaringan</p>
+        </div>
+        <div class="text-sm text-center">
+            &copy; 2026 Roadmap Pembelajaran TLJ Kelas XII.
+        </div>
+        <a href="index.html" class="text-slate-400 hover:text-white transition text-sm flex items-center gap-2">
+            <i class="fas fa-arrow-left"></i> Kembali ke Roadmap
+        </a>
+    </div>
+</footer>
+
+<div class="quiz-summary" id="quizSummary" style="display:none;">
+  <span>Progres Kuis</span>
+  <span class="score" id="quizScore">0 / 10</span>
+</div>
+
+<script>
+/* ---------------- Nav active state + progress bar ---------------- */
+const sections = document.querySelectorAll('section.section');
+const navLinks = document.querySelectorAll('.navlist a');
+function updateNav(){
+  let current = '';
+  sections.forEach(s=>{
+    const rect = s.getBoundingClientRect();
+    if(rect.top <= 140) current = s.id;
+  });
+  navLinks.forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('href') === '#'+current);
+  });
+  const scrollTop = document.documentElement.scrollTop;
+  const scrollH = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  document.getElementById('progressFill').style.width = (scrollH>0 ? (scrollTop/scrollH*100) : 0) + '%';
+}
+document.addEventListener('scroll', updateNav);
+updateNav();
+
+/* ---------------- OSI interactive layers ---------------- */
+const osiData = [
+  {n:7, name:'Application', desc:'Tempat aplikasi bekerja.', ex:'Browser, Email, WhatsApp Desktop'},
+  {n:6, name:'Presentation', desc:'Mengubah format data — enkripsi maupun dekripsi.', ex:'Enkripsi, Dekripsi, JPEG, PNG'},
+  {n:5, name:'Session', desc:'Mengatur koneksi antar komputer.', ex:'Saat login Zoom'},
+  {n:4, name:'Transport', desc:'Mengatur pengiriman data.', ex:'Protokol TCP, UDP'},
+  {n:3, name:'Network', desc:'Mengatur alamat IP.', ex:'Perangkat: Router'},
+  {n:2, name:'Data Link', desc:'Mengatur MAC Address.', ex:'Perangkat: Switch'},
+  {n:1, name:'Physical', desc:'Media fisik penghubung.', ex:'Kabel LAN, Fiber Optic, Hub'},
+];
+const osiList = document.getElementById('osiList');
+osiData.forEach(l=>{
+  const card = document.createElement('div');
+  card.className = 'osi-card';
+  card.innerHTML = `
+    <div class="osi-head">
+      <div class="osi-head-left">
+        <span class="osi-layer-num">${l.n}</span>
+        <span class="osi-name">${l.name}</span>
+      </div>
+      <span class="osi-chevron">›</span>
+    </div>
+    <div class="osi-body">
+      <p style="margin:8px 0 0 0; color:var(--ink-dim); font-size:14px;">${l.desc}</p>
+      <div class="label">Contoh</div>
+      <div class="examples">${l.ex}</div>
+    </div>`;
+  card.addEventListener('click', ()=> card.classList.toggle('open'));
+  osiList.appendChild(card);
+});
+
+/* ---------------- Reflection questions ---------------- */
+const reflectQs = [
+  'Mengapa jaringan sekolah tidak cukup menggunakan satu network saja?',
+  'Apa manfaat subnetting menurut pendapatmu?',
+  'Mengapa IPv6 dibuat?',
+  'Jika menjadi administrator jaringan sekolah, bagian mana yang menurutmu paling penting dipahami?',
+  'Setelah belajar bab ini, materi apa yang masih membuatmu bingung?'
+];
+const reflectList = document.getElementById('reflectList');
+reflectQs.forEach((q,i)=>{
+  const div = document.createElement('div');
+  div.className = 'reflect-item';
+  div.innerHTML = `
+    <div class="reflect-q"><span class="qnum">${i+1}.</span>${q}</div>
+    <textarea placeholder="Tulis jawabanmu di sini..."></textarea>`;
+  reflectList.appendChild(div);
+});
+
+/* ---------------- Quiz ---------------- */
+const quizData = [
+  {q:'OSI Model memiliki...', opts:['4 Layer','5 Layer','7 Layer','8 Layer'], correct:2},
+  {q:'Layer yang bertugas menentukan IP Address adalah...', opts:['Physical','Data Link','Network','Session'], correct:2},
+  {q:'IPv4 menggunakan...', opts:['16 bit','32 bit','64 bit','128 bit'], correct:1},
+  {q:'Alamat berikut termasuk Private IP...', opts:['8.8.8.8','1.1.1.1','192.168.1.10','203.0.113.10'], correct:2},
+  {q:'CIDR /24 memiliki jumlah host sebanyak...', opts:['30','62','126','254'], correct:3},
+  {q:'VLSM bertujuan untuk...', opts:['Mempercepat internet','Menghemat penggunaan IP Address','Menambah bandwidth','Menghapus subnet'], correct:1},
+  {q:'Model yang digunakan pada implementasi Internet adalah...', opts:['OSI','TCP/IP','IEEE','Ethernet'], correct:1},
+  {q:'Layer paling bawah pada OSI adalah...', opts:['Application','Session','Physical','Transport'], correct:2},
+  {q:'Subnetting digunakan untuk...', opts:['Menambah RAM','Membagi jaringan menjadi beberapa subnet','Menghapus IP','Memperbesar bandwidth'], correct:1},
+  {q:'IPv6 dibuat karena...', opts:['IPv4 terlalu cepat','IPv4 mulai kehabisan alamat','Router rusak','Switch tidak mendukung IPv4'], correct:1},
+];
+const letters = ['A','B','C','D'];
+let score = 0;
+const answered = new Array(quizData.length).fill(false);
+const quizList = document.getElementById('quizList');
+const quizSummary = document.getElementById('quizSummary');
+const quizScoreEl = document.getElementById('quizScore');
+
+quizData.forEach((item, qi)=>{
+  const card = document.createElement('div');
+  card.className = 'quiz-card';
+  const optsHtml = item.opts.map((o,oi)=>`
+    <div class="quiz-opt" data-oi="${oi}">
+      <span class="letter">${letters[oi]}</span><span>${o}</span>
+    </div>`).join('');
+  card.innerHTML = `<div class="quiz-q">${qi+1}. ${item.q}</div><div class="quiz-opts">${optsHtml}</div>`;
+  const optEls = card.querySelectorAll('.quiz-opt');
+  optEls.forEach(el=>{
+    el.addEventListener('click', ()=>{
+      if(answered[qi]) return;
+      answered[qi] = true;
+      const oi = parseInt(el.getAttribute('data-oi'));
+      optEls.forEach(o=>o.classList.add('disabled'));
+      optEls[item.correct].classList.add('correct');
+      if(oi === item.correct){
+        score++;
+      } else {
+        el.classList.add('wrong');
+      }
+      quizSummary.style.display = 'flex';
+      quizScoreEl.textContent = score + ' / ' + quizData.length;
+    });
+  });
+  quizList.appendChild(card);
+});
+
+/* ---------------- Challenge reveal ---------------- */
+document.getElementById('revealChallenge').addEventListener('click', function(){
+  const box = document.getElementById('challengeBox');
+  box.classList.toggle('show');
+  this.textContent = box.classList.contains('show') ? 'Sembunyikan Jawaban' : 'Tampilkan Jawaban yang Diharapkan';
+});
+
+/* ---------------- Mini CIDR / subnet calculator ---------------- */
+function ipToInt(ip){
+  const parts = ip.split('.').map(Number);
+  if(parts.length !== 4 || parts.some(p=>isNaN(p)||p<0||p>255)) return null;
+  return ((parts[0]<<24) >>> 0) + (parts[1]<<16) + (parts[2]<<8) + parts[3];
+}
+function intToIp(int){
+  return [(int>>>24)&255, (int>>>16)&255, (int>>>8)&255, int&255].join('.');
+}
+function updateCalc(){
+  const cidr = parseInt(document.getElementById('cidrSelect').value);
+  const ipStr = document.getElementById('netInput').value.trim();
+  const resultEl = document.getElementById('calcResult');
+  const ipInt = ipToInt(ipStr);
+  if(ipInt === null){
+    resultEl.innerHTML = '<div class="r-line" style="color:#ef4444;">Format IP tidak valid. Gunakan format seperti 192.168.10.0</div>';
+    return;
+  }
+  const hostBits = 32 - cidr;
+  const maskInt = hostBits >= 32 ? 0 : (0xFFFFFFFF << hostBits) >>> 0;
+  const networkInt = (ipInt & maskInt) >>> 0;
+  const broadcastInt = (networkInt | (~maskInt >>> 0)) >>> 0;
+  const totalHosts = hostBits <= 1 ? 0 : Math.pow(2, hostBits) - 2;
+  const firstHost = hostBits <= 1 ? '-' : intToIp(networkInt + 1);
+  const lastHost = hostBits <= 1 ? '-' : intToIp(broadcastInt - 1);
+  resultEl.innerHTML = `
+    <div class="r-line"><span>Network Address</span><b>${intToIp(networkInt)}/${cidr}</b></div>
+    <div class="r-line"><span>Subnet Mask</span><b>${intToIp(maskInt)}</b></div>
+    <div class="r-line"><span>Rentang Host</span><b>${firstHost} — ${lastHost}</b></div>
+    <div class="r-line"><span>Broadcast</span><b>${intToIp(broadcastInt)}</b></div>
+    <div class="r-line"><span>Jumlah Host Valid</span><b>${totalHosts}</b></div>
+  `;
+}
+document.getElementById('cidrSelect').addEventListener('change', updateCalc);
+document.getElementById('netInput').addEventListener('input', updateCalc);
+updateCalc();
+
+/* ---------------- Evaluasi Akhir: 25 Soal ---------------- */
+const evalData = [
+  {q:'OSI Model terdiri dari berapa layer?', opts:['5 layer','6 layer','7 layer','8 layer'], correct:2},
+  {q:'Layer yang bertugas mengatur pengalamatan logis (IP Address) adalah...', opts:['Physical','Data Link','Network','Transport'], correct:2},
+  {q:'Perangkat yang bekerja pada Layer 2 (Data Link) adalah...', opts:['Router','Switch','Hub','Repeater'], correct:1},
+  {q:'Protokol TCP dan UDP bekerja pada layer...', opts:['Network','Transport','Session','Application'], correct:1},
+  {q:'Layer yang berfungsi mengatur enkripsi dan format data adalah...', opts:['Session','Presentation','Application','Physical'], correct:1},
+  {q:'Model yang benar-benar digunakan dalam implementasi jaringan Internet adalah...', opts:['OSI', 'TCP/IP', 'IEEE 802', 'ISO'], correct:1},
+  {q:'Model TCP/IP memiliki berapa layer utama?', opts:['3 layer','4 layer','5 layer','7 layer'], correct:1},
+  {q:'IPv4 menggunakan alamat sepanjang...', opts:['16 bit','32 bit','64 bit','128 bit'], correct:1},
+  {q:'IPv6 dibuat terutama karena...', opts:['IPv4 tidak aman','Alamat IPv4 mulai habis','IPv4 terlalu lambat','Router tidak mendukung IPv4'], correct:1},
+  {q:'Panjang alamat IPv6 adalah...', opts:['32 bit','64 bit','128 bit','256 bit'], correct:2},
+  {q:'Manakah yang termasuk kelas Private IP Address?', opts:['8.8.8.8','172.16.0.1','203.0.113.5','1.1.1.1'], correct:1},
+  {q:'Subnet mask default untuk kelas C adalah...', opts:['255.0.0.0','255.255.0.0','255.255.255.0','255.255.255.255'], correct:2},
+  {q:'Notasi CIDR /26 memiliki subnet mask...', opts:['255.255.255.0','255.255.255.128','255.255.255.192','255.255.255.224'], correct:2},
+  {q:'Jumlah host valid pada subnet /28 adalah...', opts:['6','14','30','62'], correct:1},
+  {q:'Fungsi utama subnetting adalah...', opts:['Mempercepat koneksi internet','Membagi jaringan besar menjadi beberapa subnet','Menambah jumlah bandwidth','Mengganti IP address secara otomatis'], correct:1},
+  {q:'VLSM adalah singkatan dari...', opts:['Variable Length Subnet Mask','Virtual LAN Subnet Model','Very Long Subnet Method','Variable LAN Segment Mask'], correct:0},
+  {q:'Keuntungan utama menggunakan VLSM dibandingkan subnetting biasa adalah...', opts:['Menghemat penggunaan alamat IP','Menambah kecepatan jaringan','Mengurangi jumlah perangkat','Menghapus kebutuhan router'], correct:0},
+  {q:'Alamat broadcast pada sebuah subnet digunakan untuk...', opts:['Alamat host pertama','Mengirim data ke semua host dalam subnet','Alamat gateway','Alamat DNS server'], correct:1},
+  {q:'Pada jaringan 192.168.10.0/24, alamat network-nya adalah...', opts:['192.168.10.0','192.168.10.1','192.168.10.255','192.168.10.254'], correct:0},
+  {q:'Pada jaringan 192.168.10.0/24, alamat broadcast-nya adalah...', opts:['192.168.10.0','192.168.10.1','192.168.10.254','192.168.10.255'], correct:3},
+  {q:'CIDR /24 setara dengan subnet mask...', opts:['255.255.0.0','255.255.255.0','255.255.255.128','255.0.0.0'], correct:1},
+  {q:'MAC Address digunakan sebagai identitas perangkat pada layer...', opts:['Network','Data Link','Transport','Application'], correct:1},
+  {q:'Contoh protokol yang bekerja di layer Application adalah...', opts:['TCP','IP','HTTP','MAC'], correct:2},
+  {q:'Jika sebuah bagian jaringan hanya membutuhkan 6 host, CIDR yang paling efisien digunakan adalah...', opts:['/24','/28','/29','/30'], correct:2},
+  {q:'Tujuan utama mempelajari OSI Model bagi seorang teknisi jaringan adalah...', opts:['Agar bisa membuat aplikasi','Memahami cara kerja komunikasi data secara bertahap untuk memudahkan troubleshooting','Mengganti alamat IP secara manual','Membuat kabel UTP'], correct:1},
+];
+
+const evalLetters = ['A','B','C','D'];
+const evalAnswers = new Array(evalData.length).fill(null);
+const evalList = document.getElementById('evalList');
+
+evalData.forEach((item, qi)=>{
+  const card = document.createElement('div');
+  card.className = 'quiz-card';
+  const optsHtml = item.opts.map((o,oi)=>`
+    <div class="quiz-opt" data-oi="${oi}">
+      <span class="letter">${evalLetters[oi]}</span><span>${o}</span>
+    </div>`).join('');
+  card.innerHTML = `<div class="quiz-q">${qi+1}. ${item.q}</div><div class="quiz-opts">${optsHtml}</div>`;
+  const optEls = card.querySelectorAll('.quiz-opt');
+  optEls.forEach(el=>{
+    el.addEventListener('click', ()=>{
+      if(evalSubmitted) return;
+      const oi = parseInt(el.getAttribute('data-oi'));
+      evalAnswers[qi] = oi;
+      optEls.forEach(o=>o.classList.remove('selected'));
+      el.classList.add('selected');
+      el.style.borderColor = 'var(--signal)';
+      el.style.background = 'rgba(59,130,246,0.08)';
+      optEls.forEach(o=>{ if(o!==el){ o.style.borderColor=''; o.style.background=''; } });
+    });
+  });
+  evalList.appendChild(card);
+});
+
+let evalSubmitted = false;
+document.getElementById('evalSubmitBtn').addEventListener('click', ()=>{
+  if(evalSubmitted) return;
+
+  const unanswered = evalAnswers.filter(a=>a===null).length;
+  if(unanswered > 0){
+    document.getElementById('evalHint').textContent = `Masih ada ${unanswered} soal yang belum dijawab. Silakan lengkapi semua jawaban terlebih dahulu.`;
+    document.getElementById('evalHint').style.color = '#ef4444';
+    return;
+  }
+
+  evalSubmitted = true;
+  let score = 0;
+
+  const cards = evalList.querySelectorAll('.quiz-card');
+  cards.forEach((card, qi)=>{
+    const optEls = card.querySelectorAll('.quiz-opt');
+    const correctIdx = evalData[qi].correct;
+    const chosenIdx = evalAnswers[qi];
+    optEls.forEach(o=>o.classList.add('disabled'));
+    optEls[correctIdx].classList.add('correct');
+    if(chosenIdx === correctIdx){
+      score++;
+    } else {
+      optEls[chosenIdx].classList.add('wrong');
+    }
+  });
+
+  const total = evalData.length;
+  const percent = Math.round((score/total)*100);
+  const nama = document.getElementById('evalNama').value.trim() || '(nama belum diisi)';
+  const kelas = document.getElementById('evalKelas').value.trim() || '(kelas belum diisi)';
+
+  document.getElementById('evalScoreBig').textContent = `${score} / ${total}`;
+  document.getElementById('evalScorePercent').textContent = `Nilai: ${percent}`;
+  document.getElementById('evalStudentSummary').textContent = `Nama: ${nama} · Kelas: ${kelas}`;
+  document.getElementById('evalResultBox').style.display = 'block';
+  document.getElementById('evalResultBox').scrollIntoView({behavior:'smooth', block:'center'});
+
+  const btn = document.getElementById('evalSubmitBtn');
+  btn.textContent = 'Jawaban Terkumpul';
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+  btn.style.cursor = 'not-allowed';
+  document.getElementById('evalHint').textContent = 'Terima kasih, jawabanmu sudah dikumpulkan.';
+  document.getElementById('evalHint').style.color = '';
+});
+
+</script>
+</body>
+</html>

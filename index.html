@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap Pembelajaran TLJ Kelas XII - SMK Bintang Raudloh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#1e40af', // blue-800
+                        secondary: '#3b82f6', // blue-500
+                        accent: '#f59e0b', // amber-500
+                        dark: '#1e293b', // slate-800
+                        light: '#f8fafc', // slate-50
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #1e40af, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Animation for timeline dots */
+        .timeline-dot {
+            transition: all 0.3s ease;
+        }
+        .timeline-item:hover .timeline-dot {
+            transform: scale(1.2);
+            background-color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 antialiased selection:bg-blue-200 selection:text-blue-900">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-card transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <div class="bg-primary text-white p-2 rounded-lg">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <span class="font-bold text-xl text-primary tracking-tight">TLJ Roadmap</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#tujuan" class="text-slate-600 hover:text-primary font-medium transition">Tujuan</a>
+                    <a href="#semester-1" class="text-slate-600 hover:text-primary font-medium transition">Semester 1</a>
+                    <a href="#semester-2" class="text-slate-600 hover:text-primary font-medium transition">Semester 2</a>
+                    <a href="#kompetensi" class="text-slate-600 hover:text-primary font-medium transition">Kompetensi</a>
+                    <a href="#penilaian" class="text-slate-600 hover:text-primary font-medium transition">Info</a>
+                </div>
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-primary focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 shadow-lg">
+                <a href="#tujuan" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Tujuan</a>
+                <a href="#semester-1" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Semester Ganjil</a>
+                <a href="#semester-2" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Semester Genap</a>
+                <a href="#kompetensi" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Kompetensi</a>
+                <a href="#penilaian" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-primary hover:bg-slate-50">Informasi Tambahan</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white">
+        <!-- Abstract Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none"/>
+                <path d="M0,100 C20,80 40,60 100,20 L100,0 L0,0 Z" fill="#ffffff" opacity="0.3"/>
+                <path d="M0,100 C30,90 60,40 100,50 L100,100 Z" fill="#ffffff" opacity="0.2"/>
+            </svg>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto">
+                <span class="inline-block py-1 px-3 rounded-full bg-blue-700 text-blue-100 text-sm font-semibold tracking-wider mb-6 border border-blue-500 shadow-sm">
+                    TAHUN AJARAN 2026/2027
+                </span>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
+                    Roadmap Pembelajaran <br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-indigo-200">Teknik Layanan Jaringan</span>
+                </h1>
+                <p class="mt-4 text-xl sm:text-2xl text-blue-100 font-medium">Kelas XII - SMK Bintang Raudloh</p>
+                <div class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4 text-blue-100">
+                    <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-lg backdrop-blur-sm border border-white/20">
+                        <i class="fas fa-chalkboard-teacher text-blue-300"></i>
+                        <span>Guru Pengampu: <strong>Khalid Nabawi, S.Kom.</strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Tujuan Pembelajaran -->
+        <section id="tujuan" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-dark mb-4"><i class="fas fa-bullseye text-secondary mr-3"></i>Tujuan Pembelajaran</h2>
+                    <p class="text-lg text-slate-600 max-w-2xl mx-auto">Selama satu tahun ke depan, kita akan belajar menjadi Network Engineer profesional.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                    <!-- Cards for objectives -->
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
+                        <div class="w-12 h-12 bg-blue-100 text-primary rounded-xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-pencil-ruler"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Merancang</h3>
+                        <p class="text-slate-600">Merancang jaringan komputer sesuai dengan analisis kebutuhan.</p>
+                    </div>
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
+                        <div class="w-12 h-12 bg-indigo-100 text-indigo-700 rounded-xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Mengonfigurasi</h3>
+                        <p class="text-slate-600">Mengonfigurasi berbagai perangkat jaringan keras dan lunak.</p>
+                    </div>
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Membangun</h3>
+                        <p class="text-slate-600">Membangun jaringan skala kecil hingga menengah yang handal.</p>
+                    </div>
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
+                        <div class="w-12 h-12 bg-red-100 text-red-700 rounded-xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Mengamankan</h3>
+                        <p class="text-slate-600">Mengamankan jaringan dari ancaman internal maupun eksternal.</p>
+                    </div>
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
+                        <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Troubleshooting</h3>
+                        <p class="text-slate-600">Melakukan deteksi dan perbaikan masalah jaringan secara efisien.</p>
+                    </div>
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
+                        <div class="w-12 h-12 bg-purple-100 text-purple-700 rounded-xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Proyek Dunia Kerja</h3>
+                        <p class="text-slate-600">Menyelesaikan proyek jaringan riil sesuai kebutuhan industri.</p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100 text-center">
+                    <h3 class="text-xl font-bold text-primary mb-3">🎯 Target Akhir Pembelajaran</h3>
+                    <p class="text-lg text-slate-700">Setiap siswa mampu membangun jaringan perusahaan sederhana menggunakan <span class="font-semibold text-dark">Router, Switch, Access Point, dan Server</span> dengan konfigurasi yang baik dan aman.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Semester 1 -->
+        <section id="semester-1" class="py-20 bg-slate-50">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <span class="text-sm font-bold tracking-wider text-secondary uppercase mb-2 block">Semester Ganjil</span>
+                    <h2 class="text-3xl font-bold text-dark mb-4">Membangun Jaringan yang Andal</h2>
+                    <div class="w-24 h-1 bg-secondary mx-auto rounded-full"></div>
+                </div>
+
+                <!-- Timeline Container -->
+                <div class="relative border-l-2 border-blue-200 ml-3 md:ml-6 space-y-12">
+                    
+                    <!-- Bab 1 -->
+                    <div class="timeline-item relative pl-8 md:pl-12">
+                        <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 bg-white border-4 border-blue-300 rounded-full"></div>
+                        <a href="bab1.html" class="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-secondary/40 transition-all group">
+                            <h3 class="text-xl font-bold text-dark mb-3"><span class="text-primary mr-2">BAB 1</span> Review Dasar Jaringan</h3>
+                            <ul class="list-disc list-inside text-slate-600 space-y-1 mb-4 columns-1 sm:columns-2">
+                                <li>OSI Model & TCP/IP</li>
+                                <li>IPv4 & IPv6 (Pengenalan)</li>
+                                <li>Subnetting & CIDR</li>
+                                <li>VLSM</li>
+                            </ul>
+                            <div class="bg-blue-50 p-3 rounded-lg flex items-start gap-3 border border-blue-100">
+                                <i class="fas fa-laptop-code text-secondary mt-1"></i>
+                                <div>
+                                    <span class="font-semibold text-sm text-primary block mb-1">Praktik:</span>
+                                    <p class="text-sm text-slate-700">Menghitung subnetting dan Mendesain IP Address.</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-secondary group-hover:gap-2 transition-all">
+                                <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Bab 2 -->
+                    <div class="timeline-item relative pl-8 md:pl-12">
+                        <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 bg-white border-4 border-blue-300 rounded-full"></div>
+                        <a href="bab2.html" class="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-secondary/40 transition-all group">
+                            <h3 class="text-xl font-bold text-dark mb-3"><span class="text-primary mr-2">BAB 2</span> Perencanaan Topologi</h3>
+                            <ul class="list-disc list-inside text-slate-600 space-y-1 mb-4 columns-1 sm:columns-2">
+                                <li>Analisis kebutuhan</li>
+                                <li>Topologi jaringan</li>
+                                <li>Pemilihan perangkat</li>
+                                <li>Dokumentasi jaringan</li>
+                            </ul>
+                            <div class="bg-blue-50 p-3 rounded-lg flex items-start gap-3 border border-blue-100">
+                                <i class="fas fa-laptop-code text-secondary mt-1"></i>
+                                <div>
+                                    <span class="font-semibold text-sm text-primary block mb-1">Praktik:</span>
+                                    <p class="text-sm text-slate-700">Mendesain jaringan sekolah/perkantoran.</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-secondary group-hover:gap-2 transition-all">
+                                <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Bab 3 -->
+                    <div class="timeline-item relative pl-8 md:pl-12">
+                        <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 bg-white border-4 border-blue-300 rounded-full"></div>
+                        <a href="bab3.html" class="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-secondary/40 transition-all group">
+                            <h3 class="text-xl font-bold text-dark mb-3"><span class="text-primary mr-2">BAB 3</span> Switching</h3>
+                            <ul class="list-disc list-inside text-slate-600 space-y-1 mb-4 columns-1 sm:columns-2">
+                                <li>Switch Managed</li>
+                                <li>VLAN</li>
+                                <li>Trunk</li>
+                                <li>Access Port</li>
+                            </ul>
+                            <div class="bg-blue-50 p-3 rounded-lg flex items-start gap-3 border border-blue-100">
+                                <i class="fas fa-laptop-code text-secondary mt-1"></i>
+                                <div>
+                                    <span class="font-semibold text-sm text-primary block mb-1">Praktik:</span>
+                                    <p class="text-sm text-slate-700">Konfigurasi VLAN & Komunikasi antar VLAN.</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-secondary group-hover:gap-2 transition-all">
+                                <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                     <!-- Bab 4 -->
+                     <div class="timeline-item relative pl-8 md:pl-12">
+                        <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 bg-white border-4 border-blue-300 rounded-full"></div>
+                        <a href="bab4.html" class="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-secondary/40 transition-all group">
+                            <h3 class="text-xl font-bold text-dark mb-3"><span class="text-primary mr-2">BAB 4</span> Inter VLAN Routing</h3>
+                            <ul class="list-disc list-inside text-slate-600 space-y-1 mb-4">
+                                <li>Router on a Stick</li>
+                                <li>Layer 3 Switching (Konsep)</li>
+                            </ul>
+                            <div class="bg-blue-50 p-3 rounded-lg flex items-start gap-3 border border-blue-100">
+                                <i class="fas fa-laptop-code text-secondary mt-1"></i>
+                                <div>
+                                    <span class="font-semibold text-sm text-primary block mb-1">Praktik:</span>
+                                    <p class="text-sm text-slate-700">Routing antar VLAN.</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-secondary group-hover:gap-2 transition-all">
+                                <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Bab 5 & 6 (Combined visually for brevity) -->
+                    <div class="timeline-item relative pl-8 md:pl-12">
+                        <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 bg-white border-4 border-blue-300 rounded-full"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <a href="bab5.html" class="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-secondary/40 transition-all group">
+                                <h3 class="text-lg font-bold text-dark mb-3"><span class="text-primary mr-2">BAB 5</span> Static Routing</h3>
+                                <ul class="list-disc list-inside text-sm text-slate-600 space-y-1 mb-4">
+                                    <li>Konsep & Routing Table</li>
+                                    <li>Default Route</li>
+                                </ul>
+                                <div class="bg-blue-50 p-2 rounded-lg text-sm flex gap-2">
+                                     <i class="fas fa-tools text-secondary mt-1"></i> <span>Konfigurasi Static Routing</span>
+                                </div>
+                                <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-secondary group-hover:gap-2 transition-all">
+                                    <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                                </div>
+                            </a>
+                            <a href="bab6.html" class="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-secondary/40 transition-all group">
+                                <h3 class="text-lg font-bold text-dark mb-3"><span class="text-primary mr-2">BAB 6</span> Dynamic Routing</h3>
+                                <ul class="list-disc list-inside text-sm text-slate-600 space-y-1 mb-4">
+                                    <li>RIP</li>
+                                    <li>OSPF (Dasar)</li>
+                                </ul>
+                                <div class="bg-blue-50 p-2 rounded-lg text-sm flex gap-2">
+                                     <i class="fas fa-tools text-secondary mt-1"></i> <span>Routing otomatis antar jaringan</span>
+                                </div>
+                                <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-secondary group-hover:gap-2 transition-all">
+                                    <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Bab 7 -->
+                    <div class="timeline-item relative pl-8 md:pl-12">
+                        <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 bg-white border-4 border-blue-300 rounded-full"></div>
+                        <a href="bab7.html" class="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-secondary/40 transition-all group">
+                            <h3 class="text-xl font-bold text-dark mb-3"><span class="text-primary mr-2">BAB 7</span> NAT dan Internet Gateway</h3>
+                            <ul class="list-disc list-inside text-slate-600 space-y-1 mb-4 columns-1 sm:columns-2">
+                                <li>Static & Dynamic NAT</li>
+                                <li>PAT</li>
+                                <li>Internet Sharing</li>
+                            </ul>
+                            <div class="bg-blue-50 p-3 rounded-lg flex items-start gap-3 border border-blue-100">
+                                <i class="fas fa-laptop-code text-secondary mt-1"></i>
+                                <div>
+                                    <span class="font-semibold text-sm text-primary block mb-1">Praktik:</span>
+                                    <p class="text-sm text-slate-700">Simulasi akses internet.</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-secondary group-hover:gap-2 transition-all">
+                                <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Bab 8 -->
+                    <div class="timeline-item relative pl-8 md:pl-12">
+                        <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 bg-white border-4 border-blue-300 rounded-full"></div>
+                        <a href="bab8.html" class="block bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-secondary/40 transition-all group">
+                            <h3 class="text-xl font-bold text-dark mb-3"><span class="text-primary mr-2">BAB 8</span> Troubleshooting Routing</h3>
+                            <ul class="list-disc list-inside text-slate-600 space-y-1 mb-4 columns-1 sm:columns-2">
+                                <li>Analisis masalah</li>
+                                <li>Ping & Traceroute</li>
+                                <li>Route Table</li>
+                            </ul>
+                            <div class="bg-amber-50 p-3 rounded-lg flex items-start gap-3 border border-amber-100">
+                                <i class="fas fa-wrench text-amber-600 mt-1"></i>
+                                <div>
+                                    <span class="font-semibold text-sm text-amber-700 block mb-1">Praktik:</span>
+                                    <p class="text-sm text-slate-700">Memperbaiki jaringan yang mengalami gangguan.</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-secondary group-hover:gap-2 transition-all">
+                                <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Semester 2 -->
+        <section id="semester-2" class="py-20 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <span class="text-sm font-bold tracking-wider text-indigo-500 uppercase mb-2 block">Semester Genap</span>
+                    <h2 class="text-3xl font-bold text-dark mb-4">Mengelola Jaringan Profesional</h2>
+                    <div class="w-24 h-1 bg-indigo-500 mx-auto rounded-full"></div>
+                </div>
+
+                <!-- Timeline Container -->
+                <div class="relative border-l-2 border-indigo-200 ml-3 md:ml-6 space-y-12">
+                    
+                    <!-- Bab 9 -->
+                    <div class="timeline-item relative pl-8 md:pl-12">
+                        <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 bg-white border-4 border-indigo-300 rounded-full"></div>
+                        <a href="bab9.html" class="block bg-slate-50 p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-indigo-300 transition-all group">
+                            <h3 class="text-xl font-bold text-dark mb-3"><span class="text-indigo-600 mr-2">BAB 9</span> Wireless Network</h3>
+                            <ul class="list-disc list-inside text-slate-600 space-y-1 mb-4 columns-1 sm:columns-2">
+                                <li>Access Point & SSID</li>
+                                <li>Channel</li>
+                                <li>Keamanan Wi-Fi</li>
+                            </ul>
+                            <div class="bg-indigo-50 p-3 rounded-lg flex items-start gap-3 border border-indigo-100">
+                                <i class="fas fa-wifi text-indigo-500 mt-1"></i>
+                                <div>
+                                    <span class="font-semibold text-sm text-indigo-700 block mb-1">Praktik:</span>
+                                    <p class="text-sm text-slate-700">Membangun jaringan Wi-Fi.</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-indigo-600 group-hover:gap-2 transition-all">
+                                <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Bab 10 & 11 -->
+                    <div class="timeline-item relative pl-8 md:pl-12">
+                        <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 bg-white border-4 border-indigo-300 rounded-full"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <a href="bab10.html" class="block bg-slate-50 p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-indigo-300 transition-all group">
+                                <h3 class="text-lg font-bold text-dark mb-3"><span class="text-indigo-600 mr-2">BAB 10</span> Firewall</h3>
+                                <ul class="list-disc list-inside text-sm text-slate-600 space-y-1 mb-4">
+                                    <li>Konsep & Filtering</li>
+                                    <li>Port Management</li>
+                                </ul>
+                                <div class="bg-indigo-50 p-2 rounded-lg text-sm flex gap-2 text-slate-700">
+                                     <i class="fas fa-shield-alt text-indigo-500 mt-1"></i> <span>Membatasi akses jaringan</span>
+                                </div>
+                                <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-indigo-600 group-hover:gap-2 transition-all">
+                                    <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                                </div>
+                            </a>
+                            <a href="bab11.html" class="block bg-slate-50 p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-indigo-300 transition-all group">
+                                <h3 class="text-lg font-bold text-dark mb-3"><span class="text-indigo-600 mr-2">BAB 11</span> Proxy Server</h3>
+                                <ul class="list-disc list-inside text-sm text-slate-600 space-y-1 mb-4">
+                                    <li>Fungsi & Filtering Web</li>
+                                    <li>Cache</li>
+                                </ul>
+                                <div class="bg-indigo-50 p-2 rounded-lg text-sm flex gap-2 text-slate-700">
+                                     <i class="fas fa-server text-indigo-500 mt-1"></i> <span>Konfigurasi Proxy Server</span>
+                                </div>
+                                <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-indigo-600 group-hover:gap-2 transition-all">
+                                    <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Bab 12 -->
+                    <div class="timeline-item relative pl-8 md:pl-12">
+                        <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 bg-white border-4 border-indigo-300 rounded-full"></div>
+                        <a href="bab12.html" class="block bg-slate-50 p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-indigo-300 transition-all group">
+                            <h3 class="text-xl font-bold text-dark mb-3"><span class="text-indigo-600 mr-2">BAB 12</span> Manajemen Bandwidth</h3>
+                            <ul class="list-disc list-inside text-slate-600 space-y-1 mb-4 columns-1 sm:columns-2">
+                                <li>QoS</li>
+                                <li>Queue & Simple Queue</li>
+                                <li>Prioritas trafik</li>
+                            </ul>
+                            <div class="bg-indigo-50 p-3 rounded-lg flex items-start gap-3 border border-indigo-100">
+                                <i class="fas fa-tachometer-alt text-indigo-500 mt-1"></i>
+                                <div>
+                                    <span class="font-semibold text-sm text-indigo-700 block mb-1">Praktik:</span>
+                                    <p class="text-sm text-slate-700">Membagi bandwidth antar pengguna.</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-indigo-600 group-hover:gap-2 transition-all">
+                                <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- Bab 13 & 14 -->
+                    <div class="timeline-item relative pl-8 md:pl-12">
+                        <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 bg-white border-4 border-indigo-300 rounded-full"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <a href="bab13.html" class="block bg-slate-50 p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-indigo-300 transition-all group">
+                                <h3 class="text-lg font-bold text-dark mb-3"><span class="text-indigo-600 mr-2">BAB 13</span> Load Balancing</h3>
+                                <ul class="list-disc list-inside text-sm text-slate-600 space-y-1 mb-4">
+                                    <li>Konsep Multi ISP & Failover</li>
+                                    <li>PCC (Pengenalan)</li>
+                                </ul>
+                                <div class="bg-indigo-50 p-2 rounded-lg text-sm flex gap-2 text-slate-700">
+                                     <i class="fas fa-balance-scale text-indigo-500 mt-1"></i> <span>Simulasi dua jalur internet</span>
+                                </div>
+                                <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-indigo-600 group-hover:gap-2 transition-all">
+                                    <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                                </div>
+                            </a>
+                            <a href="bab14.html" class="block bg-slate-50 p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-indigo-300 transition-all group">
+                                <h3 class="text-lg font-bold text-dark mb-3"><span class="text-indigo-600 mr-2">BAB 14</span> Network Monitoring</h3>
+                                <ul class="list-disc list-inside text-sm text-slate-600 space-y-1 mb-4">
+                                    <li>Monitoring perangkat</li>
+                                    <li>Monitoring trafik</li>
+                                </ul>
+                                <div class="bg-indigo-50 p-2 rounded-lg text-sm flex gap-2 text-slate-700">
+                                     <i class="fas fa-chart-line text-indigo-500 mt-1"></i> <span>Memantau kondisi jaringan</span>
+                                </div>
+                                <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-indigo-600 group-hover:gap-2 transition-all">
+                                    <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                     <!-- Bab 15 & 16 -->
+                     <div class="timeline-item relative pl-8 md:pl-12">
+                        <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 bg-white border-4 border-indigo-300 rounded-full"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <a href="bab15.html" class="block bg-slate-50 p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-indigo-300 transition-all group">
+                                <h3 class="text-lg font-bold text-dark mb-3"><span class="text-indigo-600 mr-2">BAB 15</span> Fiber Optic</h3>
+                                <ul class="list-disc list-inside text-sm text-slate-600 space-y-1 mb-4">
+                                    <li>Jenis kabel & Perangkat FO</li>
+                                    <li>Penyambungan & Pengujian</li>
+                                </ul>
+                                <div class="bg-indigo-50 p-2 rounded-lg text-sm flex gap-2 text-slate-700">
+                                     <i class="fas fa-network-wired text-indigo-500 mt-1"></i> <span>Demonstrasi / simulasi</span>
+                                </div>
+                                <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-indigo-600 group-hover:gap-2 transition-all">
+                                    <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                                </div>
+                            </a>
+                            <a href="bab16.html" class="block bg-slate-50 p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-lg hover:border-indigo-300 transition-all group">
+                                <h3 class="text-lg font-bold text-dark mb-3"><span class="text-indigo-600 mr-2">BAB 16</span> Maintenance</h3>
+                                <ul class="list-disc list-inside text-sm text-slate-600 space-y-1 mb-4">
+                                    <li>Diagram jaringan</li>
+                                    <li>Backup konfigurasi</li>
+                                </ul>
+                                <div class="bg-indigo-50 p-2 rounded-lg text-sm flex gap-2 text-slate-700">
+                                     <i class="fas fa-file-alt text-indigo-500 mt-1"></i> <span>Membuat dokumentasi</span>
+                                </div>
+                                <div class="mt-4 flex items-center justify-end gap-1 text-sm font-semibold text-indigo-600 group-hover:gap-2 transition-all">
+                                    <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Bab 17 & 18 (Capstone) -->
+                    <div class="timeline-item relative pl-8 md:pl-12">
+                        <div class="timeline-dot absolute -left-[9px] top-1 w-4 h-4 bg-white border-4 border-indigo-500 rounded-full"></div>
+                        <a href="bab17.html" class="block bg-gradient-to-br from-indigo-900 to-blue-900 p-8 rounded-2xl shadow-lg text-white hover:shadow-xl hover:brightness-110 transition-all group">
+                            <div class="inline-block bg-accent text-indigo-900 font-bold px-3 py-1 rounded-full text-xs mb-4">PUNCAK PEMBELAJARAN</div>
+                            <h3 class="text-2xl font-bold mb-4"><span class="text-blue-300 mr-2">BAB 17 & 18</span> Project Based Learning & Uji Kompetensi</h3>
+                            <p class="text-blue-100 mb-6">Siswa bekerja dalam kelompok membangun jaringan perusahaan sederhana yang mengintegrasikan seluruh materi pembelajaran.</p>
+                            
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
+                                <div class="flex items-center gap-2"><i class="fas fa-check-circle text-emerald-400"></i> <span class="text-sm">VLAN & Routing</span></div>
+                                <div class="flex items-center gap-2"><i class="fas fa-check-circle text-emerald-400"></i> <span class="text-sm">NAT & DHCP</span></div>
+                                <div class="flex items-center gap-2"><i class="fas fa-check-circle text-emerald-400"></i> <span class="text-sm">Wireless</span></div>
+                                <div class="flex items-center gap-2"><i class="fas fa-check-circle text-emerald-400"></i> <span class="text-sm">Firewall</span></div>
+                                <div class="flex items-center gap-2"><i class="fas fa-check-circle text-emerald-400"></i> <span class="text-sm">Bandwidth Mgt</span></div>
+                                <div class="flex items-center gap-2"><i class="fas fa-check-circle text-emerald-400"></i> <span class="text-sm">Dokumentasi</span></div>
+                            </div>
+
+                            <div class="bg-black/20 p-4 rounded-xl border border-white/10">
+                                <h4 class="font-semibold text-blue-200 mb-2">Uji Kompetensi Meliputi:</h4>
+                                <ul class="list-disc list-inside text-sm space-y-1 text-blue-100">
+                                    <li>Presentasi desain jaringan.</li>
+                                    <li>Demonstrasi konfigurasi.</li>
+                                    <li>Tanya jawab teknis.</li>
+                                    <li>Penyelesaian troubleshooting dadakan.</li>
+                                </ul>
+                            </div>
+                            <div class="mt-6 flex items-center justify-end gap-1 text-sm font-semibold text-blue-200 group-hover:gap-2 transition-all">
+                                <span>Buka Materi</span><i class="fas fa-arrow-right text-xs"></i>
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Kompetensi & Perangkat -->
+        <section id="kompetensi" class="py-20 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    
+                    <!-- Kompetensi -->
+                    <div>
+                        <h2 class="text-2xl font-bold text-dark mb-6 flex items-center"><i class="fas fa-award text-secondary mr-3 text-3xl"></i> Kompetensi Lulusan</h2>
+                        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+                            <p class="text-slate-600 mb-6">Setelah menyelesaikan mata pelajaran ini, siswa diharapkan mampu:</p>
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check text-emerald-500 mt-1"></i>
+                                    <span class="text-slate-700">Mendesain topologi jaringan.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check text-emerald-500 mt-1"></i>
+                                    <span class="text-slate-700">Melakukan subnetting (CIDR & VLSM).</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check text-emerald-500 mt-1"></i>
+                                    <span class="text-slate-700">Mengonfigurasi VLAN, Static, dan Dynamic Routing.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check text-emerald-500 mt-1"></i>
+                                    <span class="text-slate-700">Mengonfigurasi NAT dan mengelola jaringan nirkabel.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check text-emerald-500 mt-1"></i>
+                                    <span class="text-slate-700">Menerapkan firewall dasar & mengelola bandwidth.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check text-emerald-500 mt-1"></i>
+                                    <span class="text-slate-700">Melakukan monitoring & troubleshooting jaringan.</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <i class="fas fa-check text-emerald-500 mt-1"></i>
+                                    <span class="text-slate-700">Menyusun dokumentasi jaringan sesuai standar.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Perangkat -->
+                    <div>
+                        <h2 class="text-2xl font-bold text-dark mb-6 flex items-center"><i class="fas fa-toolbox text-secondary mr-3 text-3xl"></i> Perangkat & Software</h2>
+                        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 h-full">
+                            <div class="grid grid-cols-2 gap-x-4 gap-y-6">
+                                <div>
+                                    <h4 class="font-semibold text-primary mb-3 border-b pb-2">Software</h4>
+                                    <ul class="space-y-2 text-sm text-slate-600">
+                                        <li class="flex items-center gap-2"><i class="fas fa-desktop text-slate-400 w-4"></i> Cisco Packet Tracer</li>
+                                        <li class="flex items-center gap-2"><i class="fas fa-cogs text-slate-400 w-4"></i> MikroTik RouterOS / CHR</li>
+                                        <li class="flex items-center gap-2"><i class="fas fa-window-maximize text-slate-400 w-4"></i> WinBox</li>
+                                        <li class="flex items-center gap-2"><i class="fas fa-box text-slate-400 w-4"></i> VirtualBox</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-primary mb-3 border-b pb-2">Hardware</h4>
+                                    <ul class="space-y-2 text-sm text-slate-600">
+                                        <li class="flex items-center gap-2"><i class="fas fa-laptop text-slate-400 w-4"></i> Laptop / PC</li>
+                                        <li class="flex items-center gap-2"><i class="fas fa-hdd text-slate-400 w-4"></i> Router MikroTik</li>
+                                        <li class="flex items-center gap-2"><i class="fas fa-network-wired text-slate-400 w-4"></i> Managed Switch</li>
+                                        <li class="flex items-center gap-2"><i class="fas fa-wifi text-slate-400 w-4"></i> Access Point</li>
+                                        <li class="flex items-center gap-2"><i class="fas fa-plug text-slate-400 w-4"></i> UTP, RJ-45, LAN Tester</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Penilaian & Target -->
+        <section id="penilaian" class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                    
+                    <!-- Metode Penilaian -->
+                    <div class="md:col-span-1">
+                        <h2 class="text-2xl font-bold text-dark mb-6"><i class="fas fa-chart-pie text-secondary mr-2"></i> Metode Penilaian</h2>
+                        <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-200">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700">
+                                        <th class="py-3 px-4 font-semibold text-sm">Aspek</th>
+                                        <th class="py-3 px-4 font-semibold text-sm text-right">Bobot</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm text-slate-600 divide-y divide-slate-200">
+                                    <tr class="hover:bg-white transition-colors">
+                                        <td class="py-3 px-4 flex items-center gap-2"><i class="fas fa-user-clock text-slate-400"></i> Sikap & Disiplin</td>
+                                        <td class="py-3 px-4 text-right font-medium text-dark">20%</td>
+                                    </tr>
+                                    <tr class="hover:bg-white transition-colors">
+                                        <td class="py-3 px-4 flex items-center gap-2"><i class="fas fa-hand-paper text-slate-400"></i> Keaktifan</td>
+                                        <td class="py-3 px-4 text-right font-medium text-dark">10%</td>
+                                    </tr>
+                                    <tr class="hover:bg-white transition-colors">
+                                        <td class="py-3 px-4 flex items-center gap-2"><i class="fas fa-book text-slate-400"></i> Tugas</td>
+                                        <td class="py-3 px-4 text-right font-medium text-dark">20%</td>
+                                    </tr>
+                                    <tr class="hover:bg-white transition-colors">
+                                        <td class="py-3 px-4 flex items-center gap-2"><i class="fas fa-network-wired text-slate-400"></i> Praktik Laboratorium</td>
+                                        <td class="py-3 px-4 text-right font-bold text-primary">30%</td>
+                                    </tr>
+                                    <tr class="hover:bg-white transition-colors">
+                                        <td class="py-3 px-4 flex items-center gap-2"><i class="fas fa-project-diagram text-slate-400"></i> Asesmen & Proyek</td>
+                                        <td class="py-3 px-4 text-right font-medium text-dark">20%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Target Akhir Quote -->
+                    <div class="md:col-span-2">
+                        <div class="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-3xl p-8 sm:p-12 text-center text-white relative overflow-hidden shadow-xl">
+                            <!-- Decorative elements -->
+                            <i class="fas fa-quote-left absolute text-8xl text-white/5 -top-4 -left-4"></i>
+                            <div class="relative z-10">
+                                <h3 class="text-accent font-bold tracking-widest text-sm uppercase mb-4">🌟 Visi Target Akhir Tahun</h3>
+                                <p class="text-xl sm:text-2xl font-light leading-relaxed italic mb-6">
+                                    "Di akhir pembelajaran, setiap siswa mampu <span class="font-bold text-white">merancang, mengonfigurasi, menguji, mendokumentasikan, dan melakukan troubleshooting</span> sebuah jaringan komputer skala sekolah atau kantor kecil sesuai standar dasar dunia kerja."
+                                </p>
+                                <div class="inline-flex items-center justify-center space-x-2 text-sm text-blue-200">
+                                    <span class="w-8 h-[1px] bg-blue-300"></span>
+                                    <span>SMK Bisa! SMK Hebat!</span>
+                                    <span class="w-8 h-[1px] bg-blue-300"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-slate-400 py-8 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="text-center md:text-left">
+                <p class="text-white font-semibold mb-1">SMK Bintang Raudloh</p>
+                <p class="text-sm">Teknik Komputer dan Jaringan</p>
+            </div>
+            <div class="text-sm text-center">
+                &copy; 2026 Roadmap Pembelajaran TLJ Kelas XII.<br class="block sm:hidden"/> Dibuat untuk tujuan edukasi.
+            </div>
+            <div class="flex gap-4">
+                 <!-- Placeholders for social or school links -->
+                 <a href="#" class="text-slate-400 hover:text-white transition"><i class="fab fa-facebook"></i></a>
+                 <a href="#" class="text-slate-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                 <a href="#" class="text-slate-400 hover:text-white transition"><i class="fas fa-globe"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('shadow-md');
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                navbar.classList.remove('shadow-md');
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
