@@ -777,70 +777,70 @@ const devices = [
   {name:'Crimping Tool', icon:'fa-hammer', fungsi:'Alat untuk memasang/mengunci konektor RJ45 ke ujung kabel UTP.', cara:'Menekan pin-pin tembaga pada konektor agar menembus &amp; menjepit kabel di dalamnya dengan kuat.', spek:'Umumnya mendukung konektor RJ45 &amp; RJ11, sebagian dilengkapi pemotong dan pengupas kabel.', contoh:'Digunakan saat praktik membuat kabel straight/cross di kelas TLJ.'},
 ];
 
-/* Quiz data */
-const quizMC = [
-  {q:'Topologi jaringan yang menghubungkan semua node ke satu titik pusat (switch/hub) disebut...', opts:['Bus','Star','Ring','Mesh'], correct:1, why:'Star menghubungkan semua node langsung ke satu titik pusat.'},
-  {q:'Kelemahan utama topologi Bus adalah...', opts:['Butuh kabel sangat banyak','Jika kabel utama putus, seluruh jaringan terganggu','Instalasi sangat mahal','Tidak bisa dipakai untuk LAN'], correct:1, why:'Bus bergantung pada satu kabel utama sehingga rentan gagal total.'},
-  {q:'Perangkat yang berfungsi mengarahkan (routing) data antar jaringan berbeda adalah...', opts:['Switch','Hub','Router','Repeater'], correct:2, why:'Router bertugas mengarahkan trafik antar jaringan.'},
-  {q:'Perbedaan utama switch dan hub adalah...', opts:['Switch meneruskan data hanya ke tujuan, hub broadcast ke semua port','Hub lebih cepat dari switch','Switch tidak bisa dipakai untuk LAN','Hub mendukung VLAN'], correct:0, why:'Switch cerdas mempelajari MAC address, hub hanya broadcast.'},
-  {q:'Alat untuk menguji kabel jaringan setelah dipasang konektor adalah...', opts:['Crimping tool','LAN tester','Patch panel','Access point'], correct:1, why:'LAN tester menampilkan urutan pin kabel yang tersambung.'},
-  {q:'Topologi yang paling andal karena tiap node punya banyak jalur alternatif adalah...', opts:['Bus','Ring','Mesh','Star'], correct:2, why:'Mesh menghubungkan tiap node ke banyak node lain sehingga ada banyak jalur cadangan.'},
-  {q:'Dokumen yang menggambarkan alur data logis/IP suatu jaringan disebut...', opts:['Diagram fisik','Diagram logis','Rack layout','Label kabel'], correct:1, why:'Diagram logis menggambarkan alur data/IP, bukan posisi fisik kabel.'},
-  {q:'Fungsi utama firewall dalam jaringan adalah...', opts:['Memperkuat sinyal Wi-Fi','Menyaring trafik untuk mencegah akses tidak sah','Menghubungkan dua segmen kabel berbeda','Menyimpan data siswa'], correct:1, why:'Firewall menyaring trafik masuk/keluar berdasarkan aturan keamanan.'},
-  {q:'Kabel yang paling cocok untuk menghubungkan dua gedung sekolah yang berjarak sangat jauh adalah...', opts:['Kabel UTP Cat5e','Kabel telepon','Fiber optic','Kabel coaxial'], correct:2, why:'Fiber optic mampu menjangkau jarak jauh dengan pelemahan sinyal minim.'},
-  {q:'Langkah pertama sebelum merancang topologi jaringan adalah...', opts:['Membeli semua perangkat','Analisis kebutuhan pengguna','Menentukan warna kabel','Membuat quiz evaluasi'], correct:1, why:'Analisis kebutuhan menjadi dasar seluruh keputusan desain jaringan berikutnya.'},
-];
+// /* Quiz data */
+// const quizMC = [
+//   {q:'Topologi jaringan yang menghubungkan semua node ke satu titik pusat (switch/hub) disebut...', opts:['Bus','Star','Ring','Mesh'], correct:1, why:'Star menghubungkan semua node langsung ke satu titik pusat.'},
+//   {q:'Kelemahan utama topologi Bus adalah...', opts:['Butuh kabel sangat banyak','Jika kabel utama putus, seluruh jaringan terganggu','Instalasi sangat mahal','Tidak bisa dipakai untuk LAN'], correct:1, why:'Bus bergantung pada satu kabel utama sehingga rentan gagal total.'},
+//   {q:'Perangkat yang berfungsi mengarahkan (routing) data antar jaringan berbeda adalah...', opts:['Switch','Hub','Router','Repeater'], correct:2, why:'Router bertugas mengarahkan trafik antar jaringan.'},
+//   {q:'Perbedaan utama switch dan hub adalah...', opts:['Switch meneruskan data hanya ke tujuan, hub broadcast ke semua port','Hub lebih cepat dari switch','Switch tidak bisa dipakai untuk LAN','Hub mendukung VLAN'], correct:0, why:'Switch cerdas mempelajari MAC address, hub hanya broadcast.'},
+//   {q:'Alat untuk menguji kabel jaringan setelah dipasang konektor adalah...', opts:['Crimping tool','LAN tester','Patch panel','Access point'], correct:1, why:'LAN tester menampilkan urutan pin kabel yang tersambung.'},
+//   {q:'Topologi yang paling andal karena tiap node punya banyak jalur alternatif adalah...', opts:['Bus','Ring','Mesh','Star'], correct:2, why:'Mesh menghubungkan tiap node ke banyak node lain sehingga ada banyak jalur cadangan.'},
+//   {q:'Dokumen yang menggambarkan alur data logis/IP suatu jaringan disebut...', opts:['Diagram fisik','Diagram logis','Rack layout','Label kabel'], correct:1, why:'Diagram logis menggambarkan alur data/IP, bukan posisi fisik kabel.'},
+//   {q:'Fungsi utama firewall dalam jaringan adalah...', opts:['Memperkuat sinyal Wi-Fi','Menyaring trafik untuk mencegah akses tidak sah','Menghubungkan dua segmen kabel berbeda','Menyimpan data siswa'], correct:1, why:'Firewall menyaring trafik masuk/keluar berdasarkan aturan keamanan.'},
+//   {q:'Kabel yang paling cocok untuk menghubungkan dua gedung sekolah yang berjarak sangat jauh adalah...', opts:['Kabel UTP Cat5e','Kabel telepon','Fiber optic','Kabel coaxial'], correct:2, why:'Fiber optic mampu menjangkau jarak jauh dengan pelemahan sinyal minim.'},
+//   {q:'Langkah pertama sebelum merancang topologi jaringan adalah...', opts:['Membeli semua perangkat','Analisis kebutuhan pengguna','Menentukan warna kabel','Membuat quiz evaluasi'], correct:1, why:'Analisis kebutuhan menjadi dasar seluruh keputusan desain jaringan berikutnya.'},
+// ];
 
-const quizTF = [
-  {q:'Topologi Mesh membutuhkan lebih sedikit kabel dibanding topologi Star.', correct:false, why:'Mesh justru butuh kabel jauh lebih banyak karena tiap node terhubung ke banyak node lain.'},
-  {q:'Managed switch memungkinkan pengaturan VLAN.', correct:true, why:'Managed switch memiliki fitur konfigurasi lanjutan termasuk VLAN.'},
-  {q:'Access Point berfungsi memancarkan sinyal Wi-Fi dari jaringan kabel.', correct:true, why:'Access Point mengonversi sinyal kabel menjadi sinyal nirkabel.'},
-  {q:'Dokumentasi jaringan tidak penting selama teknisinya masih bekerja di tempat yang sama.', correct:false, why:'Dokumentasi tetap penting untuk konsistensi, kolaborasi, dan mengantisipasi pergantian personel.'},
-  {q:'Topologi Tree merupakan gabungan beberapa topologi Star yang dihubungkan secara hierarkis.', correct:true, why:'Tree memang menyusun beberapa struktur star secara berjenjang.'},
-];
+// const quizTF = [
+//   {q:'Topologi Mesh membutuhkan lebih sedikit kabel dibanding topologi Star.', correct:false, why:'Mesh justru butuh kabel jauh lebih banyak karena tiap node terhubung ke banyak node lain.'},
+//   {q:'Managed switch memungkinkan pengaturan VLAN.', correct:true, why:'Managed switch memiliki fitur konfigurasi lanjutan termasuk VLAN.'},
+//   {q:'Access Point berfungsi memancarkan sinyal Wi-Fi dari jaringan kabel.', correct:true, why:'Access Point mengonversi sinyal kabel menjadi sinyal nirkabel.'},
+//   {q:'Dokumentasi jaringan tidak penting selama teknisinya masih bekerja di tempat yang sama.', correct:false, why:'Dokumentasi tetap penting untuk konsistensi, kolaborasi, dan mengantisipasi pergantian personel.'},
+//   {q:'Topologi Tree merupakan gabungan beberapa topologi Star yang dihubungkan secara hierarkis.', correct:true, why:'Tree memang menyusun beberapa struktur star secara berjenjang.'},
+// ];
 
-/* drag and drop: kategori Aktif vs Pasif */
-const dragItems = [
-  {name:'Router', cat:'aktif'},
-  {name:'Switch', cat:'aktif'},
-  {name:'Kabel UTP', cat:'pasif'},
-  {name:'Patch Panel', cat:'pasif'},
-  {name:'Access Point', cat:'aktif'},
-];
+// /* drag and drop: kategori Aktif vs Pasif */
+// const dragItems = [
+//   {name:'Router', cat:'aktif'},
+//   {name:'Switch', cat:'aktif'},
+//   {name:'Kabel UTP', cat:'pasif'},
+//   {name:'Patch Panel', cat:'pasif'},
+//   {name:'Access Point', cat:'aktif'},
+// ];
 
-/* matching perangkat - fungsi */
-const matchItems = [
-  {device:'Firewall', fungsi:'Menyaring trafik untuk mencegah akses tidak sah'},
-  {device:'Repeater', fungsi:'Memperkuat sinyal yang melemah'},
-  {device:'Modem', fungsi:'Mengubah sinyal digital agar bisa dikirim lewat media ISP'},
-  {device:'Bridge', fungsi:'Menghubungkan dua segmen jaringan berbeda'},
-  {device:'Crimping Tool', fungsi:'Memasang konektor RJ45 ke ujung kabel UTP'},
-];
+// /* matching perangkat - fungsi */
+// const matchItems = [
+//   {device:'Firewall', fungsi:'Menyaring trafik untuk mencegah akses tidak sah'},
+//   {device:'Repeater', fungsi:'Memperkuat sinyal yang melemah'},
+//   {device:'Modem', fungsi:'Mengubah sinyal digital agar bisa dikirim lewat media ISP'},
+//   {device:'Bridge', fungsi:'Menghubungkan dua segmen jaringan berbeda'},
+//   {device:'Crimping Tool', fungsi:'Memasang konektor RJ45 ke ujung kabel UTP'},
+// ];
 
-const quizCase = [
-  {q:'Sebuah lab dengan 40 PC sering mengalami jaringan lambat saat semua PC dipakai bersamaan untuk ujian online. Solusi paling tepat adalah...', opts:['Mengganti semua kabel UTP menjadi lebih panjang','Menambah bandwidth internet &amp; memastikan switch mencukupi jumlah port','Mematikan setengah PC saat ujian','Mengganti topologi menjadi Bus'], correct:1, why:'Kelambatan saat beban tinggi biasanya diatasi dengan bandwidth &amp; kapasitas switch yang memadai.'},
-  {q:'Kantor kecil ingin karyawannya bisa mengakses file kantor dari rumah dengan aman. Perangkat/fitur yang paling relevan adalah...', opts:['Hub','VPN pada router/firewall','Kabel coaxial','LAN tester'], correct:1, why:'VPN memungkinkan akses aman ke jaringan kantor dari luar.'},
-  {q:'Ruangan baru dibangun berjarak 150 meter dari ruang server, melebihi batas maksimal kabel UTP. Solusi terbaik adalah...', opts:['Memakai kabel UTP lebih tebal','Menggunakan fiber optic atau menambah repeater/switch di tengah','Mengganti jadi topologi ring','Menambah access point saja'], correct:1, why:'Fiber optic atau perangkat penguat sinyal cocok untuk jarak yang melebihi batas UTP (~100m).'},
-  {q:'Sebuah sekolah ingin data nilai siswa terpisah total secara logis dari jaringan Wi-Fi tamu meski memakai switch yang sama. Fitur yang dibutuhkan adalah...', opts:['VLAN pada managed switch','Mengganti semua kabel','Menambah crimping tool','Memakai topologi bus'], correct:0, why:'VLAN memisahkan jaringan secara logis walau menggunakan perangkat fisik yang sama.'},
-  {q:'Setelah dua tahun beroperasi, teknisi baru kesulitan memahami jaringan sekolah karena tidak ada catatan apa pun. Hal yang seharusnya sudah dilakukan sejak awal adalah...', opts:['Membeli perangkat lebih mahal','Membuat dokumentasi jaringan yang rapi','Mengganti topologi setiap tahun','Menghapus jaringan lama'], correct:1, why:'Dokumentasi yang baik membuat jaringan mudah dipahami siapa pun, termasuk teknisi baru.'},
-];
+// const quizCase = [
+//   {q:'Sebuah lab dengan 40 PC sering mengalami jaringan lambat saat semua PC dipakai bersamaan untuk ujian online. Solusi paling tepat adalah...', opts:['Mengganti semua kabel UTP menjadi lebih panjang','Menambah bandwidth internet &amp; memastikan switch mencukupi jumlah port','Mematikan setengah PC saat ujian','Mengganti topologi menjadi Bus'], correct:1, why:'Kelambatan saat beban tinggi biasanya diatasi dengan bandwidth &amp; kapasitas switch yang memadai.'},
+//   {q:'Kantor kecil ingin karyawannya bisa mengakses file kantor dari rumah dengan aman. Perangkat/fitur yang paling relevan adalah...', opts:['Hub','VPN pada router/firewall','Kabel coaxial','LAN tester'], correct:1, why:'VPN memungkinkan akses aman ke jaringan kantor dari luar.'},
+//   {q:'Ruangan baru dibangun berjarak 150 meter dari ruang server, melebihi batas maksimal kabel UTP. Solusi terbaik adalah...', opts:['Memakai kabel UTP lebih tebal','Menggunakan fiber optic atau menambah repeater/switch di tengah','Mengganti jadi topologi ring','Menambah access point saja'], correct:1, why:'Fiber optic atau perangkat penguat sinyal cocok untuk jarak yang melebihi batas UTP (~100m).'},
+//   {q:'Sebuah sekolah ingin data nilai siswa terpisah total secara logis dari jaringan Wi-Fi tamu meski memakai switch yang sama. Fitur yang dibutuhkan adalah...', opts:['VLAN pada managed switch','Mengganti semua kabel','Menambah crimping tool','Memakai topologi bus'], correct:0, why:'VLAN memisahkan jaringan secara logis walau menggunakan perangkat fisik yang sama.'},
+//   {q:'Setelah dua tahun beroperasi, teknisi baru kesulitan memahami jaringan sekolah karena tidak ada catatan apa pun. Hal yang seharusnya sudah dilakukan sejak awal adalah...', opts:['Membeli perangkat lebih mahal','Membuat dokumentasi jaringan yang rapi','Mengganti topologi setiap tahun','Menghapus jaringan lama'], correct:1, why:'Dokumentasi yang baik membuat jaringan mudah dipahami siapa pun, termasuk teknisi baru.'},
+// ];
 
-/* ============ INIT NAV / PILLS / SIDEBAR ============ */
-const pillNav = document.getElementById('pillNav');
-const sideNav = document.getElementById('sideNav');
-sections.forEach(s=>{
-  const pill = document.createElement('a');
-  pill.href = '#'+s.id;
-  pill.textContent = s.label;
-  pill.className = 'pill-link text-xs sm:text-sm bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full border border-white/20 transition';
-  pillNav.appendChild(pill);
+// /* ============ INIT NAV / PILLS / SIDEBAR ============ */
+// const pillNav = document.getElementById('pillNav');
+// const sideNav = document.getElementById('sideNav');
+// sections.forEach(s=>{
+//   const pill = document.createElement('a');
+//   pill.href = '#'+s.id;
+//   pill.textContent = s.label;
+//   pill.className = 'pill-link text-xs sm:text-sm bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full border border-white/20 transition';
+//   pillNav.appendChild(pill);
 
-  const link = document.createElement('a');
-  link.href = '#'+s.id;
-  link.textContent = s.label;
-  link.className = 'py-1.5 px-2 rounded-lg hover:bg-slate-100 transition';
-  sideNav.appendChild(link);
-});
+//   const link = document.createElement('a');
+//   link.href = '#'+s.id;
+//   link.textContent = s.label;
+//   link.className = 'py-1.5 px-2 rounded-lg hover:bg-slate-100 transition';
+//   sideNav.appendChild(link);
+// });
 
 /* ============ SCROLLSPY + PROGRESS ============ */
 const allNavLinks = () => document.querySelectorAll('#pillNav a, #sideNav a');
