@@ -1,119 +1,1312 @@
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BAB 2 - Perencanaan Topologi - Roadmap TLJ Kelas XII</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        primary: '#1e40af',
-                        secondary: '#3b82f6',
-                        accent: '#f59e0b',
-                        dark: '#1e293b',
-                        light: '#f8fafc',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-        }
-        .gradient-text {
-            background: linear-gradient(to right, #1e40af, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BAB 2 - Perencanaan Topologi Jaringan - Roadmap TLJ Kelas XII</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Inter', 'sans-serif'] },
+      colors: {
+        primary: '#1e40af',
+        secondary: '#3b82f6',
+        accent: '#f59e0b',
+        dark: '#1e293b',
+        light: '#f8fafc',
+      }
+    }
+  }
+}
+</script>
+<style>
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+.dark ::-webkit-scrollbar-track { background: #0f172a; }
+.dark ::-webkit-scrollbar-thumb { background: #334155; }
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+}
+.dark .glass-card {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.gradient-text {
+  background: linear-gradient(to right, #1e40af, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Reveal on scroll */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+.reveal-visible { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* Progress bar */
+#readProgress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(to right,#1e40af,#f59e0b); width:0%; z-index: 60; transition: width .1s linear; }
+
+/* Section pill nav */
+.pill-link { white-space:nowrap; }
+.pill-link.active { background:#1e40af; color:#fff; }
+
+/* Tabs */
+.topo-tab, .quiz-tab { border-bottom: 3px solid transparent; }
+.topo-tab.active, .quiz-tab.active { border-color:#1e40af; color:#1e40af; font-weight:600; }
+.dark .topo-tab.active, .dark .quiz-tab.active { color:#93c5fd; border-color:#93c5fd; }
+
+/* Accordion */
+.accordion-body { max-height:0; overflow:hidden; transition: max-height .35s ease; }
+.accordion-item.open .accordion-body { max-height: 2000px; }
+.accordion-item.open .accordion-chevron { transform: rotate(180deg); }
+.accordion-chevron { transition: transform .3s ease; }
+
+/* Modal */
+#deviceModal, #toastRoot { z-index: 70; }
+.modal-backdrop { background: rgba(15,23,42,0.6); }
+
+/* Ripple */
+.ripple-btn { position: relative; overflow: hidden; }
+.ripple-span { position:absolute; border-radius:50%; background: rgba(255,255,255,0.6); transform: scale(0); animation: ripple-anim .6s linear; pointer-events:none; }
+@keyframes ripple-anim { to { transform: scale(3); opacity:0; } }
+
+/* Tooltip */
+[data-tip] { position: relative; }
+[data-tip]:hover::after {
+  content: attr(data-tip);
+  position:absolute; bottom:125%; left:50%; transform:translateX(-50%);
+  background:#1e293b; color:#fff; font-size:11px; padding:4px 8px; border-radius:6px;
+  white-space:nowrap; z-index:40; opacity:0.95;
+}
+
+/* Drag and drop */
+.drop-zone { border:2px dashed #cbd5e1; transition: background .2s, border-color .2s; }
+.drop-zone.dragover { background:#dbeafe; border-color:#1e40af; }
+.drag-chip { cursor:grab; }
+.drag-chip.placed { opacity:0.35; pointer-events:none; }
+
+/* Timeline */
+.timeline-line { background: linear-gradient(to bottom, #1e40af, #f59e0b); }
+
+/* Answer feedback */
+.opt-correct { background:#dcfce7 !important; border-color:#22c55e !important; }
+.opt-wrong { background:#fee2e2 !important; border-color:#ef4444 !important; }
+.dark .opt-correct { background: rgba(34,197,94,0.15) !important; }
+.dark .opt-wrong { background: rgba(239,68,68,0.15) !important; }
+
+/* Highlight search keyword */
+mark.hl { background:#fde68a; color:#1e293b; border-radius:2px; padding:0 2px; }
+
+/* Sidebar */
+#sideNav a.active { color:#1e40af; font-weight:600; }
+.dark #sideNav a.active { color:#93c5fd; }
+
+body.dark { background:#0f172a; color:#e2e8f0; }
+.dark .bg-white { background-color:#111827 !important; }
+.dark .bg-slate-50 { background-color:#0f172a !important; }
+.dark .bg-slate-100 { background-color:#1e293b !important; }
+.dark .text-dark { color:#f1f5f9 !important; }
+.dark .text-slate-600, .dark .text-slate-500, .dark .text-slate-700 { color:#94a3b8 !important; }
+.dark .border-slate-100, .dark .border-slate-200 { border-color:#1e293b !important; }
+</style>
 </head>
 <body class="bg-slate-50 font-sans text-slate-800 antialiased selection:bg-blue-200 selection:text-blue-900">
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-card" id="navbar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <a href="index.html" class="flex-shrink-0 flex items-center gap-3">
-                    <div class="bg-primary text-white p-2 rounded-lg">
-                        <i class="fas fa-network-wired"></i>
-                    </div>
-                    <span class="font-bold text-xl text-primary tracking-tight">TLJ Roadmap</span>
-                </a>
-                <a href="index.html" class="hidden md:flex items-center gap-2 text-slate-600 hover:text-primary font-medium transition">
-                    <i class="fas fa-arrow-left text-sm"></i> Kembali ke Roadmap
-                </a>
-            </div>
-        </div>
+<div id="readProgress"></div>
+
+<!-- Navigation -->
+<nav class="fixed w-full z-50 glass-card" id="navbar">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16 gap-3">
+      <a href="index.html" class="flex-shrink-0 flex items-center gap-3">
+        <div class="bg-primary text-white p-2 rounded-lg"><i class="fas fa-network-wired"></i></div>
+        <span class="font-bold text-xl text-primary tracking-tight hidden sm:inline">TLJ Roadmap</span>
+      </a>
+
+      <div class="flex-1 max-w-xs relative hidden md:block">
+        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+        <input id="materiSearch" type="text" placeholder="Cari materi... (mis. router, topologi)"
+          class="w-full pl-9 pr-3 py-2 text-sm rounded-full border border-slate-200 bg-white/70 focus:outline-none focus:ring-2 focus:ring-primary/40">
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="darkToggle" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-600" data-tip="Ganti tema">
+          <i class="fas fa-moon"></i>
+        </button>
+        <a href="index.html" class="hidden md:flex items-center gap-2 text-slate-600 hover:text-primary font-medium transition text-sm">
+          <i class="fas fa-arrow-left text-sm"></i> Roadmap
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="relative pt-32 pb-16 overflow-hidden bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white">
+  <div class="absolute inset-0 opacity-10">
+    <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <path d="M0,100 C20,80 40,60 100,20 L100,0 L0,0 Z" fill="#ffffff" opacity="0.3"/>
+      <path d="M0,100 C30,90 60,40 100,50 L100,100 Z" fill="#ffffff" opacity="0.2"/>
+    </svg>
+  </div>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+    <nav class="text-xs text-blue-200 mb-4 flex items-center justify-center gap-2" aria-label="Breadcrumb">
+      <a href="index.html" class="hover:text-white">Roadmap</a> <i class="fas fa-chevron-right text-[9px]"></i> <span class="text-white font-medium">Bab 2</span>
     </nav>
+    <span class="inline-block py-1 px-3 rounded-full bg-blue-700 text-blue-100 text-sm font-semibold tracking-wider mb-6 border border-blue-500 shadow-sm">
+      Semester Ganjil
+    </span>
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
+      BAB 2<br/>Perencanaan Topologi Jaringan
+    </h1>
+    <p class="mt-2 text-lg text-blue-100 font-medium">Merancang infrastruktur jaringan yang efisien dan profesional</p>
+    <p class="mt-4 text-sm text-blue-200">Teknik Layanan Jaringan (TLJ) &middot; Kelas XII SMK &middot; Guru Pengampu: <strong class="text-white">Khalid Nabawi, S.Kom.</strong></p>
 
-    <!-- Hero -->
-    <header class="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white">
-        <div class="absolute inset-0 opacity-10">
-            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path d="M0,100 C20,80 40,60 100,20 L100,0 L0,0 Z" fill="#ffffff" opacity="0.3"/>
-                <path d="M0,100 C30,90 60,40 100,50 L100,100 Z" fill="#ffffff" opacity="0.2"/>
-            </svg>
-        </div>
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <span class="inline-block py-1 px-3 rounded-full bg-blue-700 text-blue-100 text-sm font-semibold tracking-wider mb-6 border border-blue-500 shadow-sm">
-                Semester Ganjil
-            </span>
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
-                <span class="text-primary">BAB 2</span><br/>
-                Perencanaan Topologi
-            </h1>
-            <p class="mt-4 text-lg text-blue-100 font-medium">TLJ Kelas XII - SMK Bintang Raudloh</p>
-        </div>
-    </header>
+    <div class="mt-8 flex flex-wrap justify-center gap-2" id="pillNav">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</header>
 
-    <!-- Content -->
-    <main class="py-20 bg-white flex-1">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="bg-slate-50 border border-slate-100 rounded-3xl p-10 sm:p-14 shadow-sm">
-                <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-2xl mb-6">
-                    <i class="fas fa-tools"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-dark mb-4">Perencanaan Topologi</h2>
-                <p class="text-lg text-slate-600 mb-2">Mohon maaf, materi untuk bab ini belum tersedia.</p>
-                <p class="text-slate-500 mb-8">Silakan hubungi guru pengampu untuk informasi lebih lanjut mengenai materi ini.</p>
-                <div class="inline-flex items-center gap-3 bg-white px-5 py-3 rounded-xl border border-slate-200 shadow-sm">
-                    <i class="fas fa-chalkboard-teacher text-primary"></i>
-                    <span class="text-slate-700">Guru Pengampu: <strong class="text-dark">Khalid Nabawi, S.Kom.</strong></span>
-                </div>
-                <div class="mt-10">
-                    <a href="index.html" class="inline-flex items-center gap-2 text-secondary font-semibold hover:gap-3 transition-all">
-                        <i class="fas fa-arrow-left text-sm"></i> Kembali ke Roadmap Pembelajaran
-                    </a>
-                </div>
-            </div>
-        </div>
-    </main>
+<!-- Progress belajar bar -->
+<div class="bg-white border-b border-slate-100 py-3 sticky top-16 z-40">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-3">
+    <span class="text-xs font-semibold text-slate-500 whitespace-nowrap">Progres Belajar</span>
+    <div class="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+      <div id="studyProgress" class="h-full bg-gradient-to-r from-primary to-accent" style="width:0%"></div>
+    </div>
+    <span id="studyProgressLabel" class="text-xs font-bold text-primary">0%</span>
+  </div>
+</div>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-slate-400 py-8 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="text-center md:text-left">
-                <p class="text-white font-semibold mb-1">SMK Bintang Raudloh</p>
-                <p class="text-sm">Teknik Komputer dan Jaringan</p>
-            </div>
-            <div class="text-sm text-center">
-                &copy; 2026 Roadmap Pembelajaran TLJ Kelas XII.
-            </div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-10 relative">
+  <!-- Sidebar -->
+  <aside class="hidden lg:block w-56 flex-shrink-0 py-12">
+    <div class="sticky top-32">
+      <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Daftar Isi</p>
+      <nav id="sideNav" class="flex flex-col gap-1 text-sm text-slate-600"></nav>
+    </div>
+  </aside>
+
+  <!-- Content -->
+  <main class="flex-1 py-12 min-w-0">
+
+  <!-- ===================== 1. ANALISIS KEBUTUHAN ===================== -->
+  <section id="analisis" class="mb-20 reveal">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-11 h-11 rounded-xl bg-blue-100 text-primary flex items-center justify-center"><i class="fas fa-magnifying-glass-chart"></i></div>
+      <div>
+        <p class="text-xs font-bold text-secondary uppercase tracking-wider">Materi 1</p>
+        <h2 class="text-2xl font-bold text-dark">Analisis Kebutuhan Pengguna</h2>
+      </div>
+    </div>
+
+    <div class="glass-card rounded-2xl p-6 sm:p-8 mb-6">
+      <p class="text-slate-600 leading-relaxed mb-4">Analisis kebutuhan jaringan adalah proses menggali informasi tentang siapa pengguna jaringan, apa yang mereka kerjakan, dan sumber daya apa yang mereka butuhkan, sebelum satu kabel pun dipasang. Tanpa analisis ini, jaringan yang dibangun sering kali <em>overbudget</em> (terlalu besar dari kebutuhan) atau justru <em>underspec</em> (lambat dan sering down karena kurang kapasitas).</p>
+      <p class="text-slate-600 leading-relaxed">Analisis yang baik menjawab pertanyaan: <strong>siapa</strong> penggunanya, <strong>apa</strong> yang mereka lakukan di jaringan, <strong>berapa</strong> banyak perangkat dan bandwidth yang dibutuhkan, dan <strong>seberapa aman</strong> data mereka harus dijaga.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-4 mb-6">
+      <div class="bg-white border border-slate-100 rounded-xl p-5 reveal">
+        <i class="fas fa-users text-primary mb-2"></i>
+        <h3 class="font-semibold text-dark mb-1">Observasi Pengguna</h3>
+        <p class="text-sm text-slate-500">Amati langsung aktivitas harian: berapa lama akses internet dipakai, aplikasi apa yang paling sering dibuka, jam sibuk (peak hour), dan apakah ada kebiasaan berbagi file besar.</p>
+      </div>
+      <div class="bg-white border border-slate-100 rounded-xl p-5 reveal">
+        <i class="fas fa-address-card text-primary mb-2"></i>
+        <h3 class="font-semibold text-dark mb-1">Jumlah &amp; Jenis Perangkat</h3>
+        <p class="text-sm text-slate-500">Hitung PC, laptop, printer, CCTV, HP yang tersambung Wi-Fi. Setiap jenis perangkat punya pola trafik berbeda &mdash; CCTV misalnya butuh bandwidth stabil terus-menerus.</p>
+      </div>
+      <div class="bg-white border border-slate-100 rounded-xl p-5 reveal">
+        <i class="fas fa-gauge-high text-primary mb-2"></i>
+        <h3 class="font-semibold text-dark mb-1">Kebutuhan Internet &amp; Server</h3>
+        <p class="text-sm text-slate-500">Tentukan kecepatan (Mbps) berdasarkan jumlah pengguna aktif bersamaan, dan apakah organisasi butuh server lokal (file, absensi, aplikasi akademik).</p>
+      </div>
+      <div class="bg-white border border-slate-100 rounded-xl p-5 reveal">
+        <i class="fas fa-shield-halved text-primary mb-2"></i>
+        <h3 class="font-semibold text-dark mb-1">Keamanan &amp; Anggaran</h3>
+        <p class="text-sm text-slate-500">Tentukan tingkat proteksi (firewall, filtering konten) yang dibutuhkan, lalu selaraskan semua rencana dengan anggaran yang tersedia agar realistis.</p>
+      </div>
+    </div>
+
+    <div class="bg-white border border-slate-100 rounded-2xl p-6 mb-6 overflow-x-auto reveal">
+      <h3 class="font-semibold text-dark mb-3"><i class="fas fa-table text-accent mr-2"></i>Contoh Tabel Kebutuhan Jaringan</h3>
+      <table class="w-full text-sm text-left">
+        <thead class="text-slate-500 border-b border-slate-200">
+          <tr><th class="py-2 pr-3">Ruangan</th><th class="py-2 pr-3">Pengguna</th><th class="py-2 pr-3">Perangkat</th><th class="py-2 pr-3">Kebutuhan Bandwidth</th><th class="py-2">Catatan Keamanan</th></tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 text-slate-600">
+          <tr><td class="py-2 pr-3">Lab Komputer</td><td class="py-2 pr-3">40 siswa</td><td class="py-2 pr-3">40 PC + 1 server</td><td class="py-2 pr-3">100&ndash;200 Mbps</td><td class="py-2">VLAN terpisah dari kantor</td></tr>
+          <tr><td class="py-2 pr-3">Ruang TU</td><td class="py-2 pr-3">5 staf</td><td class="py-2 pr-3">5 PC + 1 printer</td><td class="py-2 pr-3">20 Mbps</td><td class="py-2">Akses data siswa dibatasi</td></tr>
+          <tr><td class="py-2 pr-3">Ruang Guru</td><td class="py-2 pr-3">20 guru</td><td class="py-2 pr-3">Laptop + HP (Wi-Fi)</td><td class="py-2 pr-3">50 Mbps</td><td class="py-2">Password Wi-Fi berkala diganti</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="acc-studikasus" class="space-y-3 reveal">
+      <h3 class="font-semibold text-dark mb-1"><i class="fas fa-briefcase text-accent mr-2"></i>Studi Kasus</h3>
+      <div class="accordion-item bg-white border border-slate-100 rounded-xl overflow-hidden">
+        <button class="accordion-toggle w-full flex justify-between items-center p-4 text-left font-medium text-dark">
+          <span><i class="fas fa-school text-primary mr-2"></i>Studi Kasus: Sekolah</span>
+          <i class="fas fa-chevron-down accordion-chevron text-slate-400"></i>
+        </button>
+        <div class="accordion-body px-4">
+          <p class="text-sm text-slate-500 pb-4">Sekolah memiliki 3 lab komputer, ruang guru, ruang TU, dan perpustakaan. Kebutuhan utama: akses ujian berbasis komputer (CBT) yang stabil, filtering konten agar siswa tidak mengakses situs terlarang, dan jaringan terpisah antara siswa dan administrasi agar data nilai lebih aman.</p>
         </div>
-    </footer>
+      </div>
+      <div class="accordion-item bg-white border border-slate-100 rounded-xl overflow-hidden">
+        <button class="accordion-toggle w-full flex justify-between items-center p-4 text-left font-medium text-dark">
+          <span><i class="fas fa-building text-primary mr-2"></i>Studi Kasus: Kantor</span>
+          <i class="fas fa-chevron-down accordion-chevron text-slate-400"></i>
+        </button>
+        <div class="accordion-body px-4">
+          <p class="text-sm text-slate-500 pb-4">Kantor kecil dengan 30 karyawan lintas divisi. Kebutuhan utama: koneksi VPN untuk kerja jarak jauh, penyimpanan file bersama di server internal, serta prioritas bandwidth (QoS) untuk aplikasi rapat video.</p>
+        </div>
+      </div>
+      <div class="accordion-item bg-white border border-slate-100 rounded-xl overflow-hidden">
+        <button class="accordion-toggle w-full flex justify-between items-center p-4 text-left font-medium text-dark">
+          <span><i class="fas fa-desktop text-primary mr-2"></i>Studi Kasus: Laboratorium Komputer</span>
+          <i class="fas fa-chevron-down accordion-chevron text-slate-400"></i>
+        </button>
+        <div class="accordion-body px-4">
+          <p class="text-sm text-slate-500 pb-4">Laboratorium dengan 40 unit PC yang dipakai bergantian oleh beberapa kelas. Kebutuhan utama: topologi yang mudah ditambah/dikurangi node, switch dengan jumlah port cukup, dan dokumentasi IP Address yang rapi agar mudah troubleshooting saat ada PC bermasalah.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 2. TOPOLOGI JARINGAN ===================== -->
+  <section id="topologi" class="mb-20 reveal">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-11 h-11 rounded-xl bg-blue-100 text-primary flex items-center justify-center"><i class="fas fa-diagram-project"></i></div>
+      <div>
+        <p class="text-xs font-bold text-secondary uppercase tracking-wider">Materi 2</p>
+        <h2 class="text-2xl font-bold text-dark">Topologi Jaringan</h2>
+      </div>
+    </div>
+
+    <div class="glass-card rounded-2xl p-6 sm:p-8 mb-6">
+      <p class="text-slate-600 leading-relaxed">Topologi jaringan adalah <strong>pola hubungan fisik maupun logis</strong> antar perangkat dalam sebuah jaringan. Pemilihan topologi memengaruhi biaya pemasangan, kemudahan perawatan, ketahanan terhadap gangguan, dan kemudahan menambah perangkat baru.</p>
+    </div>
+
+    <div class="flex gap-1 overflow-x-auto border-b border-slate-200 mb-6" id="topoTabs"></div>
+    <div id="topoContent" class="bg-white border border-slate-100 rounded-2xl p-6 sm:p-8 mb-6"></div>
+
+    <div class="bg-white border border-slate-100 rounded-2xl p-6 overflow-x-auto reveal">
+      <h3 class="font-semibold text-dark mb-3"><i class="fas fa-table text-accent mr-2"></i>Perbandingan Topologi</h3>
+      <table class="w-full text-sm text-left">
+        <thead class="text-slate-500 border-b border-slate-200">
+          <tr><th class="py-2 pr-3">Topologi</th><th class="py-2 pr-3">Biaya Kabel</th><th class="py-2 pr-3">Ketahanan</th><th class="py-2">Skala Umum</th></tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 text-slate-600">
+          <tr><td class="py-2 pr-3">Star</td><td class="py-2 pr-3">Sedang</td><td class="py-2 pr-3">Baik (1 node putus tak ganggu lain)</td><td class="py-2">Kelas, kantor kecil-menengah</td></tr>
+          <tr><td class="py-2 pr-3">Bus</td><td class="py-2 pr-3">Rendah</td><td class="py-2 pr-3">Rendah (kabel utama putus = lumpuh)</td><td class="py-2">Jaringan lama/skala sangat kecil</td></tr>
+          <tr><td class="py-2 pr-3">Ring</td><td class="py-2 pr-3">Sedang</td><td class="py-2 pr-3">Rendah&ndash;sedang</td><td class="py-2">Backbone metro/industri</td></tr>
+          <tr><td class="py-2 pr-3">Mesh</td><td class="py-2 pr-3">Tinggi</td><td class="py-2 pr-3">Sangat baik</td><td class="py-2">Data center, jaringan kritikal</td></tr>
+          <tr><td class="py-2 pr-3">Tree</td><td class="py-2 pr-3">Sedang&ndash;tinggi</td><td class="py-2 pr-3">Sedang</td><td class="py-2">Sekolah/kampus multi-gedung</td></tr>
+          <tr><td class="py-2 pr-3">Hybrid</td><td class="py-2 pr-3">Bervariasi</td><td class="py-2 pr-3">Baik (disesuaikan kebutuhan)</td><td class="py-2">Organisasi besar/kompleks</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===================== 3. PEMILIHAN PERANGKAT ===================== -->
+  <section id="perangkat" class="mb-20 reveal">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-11 h-11 rounded-xl bg-blue-100 text-primary flex items-center justify-center"><i class="fas fa-server"></i></div>
+      <div>
+        <p class="text-xs font-bold text-secondary uppercase tracking-wider">Materi 3</p>
+        <h2 class="text-2xl font-bold text-dark">Pemilihan Perangkat Jaringan</h2>
+      </div>
+    </div>
+    <p class="text-slate-600 mb-6 max-w-2xl">Klik kartu perangkat untuk melihat fungsi, cara kerja, spesifikasi dasar, dan contoh penggunaannya.</p>
+    <div id="deviceGrid" class="grid sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+    <p id="deviceEmpty" class="text-sm text-slate-400 mt-4 hidden">Tidak ada perangkat yang cocok dengan pencarian.</p>
+  </section>
+
+  <!-- ===================== 4. PENEMPATAN PERANGKAT ===================== -->
+  <section id="penempatan" class="mb-20 reveal">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-11 h-11 rounded-xl bg-blue-100 text-primary flex items-center justify-center"><i class="fas fa-location-dot"></i></div>
+      <div>
+        <p class="text-xs font-bold text-secondary uppercase tracking-wider">Materi 4</p>
+        <h2 class="text-2xl font-bold text-dark">Penempatan Perangkat</h2>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6 mb-6">
+      <div class="bg-white border border-slate-100 rounded-2xl p-6 reveal">
+        <h3 class="font-semibold text-dark mb-3">Prinsip Utama</h3>
+        <ul class="text-sm text-slate-600 space-y-2">
+          <li><i class="fas fa-check text-green-500 mr-2"></i><strong>Access Point:</strong> di tengah area cakupan, posisi tinggi, jauh dari dinding beton tebal dan microwave.</li>
+          <li><i class="fas fa-check text-green-500 mr-2"></i><strong>Switch:</strong> sedekat mungkin dengan kelompok perangkat yang dilayani, di dalam rack/lemari panel.</li>
+          <li><i class="fas fa-check text-green-500 mr-2"></i><strong>Router:</strong> dekat titik masuk internet (modem ISP), di ruang server bila ada.</li>
+          <li><i class="fas fa-check text-green-500 mr-2"></i><strong>Rack:</strong> di ruangan berventilasi baik, terkunci, tidak lembap.</li>
+          <li><i class="fas fa-check text-green-500 mr-2"></i><strong>Jalur kabel:</strong> gunakan kabel duct/tray, hindari menyilang jalur listrik tegangan tinggi.</li>
+        </ul>
+      </div>
+      <div class="bg-white border border-slate-100 rounded-2xl p-6 reveal">
+        <h3 class="font-semibold text-dark mb-3">Manajemen &amp; Keamanan</h3>
+        <ul class="text-sm text-slate-600 space-y-2">
+          <li><i class="fas fa-check text-green-500 mr-2"></i>Ikat &amp; beri label setiap kabel di kedua ujungnya.</li>
+          <li><i class="fas fa-check text-green-500 mr-2"></i>Gunakan cable management arm/panel supaya rack rapi.</li>
+          <li><i class="fas fa-check text-green-500 mr-2"></i>Pastikan ruang server punya pendingin (AC) yang menyala 24 jam.</li>
+          <li><i class="fas fa-check text-green-500 mr-2"></i>Kunci akses fisik ke rack &mdash; hanya teknisi yang boleh masuk.</li>
+          <li><i class="fas fa-check text-green-500 mr-2"></i>Pasang UPS untuk perangkat aktif utama agar tidak mati mendadak.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="bg-white border border-slate-100 rounded-2xl p-6 reveal">
+      <h3 class="font-semibold text-dark mb-4"><i class="fas fa-ruler-combined text-accent mr-2"></i>Contoh Layout Ruangan Lab Komputer</h3>
+      <div class="grid grid-cols-6 gap-2 text-[11px] text-center">
+        <div class="col-span-6 bg-blue-50 border border-blue-100 rounded-lg py-2 font-semibold text-primary"><i class="fas fa-server mr-1"></i>Rack &amp; Router (dekat pintu masuk kabel ISP)</div>
+        <div class="col-span-2 bg-slate-50 border border-slate-100 rounded-lg py-3">Baris PC 1<br><i class="fas fa-desktop text-slate-400"></i> x10</div>
+        <div class="col-span-2 bg-slate-50 border border-slate-100 rounded-lg py-3">Baris PC 2<br><i class="fas fa-desktop text-slate-400"></i> x10</div>
+        <div class="col-span-2 bg-slate-50 border border-slate-100 rounded-lg py-3">Baris PC 3<br><i class="fas fa-desktop text-slate-400"></i> x10</div>
+        <div class="col-span-3 bg-amber-50 border border-amber-100 rounded-lg py-3"><i class="fas fa-wifi text-amber-500"></i> Access Point (langit-langit tengah)</div>
+        <div class="col-span-3 bg-emerald-50 border border-emerald-100 rounded-lg py-3"><i class="fas fa-print text-emerald-600"></i> Meja Guru &amp; Printer Jaringan</div>
+      </div>
+      <p class="text-xs text-slate-400 mt-3">Diagram sederhana &mdash; posisi rack dekat titik masuk kabel, AP di tengah ruangan agar sinyal merata ke tiga baris PC.</p>
+    </div>
+  </section>
+
+  <!-- ===================== 5. DOKUMENTASI JARINGAN ===================== -->
+  <section id="dokumentasi" class="mb-20 reveal">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-11 h-11 rounded-xl bg-blue-100 text-primary flex items-center justify-center"><i class="fas fa-book"></i></div>
+      <div>
+        <p class="text-xs font-bold text-secondary uppercase tracking-wider">Materi 5</p>
+        <h2 class="text-2xl font-bold text-dark">Dokumentasi Jaringan</h2>
+      </div>
+    </div>
+
+    <div class="glass-card rounded-2xl p-6 sm:p-8 mb-6">
+      <p class="text-slate-600 leading-relaxed">Dokumentasi adalah "peta harta karun" seorang teknisi. Saat jaringan bermasalah tengah malam, dokumentasi yang rapi membuat troubleshooting jadi hitungan menit, bukan jam. Dokumentasi minimal mencakup <strong>diagram logis</strong> (alur data/IP), <strong>diagram fisik</strong> (posisi kabel &amp; perangkat sebenarnya), label perangkat &amp; kabel, serta catatan konfigurasi.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-4 mb-6">
+      <div class="bg-white border border-slate-100 rounded-2xl p-6 reveal">
+        <h3 class="font-semibold text-dark mb-3"><i class="fas fa-sitemap text-primary mr-2"></i>Contoh Diagram Logis (disederhanakan)</h3>
+        <div class="flex flex-col items-center gap-2 text-xs text-center">
+          <div class="bg-blue-100 text-primary px-4 py-2 rounded-lg font-medium">Internet</div>
+          <i class="fas fa-arrow-down text-slate-300"></i>
+          <div class="bg-blue-100 text-primary px-4 py-2 rounded-lg font-medium">Router (192.168.1.1)</div>
+          <i class="fas fa-arrow-down text-slate-300"></i>
+          <div class="bg-slate-100 text-slate-600 px-4 py-2 rounded-lg font-medium">Switch Utama</div>
+          <div class="flex gap-2">
+            <i class="fas fa-arrow-down text-slate-300"></i><i class="fas fa-arrow-down text-slate-300"></i><i class="fas fa-arrow-down text-slate-300"></i>
+          </div>
+          <div class="flex gap-2 flex-wrap justify-center">
+            <div class="bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-lg">VLAN 10: Lab</div>
+            <div class="bg-amber-50 text-amber-700 px-3 py-1.5 rounded-lg">VLAN 20: Guru</div>
+            <div class="bg-rose-50 text-rose-700 px-3 py-1.5 rounded-lg">VLAN 30: TU</div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white border border-slate-100 rounded-2xl p-6 reveal overflow-x-auto">
+        <h3 class="font-semibold text-dark mb-3"><i class="fas fa-list-check text-primary mr-2"></i>Contoh Format Dokumentasi IP</h3>
+        <table class="w-full text-xs text-left">
+          <thead class="text-slate-500 border-b border-slate-200"><tr><th class="py-1 pr-2">Perangkat</th><th class="py-1 pr-2">Label</th><th class="py-1 pr-2">IP Address</th><th class="py-1">Lokasi</th></tr></thead>
+          <tbody class="divide-y divide-slate-100 text-slate-600">
+            <tr><td class="py-1 pr-2">Router</td><td class="py-1 pr-2">RTR-01</td><td class="py-1 pr-2">192.168.1.1</td><td class="py-1">Rack Utama</td></tr>
+            <tr><td class="py-1 pr-2">Switch Lab</td><td class="py-1 pr-2">SW-LAB-01</td><td class="py-1 pr-2">192.168.1.2</td><td class="py-1">Lab Komputer</td></tr>
+            <tr><td class="py-1 pr-2">Server</td><td class="py-1 pr-2">SRV-01</td><td class="py-1 pr-2">192.168.1.10</td><td class="py-1">Rack Utama</td></tr>
+            <tr><td class="py-1 pr-2">AP Lab</td><td class="py-1 pr-2">AP-LAB-01</td><td class="py-1 pr-2">192.168.1.20</td><td class="py-1">Langit-langit Lab</td></tr>
+          </tbody>
+        </table>
+        <p class="text-[11px] text-slate-400 mt-3">Standar penamaan: <code class="bg-slate-100 px-1 rounded">[JENIS]-[LOKASI]-[NOMOR URUT]</code>, contoh <code class="bg-slate-100 px-1 rounded">SW-LAB-01</code>.</p>
+      </div>
+    </div>
+
+    <div class="bg-white border border-slate-100 rounded-2xl p-6 reveal">
+      <h3 class="font-semibold text-dark mb-3">Checklist Dokumentasi yang Baik</h3>
+      <div class="grid sm:grid-cols-2 gap-2 text-sm text-slate-600">
+        <label class="flex items-center gap-2"><input type="checkbox" class="accent-primary"> Diagram fisik &amp; logis tersimpan &amp; ter-update</label>
+        <label class="flex items-center gap-2"><input type="checkbox" class="accent-primary"> Semua kabel &amp; port diberi label</label>
+        <label class="flex items-center gap-2"><input type="checkbox" class="accent-primary"> Daftar IP Address lengkap per perangkat</label>
+        <label class="flex items-center gap-2"><input type="checkbox" class="accent-primary"> Backup konfigurasi router/switch tersimpan aman</label>
+        <label class="flex items-center gap-2"><input type="checkbox" class="accent-primary"> Standar penamaan perangkat konsisten</label>
+        <label class="flex items-center gap-2"><input type="checkbox" class="accent-primary"> Dokumen dapat diakses tim, bukan cuma satu orang</label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRAKTIK 1 ===================== -->
+  <section id="praktik1" class="mb-20 reveal">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-11 h-11 rounded-xl bg-amber-100 text-accent flex items-center justify-center"><i class="fas fa-screwdriver-wrench"></i></div>
+      <div>
+        <p class="text-xs font-bold text-accent uppercase tracking-wider">Praktik 1</p>
+        <h2 class="text-2xl font-bold text-dark">Mendesain Jaringan Sekolah</h2>
+      </div>
+    </div>
+    <p class="text-slate-600 mb-6 max-w-2xl">Masukkan jumlah ruang dan komputer per ruang, lalu sistem akan menghitung estimasi perangkat yang kamu butuhkan.</p>
+
+    <div class="bg-white border border-slate-100 rounded-2xl p-6 sm:p-8">
+      <div class="grid sm:grid-cols-3 gap-4 mb-6">
+        <div>
+          <label class="text-sm font-medium text-slate-600">Jumlah Ruang</label>
+          <input id="p1Ruang" type="number" min="1" value="4" class="mt-1 w-full border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/40">
+        </div>
+        <div>
+          <label class="text-sm font-medium text-slate-600">Rata-rata Komputer / Ruang</label>
+          <input id="p1Komputer" type="number" min="1" value="20" class="mt-1 w-full border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/40">
+        </div>
+        <div>
+          <label class="text-sm font-medium text-slate-600">Port per Switch</label>
+          <select id="p1PortSwitch" class="mt-1 w-full border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary/40">
+            <option value="8">8 port</option>
+            <option value="16">16 port</option>
+            <option value="24" selected>24 port</option>
+            <option value="48">48 port</option>
+          </select>
+        </div>
+      </div>
+      <button id="p1Btn" class="ripple-btn bg-primary text-white font-semibold px-6 py-2.5 rounded-full hover:bg-blue-800 transition">
+        <i class="fas fa-calculator mr-1"></i> Hitung Desain
+      </button>
+
+      <div id="p1Result" class="mt-6 hidden">
+        <div class="grid sm:grid-cols-4 gap-3 text-center">
+          <div class="bg-blue-50 rounded-xl p-4"><p class="text-2xl font-bold text-primary" id="rTotalPc">0</p><p class="text-xs text-slate-500">Total Komputer</p></div>
+          <div class="bg-blue-50 rounded-xl p-4"><p class="text-2xl font-bold text-primary" id="rSwitch">0</p><p class="text-xs text-slate-500">Switch Dibutuhkan</p></div>
+          <div class="bg-blue-50 rounded-xl p-4"><p class="text-2xl font-bold text-primary" id="rRouter">1</p><p class="text-xs text-slate-500">Router Utama</p></div>
+          <div class="bg-blue-50 rounded-xl p-4"><p class="text-2xl font-bold text-primary" id="rAp">0</p><p class="text-xs text-slate-500">Access Point (Wi-Fi guru/staf)</p></div>
+        </div>
+        <p class="text-xs text-slate-400 mt-3">*Estimasi: 1 switch per ruang bila komputer &gt; sisa port switch sebelumnya; 1 access point per 2 ruang untuk cakupan Wi-Fi staf.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PRAKTIK 2 ===================== -->
+  <section id="praktik2" class="mb-20 reveal">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-11 h-11 rounded-xl bg-amber-100 text-accent flex items-center justify-center"><i class="fas fa-diagram-project"></i></div>
+      <div>
+        <p class="text-xs font-bold text-accent uppercase tracking-wider">Praktik 2</p>
+        <h2 class="text-2xl font-bold text-dark">Membuat Network Diagram</h2>
+      </div>
+    </div>
+    <p class="text-slate-600 mb-6 max-w-2xl">Susun diagram jaringan sederhana. Klik <strong>"+ Tambah PC"</strong> untuk menambah komputer ke switch, dan lihat diagramnya terbentuk otomatis.</p>
+
+    <div class="bg-white border border-slate-100 rounded-2xl p-6 sm:p-8">
+      <div class="flex flex-wrap gap-2 mb-6">
+        <button id="p2AddPc" class="ripple-btn bg-primary text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-blue-800 transition"><i class="fas fa-plus mr-1"></i>Tambah PC</button>
+        <button id="p2RemovePc" class="bg-slate-100 text-slate-600 text-sm font-semibold px-4 py-2 rounded-full hover:bg-slate-200 transition"><i class="fas fa-minus mr-1"></i>Hapus PC</button>
+        <button id="p2Reset" class="bg-slate-100 text-slate-600 text-sm font-semibold px-4 py-2 rounded-full hover:bg-slate-200 transition"><i class="fas fa-rotate-left mr-1"></i>Reset</button>
+      </div>
+
+      <div class="flex flex-col items-center gap-3">
+        <div class="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg text-sm font-semibold"><i class="fas fa-globe mr-1"></i>Internet</div>
+        <div class="w-px h-6 bg-slate-300"></div>
+        <div class="bg-blue-100 text-primary px-4 py-2 rounded-lg text-sm font-semibold"><i class="fas fa-router mr-1"></i>Router</div>
+        <div class="w-px h-6 bg-slate-300"></div>
+        <div class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold"><i class="fas fa-network-wired mr-1"></i>Switch</div>
+        <div class="w-3/4 h-px bg-slate-300"></div>
+        <div id="p2PcContainer" class="flex flex-wrap justify-center gap-3"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== MINI PROJECT ===================== -->
+  <section id="miniproject" class="mb-20 reveal">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center"><i class="fas fa-trophy"></i></div>
+      <div>
+        <p class="text-xs font-bold text-purple-500 uppercase tracking-wider">Mini Project</p>
+        <h2 class="text-2xl font-bold text-dark">Mendesain Jaringan Laboratorium Komputer</h2>
+      </div>
+    </div>
+
+    <div class="glass-card rounded-2xl p-6 sm:p-8 mb-6">
+      <h3 class="font-semibold text-dark mb-2">Studi Kasus</h3>
+      <p class="text-slate-600 mb-4">Sebuah laboratorium komputer memiliki:</p>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center text-xs mb-4">
+        <div class="bg-slate-50 rounded-lg py-3"><i class="fas fa-desktop text-primary block mb-1"></i>40 Komputer</div>
+        <div class="bg-slate-50 rounded-lg py-3"><i class="fas fa-server text-primary block mb-1"></i>1 Server</div>
+        <div class="bg-slate-50 rounded-lg py-3"><i class="fas fa-print text-primary block mb-1"></i>1 Printer Jaringan</div>
+        <div class="bg-slate-50 rounded-lg py-3"><i class="fas fa-wifi text-primary block mb-1"></i>2 Access Point</div>
+        <div class="bg-slate-50 rounded-lg py-3"><i class="fas fa-route text-primary block mb-1"></i>1 Router MikroTik</div>
+        <div class="bg-slate-50 rounded-lg py-3"><i class="fas fa-network-wired text-primary block mb-1"></i>2 Managed Switch</div>
+        <div class="bg-slate-50 rounded-lg py-3"><i class="fas fa-gauge-high text-primary block mb-1"></i>Internet 200 Mbps</div>
+      </div>
+      <h3 class="font-semibold text-dark mb-2">Tugas Kelompok</h3>
+      <ol class="list-decimal list-inside text-sm text-slate-600 space-y-1">
+        <li>Tentukan topologi yang paling sesuai beserta alasannya.</li>
+        <li>Tentukan perangkat tambahan yang diperlukan (jika ada).</li>
+        <li>Tentukan penempatan setiap perangkat di ruangan.</li>
+        <li>Buat network diagram (boleh gunakan Praktik 2 di atas sebagai referensi).</li>
+        <li>Tentukan skema IP Address untuk seluruh perangkat.</li>
+        <li>Buat dokumentasi awal (label, standar penamaan).</li>
+      </ol>
+    </div>
+
+    <div class="bg-white border border-slate-100 rounded-2xl p-6 overflow-x-auto reveal">
+      <h3 class="font-semibold text-dark mb-3"><i class="fas fa-clipboard-check text-accent mr-2"></i>Rubrik Penilaian</h3>
+      <table class="w-full text-sm text-left">
+        <thead class="text-slate-500 border-b border-slate-200">
+          <tr><th class="py-2 pr-3">Kriteria</th><th class="py-2 pr-3">Skor 4 (Sangat Baik)</th><th class="py-2 pr-3">Skor 3 (Baik)</th><th class="py-2 pr-3">Skor 2 (Cukup)</th><th class="py-2">Skor 1 (Kurang)</th></tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 text-slate-600 text-xs sm:text-sm">
+          <tr><td class="py-2 pr-3 font-medium">Ketepatan Topologi</td><td class="py-2 pr-3">Sesuai &amp; beralasan kuat</td><td class="py-2 pr-3">Sesuai, alasan cukup</td><td class="py-2 pr-3">Kurang sesuai</td><td class="py-2">Tidak sesuai</td></tr>
+          <tr><td class="py-2 pr-3 font-medium">Pemilihan Perangkat</td><td class="py-2 pr-3">Lengkap &amp; efisien</td><td class="py-2 pr-3">Lengkap</td><td class="py-2 pr-3">Ada yang kurang</td><td class="py-2">Banyak kurang tepat</td></tr>
+          <tr><td class="py-2 pr-3 font-medium">Network Diagram</td><td class="py-2 pr-3">Jelas &amp; rapi</td><td class="py-2 pr-3">Jelas</td><td class="py-2 pr-3">Kurang jelas</td><td class="py-2">Tidak dibuat</td></tr>
+          <tr><td class="py-2 pr-3 font-medium">Skema IP Address</td><td class="py-2 pr-3">Konsisten &amp; logis</td><td class="py-2 pr-3">Konsisten</td><td class="py-2 pr-3">Ada kesalahan kecil</td><td class="py-2">Tidak logis</td></tr>
+          <tr><td class="py-2 pr-3 font-medium">Dokumentasi</td><td class="py-2 pr-3">Sangat rapi &amp; lengkap</td><td class="py-2 pr-3">Rapi</td><td class="py-2 pr-3">Kurang lengkap</td><td class="py-2">Tidak ada</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===================== QUIZ ===================== -->
+  <section id="quiz" class="mb-20 reveal">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-11 h-11 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center"><i class="fas fa-list-check"></i></div>
+      <div>
+        <p class="text-xs font-bold text-rose-500 uppercase tracking-wider">Evaluasi</p>
+        <h2 class="text-2xl font-bold text-dark">Quiz Interaktif</h2>
+      </div>
+    </div>
+
+    <div class="flex gap-1 overflow-x-auto border-b border-slate-200 mb-6" id="quizTabs"></div>
+
+    <div class="mb-4">
+      <div class="h-2 bg-slate-100 rounded-full overflow-hidden">
+        <div id="quizProgressBar" class="h-full bg-gradient-to-r from-primary to-accent transition-all" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div id="quizContent" class="bg-white border border-slate-100 rounded-2xl p-6 sm:p-8 min-h-[200px]"></div>
+
+    <div class="flex flex-wrap gap-3 mt-4">
+      <button id="quizSubmit" class="ripple-btn bg-primary text-white font-semibold px-6 py-2.5 rounded-full hover:bg-blue-800 transition"><i class="fas fa-check mr-1"></i>Cek Jawaban</button>
+      <button id="quizRetry" class="bg-slate-100 text-slate-600 font-semibold px-6 py-2.5 rounded-full hover:bg-slate-200 transition"><i class="fas fa-rotate-left mr-1"></i>Ulangi Quiz</button>
+      <div id="quizScoreBadge" class="ml-auto hidden bg-emerald-50 text-emerald-700 font-bold px-4 py-2 rounded-full text-sm"></div>
+    </div>
+  </section>
+
+  <!-- ===================== REFLEKSI ===================== -->
+  <section id="refleksi" class="mb-24 reveal">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-11 h-11 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center"><i class="fas fa-comment-dots"></i></div>
+      <div>
+        <p class="text-xs font-bold text-teal-500 uppercase tracking-wider">Penutup</p>
+        <h2 class="text-2xl font-bold text-dark">Refleksi Pembelajaran</h2>
+      </div>
+    </div>
+
+    <div class="bg-white border border-slate-100 rounded-2xl p-6 sm:p-8 space-y-5">
+      <div>
+        <label class="text-sm font-medium text-slate-700 block mb-1">1. Apa hal baru yang kamu pelajari hari ini?</label>
+        <textarea rows="2" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" placeholder="Tulis jawabanmu di sini..."></textarea>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-slate-700 block mb-1">2. Perangkat jaringan apa yang menurutmu paling penting? Mengapa?</label>
+        <textarea rows="2" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" placeholder="Tulis jawabanmu di sini..."></textarea>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-slate-700 block mb-1">3. Jika kamu diminta membangun jaringan sekolah, langkah pertama apa yang akan kamu lakukan?</label>
+        <textarea rows="2" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" placeholder="Tulis jawabanmu di sini..."></textarea>
+      </div>
+      <div>
+        <label class="text-sm font-medium text-slate-700 block mb-1">4. Apa kesulitanmu dalam mempelajari materi ini?</label>
+        <textarea rows="2" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" placeholder="Tulis jawabanmu di sini..."></textarea>
+      </div>
+      <button id="refleksiSave" class="ripple-btn bg-teal-600 text-white font-semibold px-6 py-2.5 rounded-full hover:bg-teal-700 transition"><i class="fas fa-floppy-disk mr-1"></i>Simpan Refleksi</button>
+      <p class="text-xs text-slate-400">Catatan: refleksi disimpan sementara di halaman ini selama sesi belajarmu berlangsung.</p>
+    </div>
+  </section>
+
+  </main>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-slate-400 py-8 border-t border-slate-800 mt-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+    <div class="text-center md:text-left">
+      <p class="text-white font-semibold mb-1">SMK Bintang Raudloh</p>
+      <p class="text-sm">Teknik Komputer dan Jaringan</p>
+    </div>
+    <div class="text-sm text-center">&copy; 2026 Roadmap Pembelajaran TLJ Kelas XII.</div>
+  </div>
+</footer>
+
+<!-- Back to top -->
+<button id="backToTop" class="fixed bottom-6 right-6 w-11 h-11 rounded-full bg-primary text-white shadow-lg flex items-center justify-center opacity-0 pointer-events-none transition z-50" aria-label="Kembali ke atas">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- Toast root -->
+<div id="toastRoot" class="fixed bottom-6 left-1/2 -translate-x-1/2 flex flex-col gap-2 items-center"></div>
+
+<!-- Device Modal -->
+<div id="deviceModal" class="fixed inset-0 hidden items-center justify-center p-4">
+  <div class="modal-backdrop absolute inset-0" id="deviceModalBackdrop"></div>
+  <div class="relative bg-white rounded-2xl max-w-lg w-full p-6 sm:p-8 shadow-2xl">
+    <button id="deviceModalClose" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700"><i class="fas fa-xmark text-lg"></i></button>
+    <div id="deviceModalBody"></div>
+  </div>
+</div>
+
+<script>
+/* ============ DATA ============ */
+const sections = [
+  {id:'analisis', label:'Analisis Kebutuhan'},
+  {id:'topologi', label:'Topologi Jaringan'},
+  {id:'perangkat', label:'Perangkat Jaringan'},
+  {id:'penempatan', label:'Penempatan'},
+  {id:'dokumentasi', label:'Dokumentasi'},
+  {id:'praktik1', label:'Praktik 1'},
+  {id:'praktik2', label:'Praktik 2'},
+  {id:'miniproject', label:'Mini Project'},
+  {id:'quiz', label:'Quiz'},
+  {id:'refleksi', label:'Refleksi'},
+];
+
+const topologies = [
+  {
+    id:'star', name:'Star', icon:'fa-star',
+    svg:`<svg viewBox="0 0 200 160" class="w-full h-40"><circle cx="100" cy="80" r="10" fill="#1e40af"/>
+      <circle cx="30" cy="30" r="7" fill="#3b82f6"/><circle cx="170" cy="30" r="7" fill="#3b82f6"/>
+      <circle cx="30" cy="130" r="7" fill="#3b82f6"/><circle cx="170" cy="130" r="7" fill="#3b82f6"/>
+      <circle cx="100" cy="15" r="7" fill="#3b82f6"/>
+      <g stroke="#94a3b8" stroke-width="2"><line x1="100" y1="80" x2="30" y2="30"/><line x1="100" y1="80" x2="170" y2="30"/><line x1="100" y1="80" x2="30" y2="130"/><line x1="100" y1="80" x2="170" y2="130"/><line x1="100" y1="80" x2="100" y2="15"/></g></svg>`,
+    cara:'Setiap perangkat (node) terhubung langsung ke satu titik pusat, biasanya switch atau hub. Semua komunikasi antar node melewati titik pusat ini.',
+    kelebihan:['Mudah menambah/mengurangi node tanpa mengganggu yang lain','Jika satu kabel node putus, node lain tetap normal','Mudah dideteksi jika ada masalah'],
+    kekurangan:['Jika perangkat pusat (switch) rusak, seluruh jaringan lumpuh','Butuh lebih banyak kabel dibanding topologi bus'],
+    kapan:'Cocok untuk ruang kelas, lab komputer, dan kantor kecil-menengah karena mudah dirawat dan diperluas.',
+    contoh:'Jaringan LAN di lab komputer sekolah, dengan switch di tengah menghubungkan seluruh PC.'
+  },
+  {
+    id:'bus', name:'Bus', icon:'fa-minus',
+    svg:`<svg viewBox="0 0 200 100" class="w-full h-40"><line x1="15" y1="50" x2="185" y2="50" stroke="#1e40af" stroke-width="4"/>
+      <circle cx="40" cy="50" r="7" fill="#3b82f6"/><circle cx="80" cy="50" r="7" fill="#3b82f6"/><circle cx="120" cy="50" r="7" fill="#3b82f6"/><circle cx="160" cy="50" r="7" fill="#3b82f6"/>
+      <line x1="40" y1="50" x2="40" y2="25" stroke="#94a3b8"/><line x1="80" y1="50" x2="80" y2="25" stroke="#94a3b8"/><line x1="120" y1="50" x2="120" y2="25" stroke="#94a3b8"/><line x1="160" y1="50" x2="160" y2="25" stroke="#94a3b8"/></svg>`,
+    cara:'Semua node terhubung ke satu kabel utama (backbone) secara berurutan. Data mengalir sepanjang kabel dan diterima oleh node yang dituju.',
+    kelebihan:['Instalasi sederhana dan hemat kabel','Biaya paling murah di antara topologi lain'],
+    kekurangan:['Jika kabel utama putus, seluruh jaringan terganggu','Trafik padat menyebabkan tabrakan data (collision)','Sulit dilacak sumber masalah'],
+    kapan:'Sudah jarang dipakai untuk jaringan baru; cocok hanya untuk jaringan skala sangat kecil dan sementara.',
+    contoh:'Jaringan komputer lama menggunakan kabel coaxial dengan konektor BNC.'
+  },
+  {
+    id:'ring', name:'Ring', icon:'fa-circle-notch',
+    svg:`<svg viewBox="0 0 200 160" class="w-full h-40"><circle cx="100" cy="80" r="55" fill="none" stroke="#94a3b8" stroke-width="3"/>
+      <circle cx="100" cy="25" r="7" fill="#3b82f6"/><circle cx="155" cy="80" r="7" fill="#3b82f6"/><circle cx="100" cy="135" r="7" fill="#3b82f6"/><circle cx="45" cy="80" r="7" fill="#3b82f6"/></svg>`,
+    cara:'Setiap node terhubung ke dua node tetangganya membentuk lingkaran tertutup. Data mengalir satu arah (atau dua arah pada dual-ring) melewati setiap node hingga sampai tujuan.',
+    kelebihan:['Aliran data teratur, tanpa tabrakan data','Performa tetap stabil walau jumlah pengguna bertambah'],
+    kekurangan:['Jika satu node/kabel putus, seluruh ring bisa terganggu (kecuali dual-ring)','Menambah/mengurangi node mengganggu jaringan sementara'],
+    kapan:'Digunakan pada jaringan backbone metropolitan atau industri yang butuh keteraturan aliran data.',
+    contoh:'Jaringan token ring pada sistem lama, atau backbone serat optik berbentuk cincin di jaringan metro.'
+  },
+  {
+    id:'mesh', name:'Mesh', icon:'fa-diagram-project',
+    svg:`<svg viewBox="0 0 200 160" class="w-full h-40">
+      <g stroke="#94a3b8" stroke-width="1.5">
+        <line x1="40" y1="30" x2="160" y2="30"/><line x1="40" y1="30" x2="100" y2="130"/><line x1="40" y1="30" x2="30" y2="120"/><line x1="40" y1="30" x2="170" y2="120"/>
+        <line x1="160" y1="30" x2="100" y2="130"/><line x1="160" y1="30" x2="30" y2="120"/><line x1="160" y1="30" x2="170" y2="120"/>
+        <line x1="100" y1="130" x2="30" y2="120"/><line x1="100" y1="130" x2="170" y2="120"/><line x1="30" y1="120" x2="170" y2="120"/>
+      </g>
+      <circle cx="40" cy="30" r="7" fill="#1e40af"/><circle cx="160" cy="30" r="7" fill="#1e40af"/><circle cx="100" cy="130" r="7" fill="#1e40af"/><circle cx="30" cy="120" r="7" fill="#1e40af"/><circle cx="170" cy="120" r="7" fill="#1e40af"/></svg>`,
+    cara:'Setiap node terhubung langsung ke banyak (idealnya semua) node lain, menciptakan banyak jalur alternatif menuju tujuan yang sama.',
+    kelebihan:['Sangat andal, jika satu jalur putus data bisa lewat jalur lain','Keamanan data tinggi karena jalur tidak dibagi bersama'],
+    kekurangan:['Butuh kabel &amp; port sangat banyak, biaya tinggi','Instalasi &amp; perawatan rumit'],
+    kapan:'Dipakai pada jaringan kritikal seperti data center atau backbone ISP yang tidak boleh down.',
+    contoh:'Koneksi antar server di data center, atau jaringan backbone antar kota pada penyedia internet besar.'
+  },
+  {
+    id:'tree', name:'Tree', icon:'fa-sitemap',
+    svg:`<svg viewBox="0 0 200 160" class="w-full h-40"><circle cx="100" cy="20" r="8" fill="#1e40af"/>
+      <line x1="100" y1="20" x2="55" y2="70" stroke="#94a3b8"/><line x1="100" y1="20" x2="145" y2="70" stroke="#94a3b8"/>
+      <circle cx="55" cy="70" r="7" fill="#3b82f6"/><circle cx="145" cy="70" r="7" fill="#3b82f6"/>
+      <line x1="55" y1="70" x2="30" y2="130" stroke="#94a3b8"/><line x1="55" y1="70" x2="70" y2="130" stroke="#94a3b8"/>
+      <line x1="145" y1="70" x2="130" y2="130" stroke="#94a3b8"/><line x1="145" y1="70" x2="170" y2="130" stroke="#94a3b8"/>
+      <circle cx="30" cy="130" r="6" fill="#93c5fd"/><circle cx="70" cy="130" r="6" fill="#93c5fd"/><circle cx="130" cy="130" r="6" fill="#93c5fd"/><circle cx="170" cy="130" r="6" fill="#93c5fd"/></svg>`,
+    cara:'Gabungan beberapa topologi star yang dihubungkan melalui satu backbone berjenjang (hierarkis), mirip struktur pohon dengan node akar, cabang, dan ranting.',
+    kelebihan:['Mudah dikembangkan bertingkat sesuai struktur organisasi/gedung','Mudah mengisolasi masalah per cabang'],
+    kekurangan:['Jika node/kabel di tingkat atas (dekat akar) rusak, cabang di bawahnya ikut terganggu','Butuh perencanaan hierarki yang matang'],
+    kapan:'Cocok untuk sekolah/kampus dengan banyak gedung, tiap gedung punya switch cabang yang terhubung ke switch inti.',
+    contoh:'Jaringan kampus dengan switch inti di gedung utama, bercabang ke switch tiap fakultas/gedung.'
+  },
+  {
+    id:'hybrid', name:'Hybrid', icon:'fa-shapes',
+    svg:`<svg viewBox="0 0 200 160" class="w-full h-40"><circle cx="60" cy="80" r="8" fill="#1e40af"/>
+      <circle cx="20" cy="40" r="6" fill="#3b82f6"/><circle cx="20" cy="120" r="6" fill="#3b82f6"/><circle cx="60" cy="20" r="6" fill="#3b82f6"/>
+      <line x1="60" y1="80" x2="20" y2="40" stroke="#94a3b8"/><line x1="60" y1="80" x2="20" y2="120" stroke="#94a3b8"/><line x1="60" y1="80" x2="60" y2="20" stroke="#94a3b8"/>
+      <line x1="60" y1="80" x2="150" y2="80" stroke="#94a3b8" stroke-width="3"/>
+      <circle cx="150" cy="40" r="6" fill="#f59e0b"/><circle cx="150" cy="120" r="6" fill="#f59e0b"/><circle cx="190" cy="80" r="6" fill="#f59e0b"/>
+      <line x1="150" y1="40" x2="150" y2="120" stroke="#94a3b8"/><line x1="150" y1="120" x2="190" y2="80" stroke="#94a3b8"/><line x1="190" y1="80" x2="150" y2="40" stroke="#94a3b8"/></svg>`,
+    cara:'Kombinasi dua atau lebih jenis topologi dalam satu jaringan, misalnya star pada satu bagian gedung dan mesh pada bagian server, disesuaikan kebutuhan tiap area.',
+    kelebihan:['Fleksibel, tiap area bisa pakai topologi paling sesuai','Skalabel untuk organisasi besar dan kompleks'],
+    kekurangan:['Perencanaan &amp; dokumentasi lebih rumit','Butuh teknisi dengan pemahaman lebih luas'],
+    kapan:'Dipakai organisasi besar yang punya kebutuhan berbeda-beda per divisi/gedung, misalnya kantor pusat perusahaan.',
+    contoh:'Kantor pusat memakai topologi star untuk tiap lantai, dihubungkan mesh antar server inti di ruang data center.'
+  },
+];
+
+const devices = [
+  {name:'Router', icon:'fa-route', fungsi:'Menghubungkan dan mengarahkan (routing) trafik data antar jaringan yang berbeda, misalnya dari jaringan lokal ke internet.', cara:'Membaca alamat IP tujuan paket data lalu menentukan jalur terbaik untuk meneruskannya.', spek:'Mendukung standar WAN/LAN, jumlah port bervariasi, mendukung fitur NAT &amp; firewall dasar.', contoh:'Router MikroTik di sekolah menghubungkan jaringan lokal ke internet dari ISP.'},
+  {name:'Switch', icon:'fa-network-wired', fungsi:'Menghubungkan banyak perangkat dalam satu jaringan lokal (LAN) dan meneruskan data hanya ke perangkat tujuan.', cara:'Mempelajari alamat MAC tiap perangkat yang terhubung, lalu meneruskan data secara langsung (bukan broadcast semua port).', spek:'Tersedia 8/16/24/48 port, kecepatan 100 Mbps&ndash;10 Gbps.', contoh:'Switch 24 port menghubungkan seluruh PC di lab komputer.'},
+  {name:'Managed Switch', icon:'fa-sliders', fungsi:'Switch dengan kemampuan konfigurasi lanjutan seperti VLAN, monitoring trafik, dan pengaturan prioritas data (QoS).', cara:'Dikonfigurasi lewat web interface/CLI untuk mengatur port, VLAN, dan keamanan jaringan.', spek:'Mendukung VLAN, SNMP, port mirroring, umumnya untuk kebutuhan menengah-besar.', contoh:'Managed switch memisahkan VLAN lab siswa dan VLAN kantor TU dalam satu perangkat fisik.'},
+  {name:'Hub', icon:'fa-share-nodes', fungsi:'Menghubungkan beberapa perangkat namun meneruskan data ke SEMUA port (broadcast), bukan hanya ke tujuan.', cara:'Menyalin sinyal yang masuk ke satu port dan mengirimkannya ke seluruh port lain tanpa penyaringan.', spek:'Umumnya 4-16 port, kecepatan rendah (10/100 Mbps), sudah jarang dipakai.', contoh:'Ditemukan pada jaringan lama sebelum switch menjadi standar.'},
+  {name:'Access Point', icon:'fa-wifi', fungsi:'Memancarkan sinyal Wi-Fi agar perangkat nirkabel bisa terhubung ke jaringan kabel.', cara:'Mengonversi sinyal data dari jaringan kabel menjadi sinyal radio (Wi-Fi) dan sebaliknya.', spek:'Mendukung standar 802.11 (n/ac/ax), jangkauan tergantung daya pancar dan penghalang fisik.', contoh:'AP dipasang di langit-langit ruang guru agar laptop &amp; HP bisa akses Wi-Fi sekolah.'},
+  {name:'Firewall', icon:'fa-shield-halved', fungsi:'Menyaring trafik masuk/keluar jaringan untuk mencegah akses tidak sah dan serangan siber.', cara:'Memeriksa paket data berdasarkan aturan (rule) yang ditentukan, lalu mengizinkan atau memblokirnya.', spek:'Bisa berupa perangkat keras khusus atau fitur bawaan router, mendukung filtering berbasis IP/port/aplikasi.', contoh:'Firewall memblokir akses ke situs berbahaya dari jaringan siswa.'},
+  {name:'Server', icon:'fa-server', fungsi:'Menyediakan layanan/data untuk diakses banyak client, misalnya file, aplikasi, atau autentikasi login.', cara:'Menjalankan perangkat lunak layanan (file server, web server, dsb.) dan merespons permintaan dari client.', spek:'Spesifikasi tinggi (RAM &amp; storage besar), umumnya menyala 24 jam, sering diletakkan di rack.', contoh:'Server sekolah menyimpan data nilai siswa dan aplikasi akademik.'},
+  {name:'Patch Panel', icon:'fa-th-large', fungsi:'Titik terminasi kabel UTP dari berbagai ruangan agar mudah dikelola dan disambungkan ke switch.', cara:'Kabel dari tiap titik akses ditancapkan ke belakang patch panel, lalu bagian depan dihubungkan ke switch dengan patch cord pendek.', spek:'Umumnya 24/48 port, dipasang di rack server.', contoh:'Semua titik akses di lab komputer diterminasi ke satu patch panel di rack.'},
+  {name:'Rack Server', icon:'fa-warehouse', fungsi:'Lemari/rangka standar untuk menempatkan dan merapikan perangkat jaringan seperti switch, router, dan patch panel.', cara:'Perangkat dipasang bertingkat menggunakan ukuran standar unit (U) agar rapi, aman, dan mudah dirawat.', spek:'Ukuran umum 6U-42U, dilengkapi ventilasi dan kadang kunci pengaman.', contoh:'Rack 12U di ruang server sekolah menampung router, switch, dan patch panel.'},
+  {name:'Modem', icon:'fa-tower-broadcast', fungsi:'Mengubah sinyal digital dari jaringan lokal menjadi sinyal yang bisa dikirim lewat media ISP (kabel telepon/fiber), dan sebaliknya.', cara:'Melakukan modulasi-demodulasi sinyal antara perangkat pengguna dan jaringan penyedia internet.', spek:'Jenis umum: modem fiber (ONT), modem DSL, mendukung kecepatan sesuai layanan ISP.', contoh:'Modem fiber dari ISP dihubungkan ke router sekolah sebagai sumber internet.'},
+  {name:'Repeater', icon:'fa-signal', fungsi:'Memperkuat &amp; memperluas jangkauan sinyal jaringan (kabel maupun Wi-Fi) yang mulai melemah.', cara:'Menerima sinyal yang lemah, memperkuatnya, lalu memancarkan/meneruskannya kembali.', spek:'Untuk Wi-Fi disebut range extender; untuk kabel digunakan pada jarak yang melebihi batas standar.', contoh:'Repeater Wi-Fi dipasang di ujung koridor agar sinyal sampai ke ruang paling belakang.'},
+  {name:'Bridge', icon:'fa-arrows-left-right', fungsi:'Menghubungkan dua segmen jaringan berbeda agar bisa berkomunikasi seolah satu jaringan.', cara:'Meneruskan data antar segmen berdasarkan alamat MAC, sambil menyaring trafik yang tidak perlu diteruskan.', spek:'Bisa berupa perangkat keras atau fungsi software, umum dipakai menggabungkan jaringan kabel dan nirkabel.', contoh:'Bridge menghubungkan jaringan gedung lama dengan gedung baru yang menggunakan media berbeda.'},
+  {name:'Gateway', icon:'fa-door-open', fungsi:'Menjadi pintu penghubung antara dua jaringan dengan protokol/arsitektur berbeda.', cara:'Menerjemahkan format data dari satu jaringan agar bisa dipahami jaringan lain sebelum diteruskan.', spek:'Sering menyatu dengan fungsi router pada perangkat kecil-menengah.', contoh:'Gateway menghubungkan jaringan lokal sekolah dengan sistem informasi milik dinas pendidikan.'},
+  {name:'Kabel UTP', icon:'fa-ethernet', fungsi:'Media transmisi data kabel yang paling umum untuk jaringan LAN.', cara:'Mengalirkan sinyal listrik yang merepresentasikan data melalui pasangan kabel berpilin (twisted pair).', spek:'Kategori umum: Cat5e (1 Gbps, hingga 100m), Cat6 (hingga 10 Gbps jarak pendek).', contoh:'Menghubungkan PC ke switch di lab komputer.'},
+  {name:'Fiber Optic', icon:'fa-bolt', fungsi:'Media transmisi data berkecepatan sangat tinggi menggunakan cahaya, cocok untuk jarak jauh.', cara:'Data dikirim dalam bentuk pulsa cahaya melalui inti serat kaca/plastik tipis.', spek:'Kecepatan hingga ratusan Gbps, jarak tempuh jauh lebih panjang dari UTP tanpa banyak pelemahan sinyal.', contoh:'Menghubungkan gedung sekolah yang berjauhan sebagai backbone utama.'},
+  {name:'Connector RJ45', icon:'fa-plug', fungsi:'Konektor di ujung kabel UTP yang dipasang ke port Ethernet perangkat jaringan.', cara:'Delapan kabel kecil dalam UTP disusun sesuai standar (T568A/T568B) lalu dikunci dalam konektor menggunakan crimping tool.', spek:'Standar 8P8C, harus sesuai kategori kabel yang dipakai.', contoh:'Setiap ujung kabel UTP menuju PC dan switch dipasangi RJ45.'},
+  {name:'LAN Tester', icon:'fa-vial', fungsi:'Alat untuk menguji apakah kabel jaringan yang sudah dipasang konektor berfungsi dengan benar.', cara:'Mengirim sinyal listrik lewat tiap pin kabel dan menampilkan urutan pin yang tersambung di layar indikator.', spek:'Umumnya berupa dua unit (master &amp; remote) dengan lampu indikator nomor pin.', contoh:'Setelah crimping kabel baru, teknisi mengetesnya dengan LAN tester sebelum dipasang ke perangkat.'},
+  {name:'Crimping Tool', icon:'fa-hammer', fungsi:'Alat untuk memasang/mengunci konektor RJ45 ke ujung kabel UTP.', cara:'Menekan pin-pin tembaga pada konektor agar menembus &amp; menjepit kabel di dalamnya dengan kuat.', spek:'Umumnya mendukung konektor RJ45 &amp; RJ11, sebagian dilengkapi pemotong dan pengupas kabel.', contoh:'Digunakan saat praktik membuat kabel straight/cross di kelas TLJ.'},
+];
+
+/* Quiz data */
+const quizMC = [
+  {q:'Topologi jaringan yang menghubungkan semua node ke satu titik pusat (switch/hub) disebut...', opts:['Bus','Star','Ring','Mesh'], correct:1, why:'Star menghubungkan semua node langsung ke satu titik pusat.'},
+  {q:'Kelemahan utama topologi Bus adalah...', opts:['Butuh kabel sangat banyak','Jika kabel utama putus, seluruh jaringan terganggu','Instalasi sangat mahal','Tidak bisa dipakai untuk LAN'], correct:1, why:'Bus bergantung pada satu kabel utama sehingga rentan gagal total.'},
+  {q:'Perangkat yang berfungsi mengarahkan (routing) data antar jaringan berbeda adalah...', opts:['Switch','Hub','Router','Repeater'], correct:2, why:'Router bertugas mengarahkan trafik antar jaringan.'},
+  {q:'Perbedaan utama switch dan hub adalah...', opts:['Switch meneruskan data hanya ke tujuan, hub broadcast ke semua port','Hub lebih cepat dari switch','Switch tidak bisa dipakai untuk LAN','Hub mendukung VLAN'], correct:0, why:'Switch cerdas mempelajari MAC address, hub hanya broadcast.'},
+  {q:'Alat untuk menguji kabel jaringan setelah dipasang konektor adalah...', opts:['Crimping tool','LAN tester','Patch panel','Access point'], correct:1, why:'LAN tester menampilkan urutan pin kabel yang tersambung.'},
+  {q:'Topologi yang paling andal karena tiap node punya banyak jalur alternatif adalah...', opts:['Bus','Ring','Mesh','Star'], correct:2, why:'Mesh menghubungkan tiap node ke banyak node lain sehingga ada banyak jalur cadangan.'},
+  {q:'Dokumen yang menggambarkan alur data logis/IP suatu jaringan disebut...', opts:['Diagram fisik','Diagram logis','Rack layout','Label kabel'], correct:1, why:'Diagram logis menggambarkan alur data/IP, bukan posisi fisik kabel.'},
+  {q:'Fungsi utama firewall dalam jaringan adalah...', opts:['Memperkuat sinyal Wi-Fi','Menyaring trafik untuk mencegah akses tidak sah','Menghubungkan dua segmen kabel berbeda','Menyimpan data siswa'], correct:1, why:'Firewall menyaring trafik masuk/keluar berdasarkan aturan keamanan.'},
+  {q:'Kabel yang paling cocok untuk menghubungkan dua gedung sekolah yang berjarak sangat jauh adalah...', opts:['Kabel UTP Cat5e','Kabel telepon','Fiber optic','Kabel coaxial'], correct:2, why:'Fiber optic mampu menjangkau jarak jauh dengan pelemahan sinyal minim.'},
+  {q:'Langkah pertama sebelum merancang topologi jaringan adalah...', opts:['Membeli semua perangkat','Analisis kebutuhan pengguna','Menentukan warna kabel','Membuat quiz evaluasi'], correct:1, why:'Analisis kebutuhan menjadi dasar seluruh keputusan desain jaringan berikutnya.'},
+];
+
+const quizTF = [
+  {q:'Topologi Mesh membutuhkan lebih sedikit kabel dibanding topologi Star.', correct:false, why:'Mesh justru butuh kabel jauh lebih banyak karena tiap node terhubung ke banyak node lain.'},
+  {q:'Managed switch memungkinkan pengaturan VLAN.', correct:true, why:'Managed switch memiliki fitur konfigurasi lanjutan termasuk VLAN.'},
+  {q:'Access Point berfungsi memancarkan sinyal Wi-Fi dari jaringan kabel.', correct:true, why:'Access Point mengonversi sinyal kabel menjadi sinyal nirkabel.'},
+  {q:'Dokumentasi jaringan tidak penting selama teknisinya masih bekerja di tempat yang sama.', correct:false, why:'Dokumentasi tetap penting untuk konsistensi, kolaborasi, dan mengantisipasi pergantian personel.'},
+  {q:'Topologi Tree merupakan gabungan beberapa topologi Star yang dihubungkan secara hierarkis.', correct:true, why:'Tree memang menyusun beberapa struktur star secara berjenjang.'},
+];
+
+/* drag and drop: kategori Aktif vs Pasif */
+const dragItems = [
+  {name:'Router', cat:'aktif'},
+  {name:'Switch', cat:'aktif'},
+  {name:'Kabel UTP', cat:'pasif'},
+  {name:'Patch Panel', cat:'pasif'},
+  {name:'Access Point', cat:'aktif'},
+];
+
+/* matching perangkat - fungsi */
+const matchItems = [
+  {device:'Firewall', fungsi:'Menyaring trafik untuk mencegah akses tidak sah'},
+  {device:'Repeater', fungsi:'Memperkuat sinyal yang melemah'},
+  {device:'Modem', fungsi:'Mengubah sinyal digital agar bisa dikirim lewat media ISP'},
+  {device:'Bridge', fungsi:'Menghubungkan dua segmen jaringan berbeda'},
+  {device:'Crimping Tool', fungsi:'Memasang konektor RJ45 ke ujung kabel UTP'},
+];
+
+const quizCase = [
+  {q:'Sebuah lab dengan 40 PC sering mengalami jaringan lambat saat semua PC dipakai bersamaan untuk ujian online. Solusi paling tepat adalah...', opts:['Mengganti semua kabel UTP menjadi lebih panjang','Menambah bandwidth internet &amp; memastikan switch mencukupi jumlah port','Mematikan setengah PC saat ujian','Mengganti topologi menjadi Bus'], correct:1, why:'Kelambatan saat beban tinggi biasanya diatasi dengan bandwidth &amp; kapasitas switch yang memadai.'},
+  {q:'Kantor kecil ingin karyawannya bisa mengakses file kantor dari rumah dengan aman. Perangkat/fitur yang paling relevan adalah...', opts:['Hub','VPN pada router/firewall','Kabel coaxial','LAN tester'], correct:1, why:'VPN memungkinkan akses aman ke jaringan kantor dari luar.'},
+  {q:'Ruangan baru dibangun berjarak 150 meter dari ruang server, melebihi batas maksimal kabel UTP. Solusi terbaik adalah...', opts:['Memakai kabel UTP lebih tebal','Menggunakan fiber optic atau menambah repeater/switch di tengah','Mengganti jadi topologi ring','Menambah access point saja'], correct:1, why:'Fiber optic atau perangkat penguat sinyal cocok untuk jarak yang melebihi batas UTP (~100m).'},
+  {q:'Sebuah sekolah ingin data nilai siswa terpisah total secara logis dari jaringan Wi-Fi tamu meski memakai switch yang sama. Fitur yang dibutuhkan adalah...', opts:['VLAN pada managed switch','Mengganti semua kabel','Menambah crimping tool','Memakai topologi bus'], correct:0, why:'VLAN memisahkan jaringan secara logis walau menggunakan perangkat fisik yang sama.'},
+  {q:'Setelah dua tahun beroperasi, teknisi baru kesulitan memahami jaringan sekolah karena tidak ada catatan apa pun. Hal yang seharusnya sudah dilakukan sejak awal adalah...', opts:['Membeli perangkat lebih mahal','Membuat dokumentasi jaringan yang rapi','Mengganti topologi setiap tahun','Menghapus jaringan lama'], correct:1, why:'Dokumentasi yang baik membuat jaringan mudah dipahami siapa pun, termasuk teknisi baru.'},
+];
+
+/* ============ INIT NAV / PILLS / SIDEBAR ============ */
+const pillNav = document.getElementById('pillNav');
+const sideNav = document.getElementById('sideNav');
+sections.forEach(s=>{
+  const pill = document.createElement('a');
+  pill.href = '#'+s.id;
+  pill.textContent = s.label;
+  pill.className = 'pill-link text-xs sm:text-sm bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full border border-white/20 transition';
+  pillNav.appendChild(pill);
+
+  const link = document.createElement('a');
+  link.href = '#'+s.id;
+  link.textContent = s.label;
+  link.className = 'py-1.5 px-2 rounded-lg hover:bg-slate-100 transition';
+  sideNav.appendChild(link);
+});
+
+/* ============ SCROLLSPY + PROGRESS ============ */
+const allNavLinks = () => document.querySelectorAll('#pillNav a, #sideNav a');
+function onScroll(){
+  const doc = document.documentElement;
+  const scrollTop = doc.scrollTop || document.body.scrollTop;
+  const scrollHeight = (doc.scrollHeight - doc.clientHeight) || 1;
+  const pct = Math.min(100, (scrollTop/scrollHeight)*100);
+  document.getElementById('readProgress').style.width = pct+'%';
+  document.getElementById('studyProgress').style.width = pct+'%';
+  document.getElementById('studyProgressLabel').textContent = Math.round(pct)+'%';
+
+  let current = sections[0].id;
+  sections.forEach(s=>{
+    const el = document.getElementById(s.id);
+    if(el && el.getBoundingClientRect().top < 140) current = s.id;
+  });
+  allNavLinks().forEach(a=>{
+    a.classList.toggle('active', a.getAttribute('href') === '#'+current);
+  });
+
+  const backBtn = document.getElementById('backToTop');
+  if(scrollTop > 400){ backBtn.classList.remove('opacity-0','pointer-events-none'); }
+  else { backBtn.classList.add('opacity-0','pointer-events-none'); }
+}
+document.addEventListener('scroll', onScroll);
+onScroll();
+
+document.getElementById('backToTop').addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+
+/* ============ REVEAL ON SCROLL ============ */
+const revealObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('reveal-visible'); revealObserver.unobserve(e.target); } });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+/* ============ DARK MODE ============ */
+const darkToggle = document.getElementById('darkToggle');
+darkToggle.addEventListener('click', ()=>{
+  document.documentElement.classList.toggle('dark');
+  document.body.classList.toggle('dark');
+  const isDark = document.documentElement.classList.contains('dark');
+  darkToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+  showToast(isDark ? 'Mode gelap diaktifkan' : 'Mode terang diaktifkan');
+});
+
+/* ============ TOAST ============ */
+function showToast(msg){
+  const root = document.getElementById('toastRoot');
+  const t = document.createElement('div');
+  t.className = 'bg-dark text-white text-sm px-4 py-2 rounded-full shadow-lg opacity-0 translate-y-2 transition';
+  t.textContent = msg;
+  root.appendChild(t);
+  requestAnimationFrame(()=>{ t.classList.remove('opacity-0','translate-y-2'); });
+  setTimeout(()=>{ t.classList.add('opacity-0'); setTimeout(()=>t.remove(), 300); }, 2200);
+}
+
+/* ============ RIPPLE ============ */
+document.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.ripple-btn');
+  if(!btn) return;
+  const rect = btn.getBoundingClientRect();
+  const span = document.createElement('span');
+  const size = Math.max(rect.width, rect.height);
+  span.className = 'ripple-span';
+  span.style.width = span.style.height = size+'px';
+  span.style.left = (e.clientX - rect.left - size/2)+'px';
+  span.style.top = (e.clientY - rect.top - size/2)+'px';
+  btn.appendChild(span);
+  setTimeout(()=>span.remove(), 600);
+});
+
+/* ============ ACCORDION ============ */
+document.querySelectorAll('.accordion-toggle').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    btn.closest('.accordion-item').classList.toggle('open');
+  });
+});
+
+/* ============ TOPOLOGY TABS ============ */
+const topoTabs = document.getElementById('topoTabs');
+const topoContent = document.getElementById('topoContent');
+function renderTopo(id){
+  const t = topologies.find(x=>x.id===id);
+  topoContent.innerHTML = `
+    <div class="grid md:grid-cols-2 gap-6 items-start">
+      <div class="bg-slate-50 rounded-xl p-4 flex items-center justify-center">${t.svg}</div>
+      <div>
+        <h3 class="font-bold text-lg text-dark mb-2"><i class="fas ${t.icon} text-primary mr-2"></i>Topologi ${t.name}</h3>
+        <p class="text-sm text-slate-600 mb-3"><strong>Cara kerja:</strong> ${t.cara}</p>
+        <p class="text-sm text-slate-600 mb-3"><strong>Kapan digunakan:</strong> ${t.kapan}</p>
+        <p class="text-sm text-slate-600"><strong>Contoh implementasi:</strong> ${t.contoh}</p>
+      </div>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-4 mt-6">
+      <div class="bg-emerald-50 rounded-xl p-4">
+        <p class="text-xs font-bold text-emerald-700 uppercase mb-2">Kelebihan</p>
+        <ul class="text-sm text-emerald-800 space-y-1 list-disc list-inside">${t.kelebihan.map(k=>`<li>${k}</li>`).join('')}</ul>
+      </div>
+      <div class="bg-rose-50 rounded-xl p-4">
+        <p class="text-xs font-bold text-rose-700 uppercase mb-2">Kekurangan</p>
+        <ul class="text-sm text-rose-800 space-y-1 list-disc list-inside">${t.kekurangan.map(k=>`<li>${k}</li>`).join('')}</ul>
+      </div>
+    </div>`;
+}
+topologies.forEach((t,i)=>{
+  const tab = document.createElement('button');
+  tab.className = 'topo-tab px-4 py-2.5 text-sm text-slate-500 flex-shrink-0'+(i===0?' active':'');
+  tab.innerHTML = `<i class="fas ${t.icon} mr-1"></i>${t.name}`;
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.topo-tab').forEach(x=>x.classList.remove('active'));
+    tab.classList.add('active');
+    renderTopo(t.id);
+  });
+  topoTabs.appendChild(tab);
+});
+renderTopo(topologies[0].id);
+
+/* ============ DEVICE GRID + MODAL + SEARCH ============ */
+const deviceGrid = document.getElementById('deviceGrid');
+function renderDevices(filter=''){
+  deviceGrid.innerHTML = '';
+  const f = filter.trim().toLowerCase();
+  let count = 0;
+  devices.forEach((d,idx)=>{
+    const hay = (d.name+' '+d.fungsi).toLowerCase();
+    if(f && !hay.includes(f)) return;
+    count++;
+    const card = document.createElement('button');
+    card.className = 'reveal reveal-visible text-left bg-white border border-slate-100 hover:border-primary/40 hover:shadow-md rounded-xl p-4 transition';
+    card.innerHTML = `<div class="w-10 h-10 rounded-lg bg-blue-100 text-primary flex items-center justify-center mb-2"><i class="fas ${d.icon}"></i></div>
+      <p class="font-semibold text-dark text-sm">${highlightText(d.name, f)}</p>
+      <p class="text-xs text-slate-500 mt-1 line-clamp-2">${highlightText(d.fungsi, f)}</p>`;
+    card.addEventListener('click', ()=> openDeviceModal(idx));
+    deviceGrid.appendChild(card);
+  });
+  document.getElementById('deviceEmpty').classList.toggle('hidden', count>0);
+}
+function highlightText(text, f){
+  if(!f) return text;
+  const re = new RegExp('('+f.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig');
+  return text.replace(re, '<mark class="hl">$1</mark>');
+}
+renderDevices();
+
+const deviceModal = document.getElementById('deviceModal');
+function openDeviceModal(idx){
+  const d = devices[idx];
+  document.getElementById('deviceModalBody').innerHTML = `
+    <div class="w-12 h-12 rounded-xl bg-blue-100 text-primary flex items-center justify-center mb-3"><i class="fas ${d.icon} text-lg"></i></div>
+    <h3 class="text-xl font-bold text-dark mb-3">${d.name}</h3>
+    <p class="text-sm text-slate-600 mb-2"><strong>Fungsi:</strong> ${d.fungsi}</p>
+    <p class="text-sm text-slate-600 mb-2"><strong>Cara kerja:</strong> ${d.cara}</p>
+    <p class="text-sm text-slate-600 mb-2"><strong>Spesifikasi dasar:</strong> ${d.spek}</p>
+    <p class="text-sm text-slate-600"><strong>Contoh penggunaan:</strong> ${d.contoh}</p>`;
+  deviceModal.classList.remove('hidden');
+  deviceModal.classList.add('flex');
+}
+function closeDeviceModal(){ deviceModal.classList.add('hidden'); deviceModal.classList.remove('flex'); }
+document.getElementById('deviceModalClose').addEventListener('click', closeDeviceModal);
+document.getElementById('deviceModalBackdrop').addEventListener('click', closeDeviceModal);
+
+const searchInput = document.getElementById('materiSearch');
+searchInput.addEventListener('input', ()=> renderDevices(searchInput.value));
+
+/* ============ PRAKTIK 1 ============ */
+document.getElementById('p1Btn').addEventListener('click', ()=>{
+  const ruang = parseInt(document.getElementById('p1Ruang').value)||0;
+  const komputer = parseInt(document.getElementById('p1Komputer').value)||0;
+  const portSwitch = parseInt(document.getElementById('p1PortSwitch').value)||24;
+  const totalPc = ruang*komputer;
+  const switchNeeded = Math.max(1, Math.ceil(totalPc/portSwitch));
+  const apNeeded = Math.max(1, Math.ceil(ruang/2));
+  document.getElementById('rTotalPc').textContent = totalPc;
+  document.getElementById('rSwitch').textContent = switchNeeded;
+  document.getElementById('rAp').textContent = apNeeded;
+  document.getElementById('p1Result').classList.remove('hidden');
+  showToast('Desain berhasil dihitung');
+});
+
+/* ============ PRAKTIK 2 ============ */
+const p2Container = document.getElementById('p2PcContainer');
+let p2Count = 3;
+function renderP2(){
+  p2Container.innerHTML = '';
+  for(let i=1;i<=p2Count;i++){
+    const pc = document.createElement('div');
+    pc.className = 'bg-slate-100 text-slate-600 text-xs px-3 py-2 rounded-lg flex flex-col items-center';
+    pc.innerHTML = `<i class="fas fa-desktop mb-1"></i>PC-${i}`;
+    p2Container.appendChild(pc);
+  }
+}
+document.getElementById('p2AddPc').addEventListener('click', ()=>{ p2Count++; renderP2(); });
+document.getElementById('p2RemovePc').addEventListener('click', ()=>{ if(p2Count>0){ p2Count--; renderP2(); } });
+document.getElementById('p2Reset').addEventListener('click', ()=>{ p2Count=3; renderP2(); showToast('Diagram direset'); });
+renderP2();
+
+/* ============ QUIZ ENGINE ============ */
+const quizTabs = document.getElementById('quizTabs');
+const quizContent = document.getElementById('quizContent');
+const quizTypes = [
+  {id:'mc', label:'Pilihan Ganda'},
+  {id:'tf', label:'Benar/Salah'},
+  {id:'dd', label:'Drag &amp; Drop'},
+  {id:'match', label:'Mencocokkan'},
+  {id:'case', label:'Studi Kasus'},
+];
+let currentQuizType = 'mc';
+let quizAnswers = {}; // keyed by type
+
+quizTypes.forEach((qt,i)=>{
+  const tab = document.createElement('button');
+  tab.className = 'quiz-tab px-4 py-2.5 text-sm text-slate-500 flex-shrink-0'+(i===0?' active':'');
+  tab.innerHTML = qt.label;
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.quiz-tab').forEach(x=>x.classList.remove('active'));
+    tab.classList.add('active');
+    currentQuizType = qt.id;
+    renderQuiz(qt.id);
+  });
+  quizTabs.appendChild(tab);
+});
+
+function renderQuiz(type){
+  document.getElementById('quizScoreBadge').classList.add('hidden');
+  if(type==='mc') return renderMC();
+  if(type==='tf') return renderTF();
+  if(type==='dd') return renderDD();
+  if(type==='match') return renderMatch();
+  if(type==='case') return renderCase();
+}
+
+function renderMC(){
+  quizAnswers.mc = quizAnswers.mc || new Array(quizMC.length).fill(null);
+  quizContent.innerHTML = quizMC.map((q,qi)=>`
+    <div class="mb-6" data-qi="${qi}">
+      <p class="font-medium text-dark mb-2">${qi+1}. ${q.q}</p>
+      <div class="space-y-2">
+        ${q.opts.map((o,oi)=>`
+          <label class="mc-opt flex items-center gap-2 border border-slate-200 rounded-lg px-3 py-2 text-sm cursor-pointer hover:bg-slate-50" data-oi="${oi}">
+            <input type="radio" name="mc${qi}" class="accent-primary" value="${oi}" ${quizAnswers.mc[qi]===oi?'checked':''}>
+            ${o}
+          </label>`).join('')}
+      </div>
+      <p class="mc-why hidden text-xs text-slate-500 mt-2 bg-slate-50 rounded-lg p-2"></p>
+    </div>`).join('');
+  quizContent.querySelectorAll('input[type=radio]').forEach(inp=>{
+    inp.addEventListener('change', (e)=>{
+      const qi = parseInt(e.target.closest('[data-qi]').dataset.qi);
+      quizAnswers.mc[qi] = parseInt(e.target.value);
+    });
+  });
+}
+function renderTF(){
+  quizAnswers.tf = quizAnswers.tf || new Array(quizTF.length).fill(null);
+  quizContent.innerHTML = quizTF.map((q,qi)=>`
+    <div class="mb-5" data-qi="${qi}">
+      <p class="font-medium text-dark mb-2">${qi+1}. ${q.q}</p>
+      <div class="flex gap-2">
+        <button class="tf-btn px-4 py-2 rounded-lg text-sm border ${quizAnswers.tf[qi]===true?'bg-blue-50 border-primary':'border-slate-200'}" data-val="true">Benar</button>
+        <button class="tf-btn px-4 py-2 rounded-lg text-sm border ${quizAnswers.tf[qi]===false?'bg-blue-50 border-primary':'border-slate-200'}" data-val="false">Salah</button>
+      </div>
+      <p class="tf-why hidden text-xs text-slate-500 mt-2 bg-slate-50 rounded-lg p-2"></p>
+    </div>`).join('');
+  quizContent.querySelectorAll('.tf-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const wrap = btn.closest('[data-qi]');
+      const qi = parseInt(wrap.dataset.qi);
+      quizAnswers.tf[qi] = btn.dataset.val === 'true';
+      wrap.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('bg-blue-50','border-primary'));
+      btn.classList.add('bg-blue-50','border-primary');
+    });
+  });
+}
+function renderDD(){
+  quizAnswers.dd = quizAnswers.dd || {};
+  quizContent.innerHTML = `
+    <p class="text-sm text-slate-500 mb-4">Seret (drag) tiap perangkat ke kategori yang benar: <strong>Perangkat Aktif</strong> (butuh listrik &amp; memproses sinyal) atau <strong>Perangkat Pasif</strong> (tidak memproses sinyal).</p>
+    <div class="flex flex-wrap gap-2 mb-6" id="ddPool">
+      ${dragItems.map((d,i)=>`<div class="drag-chip bg-white border border-slate-200 rounded-full px-4 py-2 text-sm shadow-sm ${quizAnswers.dd[i]?'placed':''}" draggable="true" data-i="${i}">${d.name}</div>`).join('')}
+    </div>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div class="drop-zone rounded-xl p-4 min-h-[110px]" data-cat="aktif"><p class="text-xs font-bold text-slate-400 uppercase mb-2">Perangkat Aktif</p><div class="flex flex-wrap gap-2 zone-items"></div></div>
+      <div class="drop-zone rounded-xl p-4 min-h-[110px]" data-cat="pasif"><p class="text-xs font-bold text-slate-400 uppercase mb-2">Perangkat Pasif</p><div class="flex flex-wrap gap-2 zone-items"></div></div>
+    </div>
+    <p class="dd-why hidden text-xs text-slate-500 mt-4 bg-slate-50 rounded-lg p-3"></p>`;
+
+  // restore placed items
+  Object.keys(quizAnswers.dd).forEach(i=>{
+    const cat = quizAnswers.dd[i];
+    const zone = quizContent.querySelector(`.drop-zone[data-cat="${cat}"] .zone-items`);
+    const chip = quizContent.querySelector(`.drag-chip[data-i="${i}"]`);
+    if(zone && chip){ const clone = chip.cloneNode(true); clone.classList.remove('placed'); zone.appendChild(clone); }
+  });
+
+  quizContent.querySelectorAll('.drag-chip').forEach(chip=>{
+    chip.addEventListener('dragstart', (e)=>{ e.dataTransfer.setData('text/plain', chip.dataset.i); });
+  });
+  quizContent.querySelectorAll('.drop-zone').forEach(zone=>{
+    zone.addEventListener('dragover', (e)=>{ e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', ()=> zone.classList.remove('dragover'));
+    zone.addEventListener('drop', (e)=>{
+      e.preventDefault(); zone.classList.remove('dragover');
+      const i = e.dataTransfer.getData('text/plain');
+      quizAnswers.dd[i] = zone.dataset.cat;
+      const pool = quizContent.querySelector(`.drag-chip[data-i="${i}"]`);
+      if(pool) pool.classList.add('placed');
+      const clone = document.createElement('div');
+      clone.className = 'drag-chip bg-white border border-slate-200 rounded-full px-4 py-2 text-sm shadow-sm';
+      clone.textContent = dragItems[i].name;
+      zone.querySelector('.zone-items').appendChild(clone);
+    });
+  });
+}
+function renderMatch(){
+  quizAnswers.match = quizAnswers.match || new Array(matchItems.length).fill('');
+  const shuffledFungsi = matchItems.map(m=>m.fungsi);
+  quizContent.innerHTML = `
+    <p class="text-sm text-slate-500 mb-4">Cocokkan tiap perangkat dengan fungsinya menggunakan pilihan dropdown.</p>
+    <div class="space-y-3">
+    ${matchItems.map((m,i)=>`
+      <div class="flex flex-col sm:flex-row sm:items-center gap-2" data-qi="${i}">
+        <span class="font-medium text-dark w-40 flex-shrink-0"><i class="fas fa-microchip text-primary mr-1"></i>${m.device}</span>
+        <select class="match-select flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm">
+          <option value="">-- Pilih fungsi --</option>
+          ${shuffledFungsi.map(f=>`<option value="${f}" ${quizAnswers.match[i]===f?'selected':''}>${f}</option>`).join('')}
+        </select>
+      </div>`).join('')}
+    </div>
+    <p class="match-why hidden text-xs text-slate-500 mt-4 bg-slate-50 rounded-lg p-3"></p>`;
+  quizContent.querySelectorAll('.match-select').forEach(sel=>{
+    sel.addEventListener('change', (e)=>{
+      const qi = parseInt(e.target.closest('[data-qi]').dataset.qi);
+      quizAnswers.match[qi] = e.target.value;
+    });
+  });
+}
+function renderCase(){
+  quizAnswers.case = quizAnswers.case || new Array(quizCase.length).fill(null);
+  quizContent.innerHTML = quizCase.map((q,qi)=>`
+    <div class="mb-6" data-qi="${qi}">
+      <p class="font-medium text-dark mb-2"><i class="fas fa-file-lines text-accent mr-1"></i>${qi+1}. ${q.q}</p>
+      <div class="space-y-2">
+        ${q.opts.map((o,oi)=>`
+          <label class="case-opt flex items-center gap-2 border border-slate-200 rounded-lg px-3 py-2 text-sm cursor-pointer hover:bg-slate-50" data-oi="${oi}">
+            <input type="radio" name="case${qi}" class="accent-primary" value="${oi}" ${quizAnswers.case[qi]===oi?'checked':''}>
+            ${o}
+          </label>`).join('')}
+      </div>
+      <p class="case-why hidden text-xs text-slate-500 mt-2 bg-slate-50 rounded-lg p-2"></p>
+    </div>`).join('');
+  quizContent.querySelectorAll('input[type=radio]').forEach(inp=>{
+    inp.addEventListener('change', (e)=>{
+      const qi = parseInt(e.target.closest('[data-qi]').dataset.qi);
+      quizAnswers.case[qi] = parseInt(e.target.value);
+    });
+  });
+}
+renderQuiz('mc');
+
+function gradeMC(){
+  let correct = 0;
+  quizContent.querySelectorAll('[data-qi]').forEach(wrap=>{
+    const qi = parseInt(wrap.dataset.qi);
+    const q = quizMC[qi];
+    const ans = quizAnswers.mc[qi];
+    wrap.querySelectorAll('.mc-opt').forEach(opt=>{
+      const oi = parseInt(opt.dataset.oi);
+      opt.classList.remove('opt-correct','opt-wrong');
+      if(oi===q.correct) opt.classList.add('opt-correct');
+      else if(oi===ans) opt.classList.add('opt-wrong');
+    });
+    const why = wrap.querySelector('.mc-why');
+    why.textContent = 'Pembahasan: '+q.why;
+    why.classList.remove('hidden');
+    if(ans===q.correct) correct++;
+  });
+  return {correct, total: quizMC.length};
+}
+function gradeTF(){
+  let correct = 0;
+  quizContent.querySelectorAll('[data-qi]').forEach(wrap=>{
+    const qi = parseInt(wrap.dataset.qi);
+    const q = quizTF[qi];
+    const ans = quizAnswers.tf[qi];
+    wrap.querySelectorAll('.tf-btn').forEach(btn=>{
+      btn.classList.remove('opt-correct','opt-wrong');
+      const val = btn.dataset.val === 'true';
+      if(val===q.correct) btn.classList.add('opt-correct');
+      else if(val===ans) btn.classList.add('opt-wrong');
+    });
+    const why = wrap.querySelector('.tf-why');
+    why.textContent = 'Pembahasan: '+q.why;
+    why.classList.remove('hidden');
+    if(ans===q.correct) correct++;
+  });
+  return {correct, total: quizTF.length};
+}
+function gradeDD(){
+  let correct = 0;
+  dragItems.forEach((d,i)=>{ if(quizAnswers.dd[i]===d.cat) correct++; });
+  const why = quizContent.querySelector('.dd-why');
+  if(why){
+    why.textContent = 'Perangkat aktif membutuhkan daya listrik untuk memproses sinyal (Router, Switch, Access Point). Perangkat pasif hanya menyalurkan sinyal tanpa memproses (Kabel UTP, Patch Panel).';
+    why.classList.remove('hidden');
+  }
+  return {correct, total: dragItems.length};
+}
+function gradeMatch(){
+  let correct = 0;
+  matchItems.forEach((m,i)=>{ if(quizAnswers.match[i]===m.fungsi) correct++; });
+  const why = quizContent.querySelector('.match-why');
+  if(why){
+    why.innerHTML = 'Pasangan yang benar: '+matchItems.map(m=>`<br>${m.device} &rarr; ${m.fungsi}`).join('');
+    why.classList.remove('hidden');
+  }
+  return {correct, total: matchItems.length};
+}
+function gradeCase(){
+  let correct = 0;
+  quizContent.querySelectorAll('[data-qi]').forEach(wrap=>{
+    const qi = parseInt(wrap.dataset.qi);
+    const q = quizCase[qi];
+    const ans = quizAnswers.case[qi];
+    wrap.querySelectorAll('.case-opt').forEach(opt=>{
+      const oi = parseInt(opt.dataset.oi);
+      opt.classList.remove('opt-correct','opt-wrong');
+      if(oi===q.correct) opt.classList.add('opt-correct');
+      else if(oi===ans) opt.classList.add('opt-wrong');
+    });
+    const why = wrap.querySelector('.case-why');
+    why.textContent = 'Pembahasan: '+q.why;
+    why.classList.remove('hidden');
+    if(ans===q.correct) correct++;
+  });
+  return {correct, total: quizCase.length};
+}
+
+document.getElementById('quizSubmit').addEventListener('click', ()=>{
+  let result;
+  if(currentQuizType==='mc') result = gradeMC();
+  else if(currentQuizType==='tf') result = gradeTF();
+  else if(currentQuizType==='dd') result = gradeDD();
+  else if(currentQuizType==='match') result = gradeMatch();
+  else result = gradeCase();
+
+  const pct = Math.round((result.correct/result.total)*100);
+  document.getElementById('quizProgressBar').style.width = pct+'%';
+  const badge = document.getElementById('quizScoreBadge');
+  badge.textContent = `Skor: ${result.correct}/${result.total} (${pct}%)`;
+  badge.classList.remove('hidden');
+  showToast(pct>=70 ? 'Kerja bagus! Kamu sudah paham materi ini.' : 'Masih ada yang perlu dipelajari ulang, cek pembahasannya ya.');
+});
+
+document.getElementById('quizRetry').addEventListener('click', ()=>{
+  quizAnswers = {};
+  document.getElementById('quizProgressBar').style.width = '0%';
+  document.getElementById('quizScoreBadge').classList.add('hidden');
+  renderQuiz(currentQuizType);
+  showToast('Quiz direset, semangat coba lagi!');
+});
+
+/* ============ REFLEKSI ============ */
+document.getElementById('refleksiSave').addEventListener('click', ()=>{
+  showToast('Refleksi berhasil disimpan untuk sesi ini');
+});
+</script>
 </body>
 </html>
