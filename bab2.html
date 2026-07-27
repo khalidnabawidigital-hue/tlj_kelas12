@@ -825,22 +825,22 @@ const devices = [
 //   {q:'Setelah dua tahun beroperasi, teknisi baru kesulitan memahami jaringan sekolah karena tidak ada catatan apa pun. Hal yang seharusnya sudah dilakukan sejak awal adalah...', opts:['Membeli perangkat lebih mahal','Membuat dokumentasi jaringan yang rapi','Mengganti topologi setiap tahun','Menghapus jaringan lama'], correct:1, why:'Dokumentasi yang baik membuat jaringan mudah dipahami siapa pun, termasuk teknisi baru.'},
 // ];
 
-// /* ============ INIT NAV / PILLS / SIDEBAR ============ */
-// const pillNav = document.getElementById('pillNav');
-// const sideNav = document.getElementById('sideNav');
-// sections.forEach(s=>{
-//   const pill = document.createElement('a');
-//   pill.href = '#'+s.id;
-//   pill.textContent = s.label;
-//   pill.className = 'pill-link text-xs sm:text-sm bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full border border-white/20 transition';
-//   pillNav.appendChild(pill);
+/* ============ INIT NAV / PILLS / SIDEBAR ============ */
+const pillNav = document.getElementById('pillNav');
+const sideNav = document.getElementById('sideNav');
+sections.forEach(s=>{
+  const pill = document.createElement('a');
+  pill.href = '#'+s.id;
+  pill.textContent = s.label;
+  pill.className = 'pill-link text-xs sm:text-sm bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full border border-white/20 transition';
+  pillNav.appendChild(pill);
 
-//   const link = document.createElement('a');
-//   link.href = '#'+s.id;
-//   link.textContent = s.label;
-//   link.className = 'py-1.5 px-2 rounded-lg hover:bg-slate-100 transition';
-//   sideNav.appendChild(link);
-// });
+  const link = document.createElement('a');
+  link.href = '#'+s.id;
+  link.textContent = s.label;
+  link.className = 'py-1.5 px-2 rounded-lg hover:bg-slate-100 transition';
+  sideNav.appendChild(link);
+});
 
 /* ============ SCROLLSPY + PROGRESS ============ */
 const allNavLinks = () => document.querySelectorAll('#pillNav a, #sideNav a');
