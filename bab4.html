@@ -1,119 +1,2298 @@
 <!DOCTYPE html>
 <html lang="id" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BAB 4 - Inter VLAN Routing - Roadmap TLJ Kelas XII</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    colors: {
-                        primary: '#1e40af',
-                        secondary: '#3b82f6',
-                        accent: '#f59e0b',
-                        dark: '#1e293b',
-                        light: '#f8fafc',
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-        }
-        .gradient-text {
-            background: linear-gradient(to right, #1e40af, #3b82f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BAB 4 - Inter-VLAN Routing - Roadmap TLJ Kelas XII</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ DESIGN TOKENS (mengikuti index.html & bab3.html) ============ */
+:root{
+  --primary:#1e40af;
+  --primary-dark:#1e3a8a;
+  --secondary:#3b82f6;
+  --accent:#f59e0b;
+  --dark:#1e293b;
+  --light:#f8fafc;
+  --slate-50:#f8fafc;
+  --slate-100:#f1f5f9;
+  --slate-200:#e2e8f0;
+  --slate-400:#94a3b8;
+  --slate-500:#64748b;
+  --slate-600:#475569;
+  --slate-700:#334155;
+  --slate-800:#1e293b;
+  --slate-900:#0f172a;
+  --radius-sm:.75rem;
+  --radius-md:1rem;
+  --radius-lg:1.5rem;
+  --radius-xl:2rem;
+  --shadow-sm:0 4px 6px -1px rgba(0,0,0,.05),0 2px 4px -1px rgba(0,0,0,.03);
+  --shadow-md:0 10px 15px -3px rgba(0,0,0,.07),0 4px 6px -2px rgba(0,0,0,.04);
+  --bg:#f8fafc;
+  --surface:#ffffff;
+  --surface-2:#f8fafc;
+  --text:#1e293b;
+  --text-muted:#64748b;
+  --border:#e2e8f0;
+  --ok-bg:#dcfce7;--ok-tx:#15803d;
+  --bad-bg:#fee2e2;--bad-tx:#b91c1c;
+  --warn-bg:#fffbeb;--warn-bd:#fde68a;--warn-tx:#92400e;
+  --info-bg:#eff6ff;--info-bd:#bfdbfe;--info-tx:#1e3a8a;
+}
+html[data-theme="dark"]{
+  --bg:#0f172a;
+  --surface:#1e293b;
+  --surface-2:#111c30;
+  --text:#e2e8f0;
+  --text-muted:#94a3b8;
+  --border:#334155;
+  --ok-bg:#0f3d24;--ok-tx:#86efac;
+  --bad-bg:#4b1113;--bad-tx:#fca5a5;
+  --warn-bg:#3a2e0d;--warn-bd:#6b5314;--warn-tx:#fcd34d;
+  --info-bg:#142a4d;--info-bd:#1e3a5f;--info-tx:#bfdbfe;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  transition:background .3s ease,color .3s ease;
+}
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:var(--slate-100);}
+::-webkit-scrollbar-thumb{background:var(--slate-400);border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:var(--slate-500);}
+::selection{background:#bfdbfe;color:#1e3a8a;}
+a{color:inherit;text-decoration:none;}
+:focus-visible{outline:3px solid var(--secondary);outline-offset:2px;border-radius:.4rem;}
+code{background:var(--surface-2);border:1px solid var(--border);padding:.05rem .4rem;border-radius:.4rem;font-size:.85em;font-family:'SFMono-Regular',Consolas,monospace;}
+.container{max-width:1180px;margin:0 auto;padding:0 1.25rem;}
+
+.glass-card{
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow:var(--shadow-sm);
+}
+html[data-theme="dark"] .glass-card{
+  background:rgba(30,41,59,.85);
+  border:1px solid rgba(255,255,255,.06);
+}
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm);
+  padding:2rem;
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);}
+.card.static:hover{transform:none;box-shadow:var(--shadow-sm);}
+.badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.3rem .85rem;border-radius:999px;font-size:.78rem;font-weight:600;
+  letter-spacing:.03em;
+}
+.badge-blue{background:#dbeafe;color:var(--primary);}
+html[data-theme="dark"] .badge-blue{background:#1e3a5f;color:#93c5fd;}
+.badge-amber{background:#fef3c7;color:#b45309;}
+html[data-theme="dark"] .badge-amber{background:#4b3a12;color:#fcd34d;}
+.badge-green{background:#dcfce7;color:#15803d;}
+html[data-theme="dark"] .badge-green{background:#0f3d24;color:#86efac;}
+.badge-red{background:#fee2e2;color:#b91c1c;}
+html[data-theme="dark"] .badge-red{background:#4b1113;color:#fca5a5;}
+
+.btn{
+  display:inline-flex;align-items:center;gap:.55rem;
+  padding:.85rem 1.6rem;border-radius:.9rem;font-weight:600;font-size:.95rem;
+  cursor:pointer;border:none;transition:all .2s ease;font-family:inherit;
+}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 8px 20px -6px rgba(30,64,175,.5);}
+.btn-primary:hover{background:var(--primary-dark);transform:translateY(-2px);}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text);}
+.btn-outline:hover{border-color:var(--secondary);color:var(--secondary);}
+.btn-accent{background:var(--accent);color:#fff;}
+.btn-accent:hover{filter:brightness(1.05);transform:translateY(-2px);}
+.btn-danger{background:transparent;border:1.5px solid #fca5a5;color:#b91c1c;}
+.btn-danger:hover{background:#fee2e2;}
+.btn-sm{padding:.55rem 1.1rem;font-size:.85rem;border-radius:.7rem;}
+.btn[disabled]{opacity:.5;cursor:not-allowed;}
+
+.section{padding:4.5rem 0;scroll-margin-top:5rem;}
+.section-title{font-size:2rem;font-weight:800;margin:0 0 .5rem;color:var(--text);}
+.section-eyebrow{font-size:.8rem;font-weight:700;letter-spacing:.1em;color:var(--secondary);text-transform:uppercase;margin-bottom:.6rem;display:block;}
+.section-desc{color:var(--text-muted);max-width:720px;margin:0 0 2rem;line-height:1.75;}
+.sub-title{font-size:1.15rem;font-weight:700;margin:2rem 0 .8rem;}
+.prose{color:var(--text-muted);line-height:1.8;font-size:.95rem;}
+.prose strong{color:var(--text);}
+.prose ul,.prose ol{padding-left:1.3rem;margin:.6rem 0;}
+.prose li{margin-bottom:.3rem;}
+
+table{width:100%;border-collapse:collapse;font-size:.9rem;}
+th,td{padding:.8rem 1rem;border-bottom:1px solid var(--border);text-align:left;vertical-align:top;}
+th{background:var(--surface-2);font-weight:700;color:var(--text);}
+.table-wrap{overflow-x:auto;border-radius:var(--radius-md);border:1px solid var(--border);background:var(--surface);}
+.table-wrap table{min-width:560px;}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* Navbar */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:100;}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;height:4rem;}
+.brand{display:flex;align-items:center;gap:.7rem;font-weight:700;font-size:1.15rem;color:var(--primary);}
+.brand-icon{background:var(--primary);color:#fff;padding:.5rem;border-radius:.6rem;}
+.nav-links{display:flex;align-items:center;gap:1.5rem;}
+.nav-links a{color:var(--text-muted);font-weight:500;font-size:.92rem;transition:color .2s;}
+.nav-links a:hover{color:var(--primary);}
+.icon-btn{width:2.5rem;height:2.5rem;border-radius:.7rem;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border);background:var(--surface);cursor:pointer;color:var(--text);}
+.icon-btn:hover{border-color:var(--secondary);color:var(--secondary);}
+#hamburgerBtn{display:none;}
+
+/* Sidebar TOC */
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:2.5rem;align-items:flex-start;}
+.sidebar{position:sticky;top:5.5rem;max-height:calc(100vh - 6.5rem);overflow-y:auto;padding-right:.5rem;}
+.sidebar-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:.8rem;}
+.toc-link{display:flex;align-items:center;gap:.6rem;padding:.45rem .7rem;border-radius:.6rem;font-size:.85rem;color:var(--text-muted);font-weight:500;}
+.toc-link:hover{background:var(--surface-2);color:var(--primary);}
+.toc-link.active{background:#dbeafe;color:var(--primary);font-weight:700;}
+html[data-theme="dark"] .toc-link.active{background:#1e3a5f;color:#93c5fd;}
+.toc-link.hidden{display:none;}
+.toc-num{font-size:.7rem;width:1.4rem;height:1.4rem;border-radius:.4rem;background:var(--surface-2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.toc-link.done .toc-num{background:#16a34a;color:#fff;}
+.search-box{width:100%;padding:.6rem .8rem;border-radius:.7rem;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;font-size:.85rem;margin-bottom:1rem;}
+#tocToggle{display:none;width:100%;margin-bottom:1rem;justify-content:center;}
+
+/* Hero */
+.hero{
+  position:relative;overflow:hidden;padding:8rem 0 5rem;color:#fff;
+  background:linear-gradient(135deg,#1e3a8a,#1e40af 45%,#312e81);
+}
+.hero-network{position:absolute;inset:0;width:100%;height:100%;opacity:.2;pointer-events:none;}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:780px;margin:0 auto;}
+.hero h1{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:800;line-height:1.1;margin:1rem 0;}
+.hero p.lead{color:#bfdbfe;font-size:1.1rem;font-weight:500;max-width:600px;margin:0 auto 1.6rem;}
+.hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.hero-meta{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;margin:0 0 1.8rem;}
+.hero-meta span{background:rgba(255,255,255,.12);color:#dbeafe;padding:.35rem .85rem;border-radius:999px;font-size:.8rem;font-weight:600;}
+.hero-progress{max-width:320px;margin:1.8rem auto 0;}
+.hero-progress .progress-track{background:rgba(255,255,255,.2);}
+.hero-icons{display:flex;justify-content:center;gap:1rem;margin-bottom:1rem;font-size:1.6rem;color:#fbbf24;}
+.float{animation:floaty 4s ease-in-out infinite;}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* diagram boxes */
+.diagram{background:var(--surface-2);border:1px dashed var(--border);border-radius:var(--radius-md);padding:1.5rem;}
+.node{background:var(--surface);border:1px solid var(--border);border-radius:.8rem;padding:.9rem 1.1rem;text-align:center;font-weight:600;font-size:.85rem;box-shadow:var(--shadow-sm);}
+.arrow-down{display:flex;justify-content:center;color:var(--secondary);font-size:1.2rem;margin:.2rem 0;}
+.flex-center{display:flex;align-items:center;justify-content:center;}
+.grid-auto{display:grid;gap:1.25rem;}
+.svg-wrap svg{width:100%;height:auto;display:block;}
+.svg-text{fill:var(--text);font-family:Inter,sans-serif;}
+.svg-muted{fill:var(--text-muted);font-family:Inter,sans-serif;}
+.svg-box{fill:var(--surface);stroke:var(--border);}
+
+/* Notes */
+.note{border-radius:var(--radius-md);padding:1rem 1.2rem;font-size:.9rem;line-height:1.7;margin-top:1.2rem;border:1px solid;}
+.note-warn{background:var(--warn-bg);border-color:var(--warn-bd);color:var(--warn-tx);}
+.note-info{background:var(--info-bg);border-color:var(--info-bd);color:var(--info-tx);}
+.note i{margin-right:.4rem;}
+
+/* Tabs */
+.tabs-nav{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;border-bottom:1px solid var(--border);padding-bottom:.75rem;}
+.tab-btn{padding:.6rem 1.1rem;border-radius:.7rem;font-size:.85rem;font-weight:600;background:var(--surface-2);color:var(--text-muted);border:none;cursor:pointer;font-family:inherit;}
+.tab-btn.active{background:var(--primary);color:#fff;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* Accordion (tinggi otomatis) */
+.accordion-item{border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:.85rem;overflow:hidden;background:var(--surface);}
+.accordion-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.1rem 1.4rem;cursor:pointer;font-weight:600;width:100%;text-align:left;background:none;border:none;color:var(--text);font-family:inherit;font-size:.95rem;}
+.accordion-head:hover{color:var(--primary);}
+.accordion-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease;}
+.accordion-body > .accordion-clip{min-height:0;overflow:hidden;}
+.accordion-body-inner{padding:0 1.4rem 1.3rem;color:var(--text-muted);line-height:1.75;font-size:.92rem;}
+.accordion-item.open .accordion-body{grid-template-rows:1fr;}
+.accordion-item.open .chev{transform:rotate(180deg);}
+.chev{transition:transform .25s ease;flex-shrink:0;}
+
+/* Code block */
+pre.code{background:var(--slate-900);color:#e2e8f0;padding:1.2rem 1.4rem;border-radius:var(--radius-md);overflow-x:auto;font-size:.84rem;line-height:1.6;font-family:'SFMono-Regular',Consolas,monospace;margin:.8rem 0;}
+pre.code .cmt{color:#94a3b8;}
+pre.code .kw{color:#93c5fd;}
+pre.code .val{color:#fca5a5;}
+
+/* Simulation */
+.pc-card{border:2px solid var(--border);border-radius:var(--radius-md);padding:1.1rem;text-align:center;background:var(--surface);}
+.pc-card select{width:100%;margin-top:.7rem;padding:.5rem;border-radius:.6rem;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font-weight:600;}
+.result-badge{padding:.9rem 1.2rem;border-radius:var(--radius-md);font-weight:600;margin-top:1rem;line-height:1.7;font-size:.92rem;}
+.result-ok{background:var(--ok-bg);color:var(--ok-tx);}
+.result-fail{background:var(--bad-bg);color:var(--bad-tx);}
+.result-warn{background:var(--warn-bg);color:var(--warn-tx);}
+.result-badge ol,.result-badge ul{margin:.5rem 0 0;padding-left:1.2rem;font-weight:500;}
+.field{display:flex;flex-direction:column;gap:.3rem;font-size:.8rem;font-weight:600;color:var(--text-muted);}
+.field input,.field select{padding:.6rem .75rem;border-radius:.6rem;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;font-size:.9rem;}
+.form-row{display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end;}
+.form-row .field{flex:1;min-width:150px;}
+.toggle{display:inline-flex;align-items:center;gap:.6rem;font-size:.88rem;font-weight:600;cursor:pointer;}
+.toggle input{width:1.15rem;height:1.15rem;accent-color:var(--primary);}
+.gw-input{width:100%;min-width:120px;padding:.4rem .6rem;border-radius:.5rem;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'SFMono-Regular',Consolas,monospace;font-size:.85rem;}
+.gw-input.bad{border-color:#dc2626;}
+.log-list{list-style:none;margin:.8rem 0 0;padding:0;font-size:.82rem;color:var(--text-muted);}
+.log-list li{padding:.35rem .6rem;border-left:3px solid var(--border);margin-bottom:.3rem;}
+.log-list li.ok{border-color:#16a34a;}
+.log-list li.fail{border-color:#dc2626;}
+
+/* Review cards */
+.rev-card{text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:1.1rem;cursor:pointer;font-family:inherit;color:var(--text);transition:all .2s ease;width:100%;}
+.rev-card:hover{border-color:var(--secondary);transform:translateY(-2px);}
+.rev-card .rev-body{display:none;margin-top:.6rem;color:var(--text-muted);font-size:.85rem;line-height:1.65;font-weight:400;}
+.rev-card.open{border-color:var(--secondary);background:var(--info-bg);}
+.rev-card.open .rev-body{display:block;}
+
+/* Checklist */
+.check-item{display:flex;gap:.8rem;align-items:flex-start;padding:.7rem 1rem;border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:.6rem;background:var(--surface);cursor:pointer;font-size:.92rem;}
+.check-item input{width:1.15rem;height:1.15rem;margin-top:.15rem;accent-color:#16a34a;flex-shrink:0;}
+.check-item.done{background:var(--ok-bg);border-color:#86efac;}
+.check-item.done span{text-decoration:line-through;opacity:.8;}
+
+/* Mini game / option buttons */
+.choice-btn{padding:.6rem 1rem;border-radius:.6rem;font-weight:600;font-size:.85rem;border:1.5px solid var(--border);background:var(--surface-2);cursor:pointer;color:var(--text);font-family:inherit;text-align:left;}
+.choice-btn:hover{border-color:var(--secondary);}
+.choice-btn.correct{background:var(--ok-bg);border-color:#16a34a;color:var(--ok-tx);}
+.choice-btn.wrong{background:var(--bad-bg);border-color:#dc2626;color:var(--bad-tx);}
+.hl-col{background:#dbeafe !important;}
+html[data-theme="dark"] .hl-col{background:#1e3a5f !important;}
+
+/* Quiz */
+.progress-track{width:100%;height:.55rem;background:var(--surface-2);border-radius:999px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(to right,var(--primary),var(--secondary));border-radius:999px;transition:width .4s ease;}
+.quiz-option{display:block;width:100%;text-align:left;padding:.9rem 1.1rem;border:1.5px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--surface);margin-bottom:.7rem;cursor:pointer;font-size:.92rem;transition:all .15s ease;color:var(--text);font-family:inherit;}
+.quiz-option:hover:not([disabled]){border-color:var(--secondary);}
+.quiz-option.correct{border-color:#16a34a;background:var(--ok-bg);color:var(--ok-tx);font-weight:600;}
+.quiz-option.wrong{border-color:#dc2626;background:var(--bad-bg);color:var(--bad-tx);font-weight:600;}
+
+/* Toast */
+#toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(150%);
+  background:var(--dark);color:#fff;padding:.9rem 1.5rem;border-radius:.8rem;font-size:.9rem;font-weight:600;
+  box-shadow:0 10px 30px -8px rgba(0,0,0,.4);z-index:400;transition:transform .35s ease;display:flex;align-items:center;gap:.6rem;max-width:92vw;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+/* tooltip */
+.tip{position:relative;cursor:help;border-bottom:1px dashed var(--secondary);}
+.tip .tip-box{visibility:hidden;opacity:0;position:absolute;bottom:135%;left:50%;transform:translateX(-50%);
+  background:var(--dark);color:#fff;padding:.6rem .8rem;border-radius:.5rem;font-size:.78rem;width:220px;
+  transition:opacity .2s;z-index:20;font-weight:400;line-height:1.5;}
+.tip:hover .tip-box,.tip:focus .tip-box{visibility:visible;opacity:1;}
+
+/* back to top */
+#backToTop{position:fixed;bottom:1.5rem;right:1.5rem;width:3rem;height:3rem;border-radius:50%;
+  background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--shadow-md);border:none;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:90;}
+#backToTop.show{opacity:1;pointer-events:auto;}
+
+/* modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);display:none;align-items:center;justify-content:center;z-index:300;padding:1.5rem;}
+.modal-overlay.show{display:flex;}
+.modal-box{background:var(--surface);border-radius:var(--radius-lg);max-width:720px;width:100%;padding:2rem;box-shadow:var(--shadow-md);max-height:88vh;overflow-y:auto;}
+
+textarea.reflect{width:100%;border:1px solid var(--border);border-radius:var(--radius-sm);padding:.9rem;font-family:inherit;
+  background:var(--surface);color:var(--text);min-height:100px;resize:vertical;}
+
+.chip{display:inline-flex;align-items:center;padding:.35rem .8rem;border-radius:999px;background:var(--surface-2);
+  border:1px solid var(--border);font-size:.78rem;font-weight:600;color:var(--text-muted);margin:.2rem;}
+
+/* frame 802.1Q */
+.frame-row{display:flex;flex-wrap:wrap;gap:4px;margin:.8rem 0;}
+.frame-cell{padding:.7rem .6rem;border-radius:.5rem;font-size:.72rem;font-weight:700;text-align:center;background:var(--surface);border:1px solid var(--border);flex:1;min-width:84px;}
+.frame-cell.tag{background:#fef3c7;border-color:#f59e0b;color:#92400e;}
+html[data-theme="dark"] .frame-cell.tag{background:#4b3a12;color:#fcd34d;}
+.frame-cell small{display:block;font-weight:500;opacity:.8;margin-top:.2rem;}
+
+.timeline-step{display:flex;gap:1rem;align-items:flex-start;}
+.step-dot{width:2.4rem;height:2.4rem;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;}
+
+.stat-pill{display:flex;align-items:center;gap:.6rem;padding:.6rem .9rem;border:1px solid var(--border);border-radius:.7rem;font-size:.88rem;background:var(--surface);}
+.stat-pill.done{background:var(--ok-bg);border-color:#86efac;color:var(--ok-tx);}
+
+footer .foot{display:flex;flex-direction:row;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important;}
+  .reveal{opacity:1;transform:none;}
+}
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;}
+  .sidebar{position:static;max-height:none;display:none;}
+  .sidebar.mobile-open{display:block;margin-bottom:1rem;}
+  #tocToggle{display:flex;}
+  .nav-links{display:none;}
+  #hamburgerBtn{display:flex;}
+  .section-title{font-size:1.6rem;}
+  footer .foot{flex-direction:column;text-align:center;}
+}
+</style>
 </head>
-<body class="bg-slate-50 font-sans text-slate-800 antialiased selection:bg-blue-200 selection:text-blue-900">
+<body>
 
-    <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-card" id="navbar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <a href="index.html" class="flex-shrink-0 flex items-center gap-3">
-                    <div class="bg-primary text-white p-2 rounded-lg">
-                        <i class="fas fa-network-wired"></i>
-                    </div>
-                    <span class="font-bold text-xl text-primary tracking-tight">TLJ Roadmap</span>
-                </a>
-                <a href="index.html" class="hidden md:flex items-center gap-2 text-slate-600 hover:text-primary font-medium transition">
-                    <i class="fas fa-arrow-left text-sm"></i> Kembali ke Roadmap
-                </a>
-            </div>
-        </div>
-    </nav>
+<!-- ============ NAVBAR ============ -->
+<nav id="navbar" class="glass-card" aria-label="Navigasi utama">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-icon"><i class="fas fa-network-wired"></i></span>
+      TLJ Roadmap
+    </a>
+    <div class="nav-links">
+      <a href="bab3.html"><i class="fas fa-arrow-left" style="font-size:.75rem;margin-right:.35rem;"></i>BAB 3</a>
+      <a href="index.html">Roadmap</a>
+      <a href="bab5.html">BAB 5<i class="fas fa-arrow-right" style="font-size:.75rem;margin-left:.35rem;"></i></a>
+      <button class="icon-btn" id="themeToggle" title="Mode gelap/terang" aria-label="Ganti mode gelap/terang"><i class="fas fa-moon"></i></button>
+    </div>
+    <button class="icon-btn" id="hamburgerBtn" aria-label="Buka menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
+  </div>
+  <div id="mobileMenu" style="display:none;border-top:1px solid var(--border);">
+    <div class="container" style="padding:1rem 1.25rem;display:flex;flex-direction:column;gap:.9rem;">
+      <a href="bab3.html">← BAB 3</a>
+      <a href="index.html">Roadmap</a>
+      <a href="bab5.html">BAB 5 →</a>
+      <button class="btn btn-outline btn-sm" id="themeToggleMobile" style="width:fit-content;"><i class="fas fa-moon"></i>&nbsp; Mode Gelap</button>
+    </div>
+  </div>
+</nav>
 
-    <!-- Hero -->
-    <header class="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white">
-        <div class="absolute inset-0 opacity-10">
-            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path d="M0,100 C20,80 40,60 100,20 L100,0 L0,0 Z" fill="#ffffff" opacity="0.3"/>
-                <path d="M0,100 C30,90 60,40 100,50 L100,100 Z" fill="#ffffff" opacity="0.2"/>
-            </svg>
-        </div>
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <span class="inline-block py-1 px-3 rounded-full bg-blue-700 text-blue-100 text-sm font-semibold tracking-wider mb-6 border border-blue-500 shadow-sm">
-                Semester Ganjil
-            </span>
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
-                <span class="text-primary">BAB 4</span><br/>
-                Inter VLAN Routing
-            </h1>
-            <p class="mt-4 text-lg text-blue-100 font-medium">TLJ Kelas XII - SMK Bintang Raudloh</p>
-        </div>
-    </header>
+<!-- ============ HERO ============ -->
+<header class="hero" id="hero">
+  <svg class="hero-network" viewBox="0 0 800 400" preserveAspectRatio="none" aria-hidden="true">
+    <g stroke="#ffffff" stroke-width="1" opacity="0.5">
+      <line x1="400" y1="60" x2="400" y2="200"/>
+      <line x1="400" y1="200" x2="160" y2="330"/>
+      <line x1="400" y1="200" x2="400" y2="330"/>
+      <line x1="400" y1="200" x2="640" y2="330"/>
+    </g>
+    <g fill="#ffffff">
+      <circle cx="400" cy="60" r="10"/>
+      <circle cx="400" cy="200" r="9"/>
+      <circle cx="160" cy="330" r="5"/>
+      <circle cx="400" cy="330" r="5"/>
+      <circle cx="640" cy="330" r="5"/>
+    </g>
+  </svg>
+  <div class="container hero-content">
+    <div class="hero-icons" aria-hidden="true"><i class="fas fa-route float"></i><i class="fas fa-arrows-left-right float" style="animation-delay:.6s"></i><i class="fas fa-server float" style="animation-delay:1.2s"></i></div>
+    <span class="badge badge-blue" style="background:rgba(255,255,255,.12);color:#dbeafe;">Semester Ganjil &middot; BAB 4</span>
+    <h1>Inter-VLAN<br><span style="color:#fbbf24;">Routing</span></h1>
+    <p class="lead">Pelajari bagaimana router menghubungkan beberapa VLAN agar perangkat dari divisi berbeda dapat berkomunikasi secara terkontrol.</p>
+    <div class="hero-meta">
+      <span><i class="far fa-clock"></i>&nbsp; Estimasi &plusmn; 120 menit</span>
+      <span><i class="fas fa-book-open"></i>&nbsp; Teori &plusmn; 45 menit</span>
+      <span><i class="fas fa-flask"></i>&nbsp; Praktik &plusmn; 75 menit</span>
+    </div>
+    <div class="hero-actions">
+      <a href="#tujuan" class="btn btn-primary" style="background:#fff;color:var(--primary);"><i class="fas fa-play"></i> Mulai Belajar</a>
+      <a href="#praktik1" class="btn btn-outline" style="border-color:rgba(255,255,255,.4);color:#fff;"><i class="fas fa-flask"></i> Langsung ke Praktik</a>
+    </div>
+    <div class="hero-progress">
+      <div class="progress-track" role="progressbar" aria-label="Progress pembelajaran" aria-valuemin="0" aria-valuemax="100" id="heroProgressBar" aria-valuenow="0"><div class="progress-fill" id="heroProgressFill" style="width:0%;"></div></div>
+      <p style="font-size:.8rem;color:#bfdbfe;margin:.5rem 0 0;">Progress belajarmu: <strong id="heroProgressText">0%</strong></p>
+    </div>
+    <p style="margin-top:1.6rem;font-size:.85rem;color:#bfdbfe;">Teknik Layanan Jaringan (TLJ) &middot; Kelas XII &middot; SMK Bintang Raudloh</p>
+    <p style="margin:.3rem 0 0;font-size:.85rem;color:#bfdbfe;font-style:italic;">Menghubungkan Berbagai VLAN Menjadi Jaringan yang Saling Berkomunikasi.</p>
+  </div>
+</header>
 
-    <!-- Content -->
-    <main class="py-20 bg-white flex-1">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="bg-slate-50 border border-slate-100 rounded-3xl p-10 sm:p-14 shadow-sm">
-                <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-2xl mb-6">
-                    <i class="fas fa-tools"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-dark mb-4">Inter VLAN Routing</h2>
-                <p class="text-lg text-slate-600 mb-2">Mohon maaf, materi untuk bab ini belum tersedia.</p>
-                <p class="text-slate-500 mb-8">Silakan hubungi guru pengampu untuk informasi lebih lanjut mengenai materi ini.</p>
-                <div class="inline-flex items-center gap-3 bg-white px-5 py-3 rounded-xl border border-slate-200 shadow-sm">
-                    <i class="fas fa-chalkboard-teacher text-primary"></i>
-                    <span class="text-slate-700">Guru Pengampu: <strong class="text-dark">Khalid Nabawi, S.Kom.</strong></span>
-                </div>
-                <div class="mt-10">
-                    <a href="index.html" class="inline-flex items-center gap-2 text-secondary font-semibold hover:gap-3 transition-all">
-                        <i class="fas fa-arrow-left text-sm"></i> Kembali ke Roadmap Pembelajaran
-                    </a>
-                </div>
-            </div>
-        </div>
-    </main>
+<!-- ============ MAIN LAYOUT ============ -->
+<main class="container" style="padding-top:3rem;">
+  <div class="layout">
 
-    <!-- Footer -->
-    <footer class="bg-dark text-slate-400 py-8 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="text-center md:text-left">
-                <p class="text-white font-semibold mb-1">SMK Bintang Raudloh</p>
-                <p class="text-sm">Teknik Komputer dan Jaringan</p>
-            </div>
-            <div class="text-sm text-center">
-                &copy; 2026 Roadmap Pembelajaran TLJ Kelas XII.
-            </div>
+    <!-- SIDEBAR TOC -->
+    <aside class="sidebar" id="sidebar" aria-label="Daftar isi">
+      <div class="sidebar-title">Progress BAB 4</div>
+      <div class="progress-track" style="margin-bottom:.4rem;"><div class="progress-fill" id="sideProgressFill" style="width:0%;"></div></div>
+      <p style="font-size:.78rem;color:var(--text-muted);margin:0 0 1.2rem;"><span id="sideProgressText">0%</span> selesai</p>
+      <div class="sidebar-title">Cari Materi</div>
+      <input type="search" class="search-box" id="materialSearch" placeholder="Cari: gateway, subinterface, SVI..." aria-label="Cari materi">
+      <p id="searchInfo" style="font-size:.75rem;color:var(--text-muted);margin:-.6rem 0 .8rem;min-height:1rem;"></p>
+      <div class="sidebar-title">Daftar Isi</div>
+      <nav id="tocNav" style="display:flex;flex-direction:column;gap:.15rem;"></nav>
+    </aside>
+
+    <!-- CONTENT -->
+    <div style="min-width:0;">
+    <button class="btn btn-outline btn-sm" id="tocToggle" aria-expanded="false"><i class="fas fa-list"></i> Daftar Isi &amp; Cari Materi</button>
+
+    <!-- 2. TUJUAN -->
+    <section class="section reveal" id="tujuan" data-title="Tujuan Pembelajaran" data-kind="read">
+      <span class="section-eyebrow">01 &middot; Capaian Pembelajaran</span>
+      <h2 class="section-title">Apa yang akan kamu kuasai?</h2>
+      <p class="section-desc">Setelah mempelajari BAB 4, kamu diharapkan mampu melakukan hal-hal berikut pada jaringan Local Area Network (LAN) dengan beberapa VLAN.</p>
+      <div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));">
+        <div class="card static" style="padding:1.3rem;">
+          <ul style="margin:0;padding-left:1.2rem;color:var(--text-muted);line-height:2;font-size:.9rem;">
+            <li>Menjelaskan pengertian dan fungsi Inter-VLAN Routing</li>
+            <li>Menjelaskan mengapa VLAN berbeda tidak dapat berkomunikasi langsung melalui switching Layer 2 biasa</li>
+            <li>Menjelaskan peran router sebagai penghubung antarjaringan</li>
+            <li>Memahami konsep Router on a Stick</li>
+            <li>Memahami fungsi subinterface pada router</li>
+            <li>Memahami enkapsulasi IEEE 802.1Q pada trunk</li>
+          </ul>
         </div>
-    </footer>
+        <div class="card static" style="padding:1.3rem;">
+          <ul style="margin:0;padding-left:1.2rem;color:var(--text-muted);line-height:2;font-size:.9rem;">
+            <li>Menjelaskan konsep Layer 3 Switch</li>
+            <li>Merancang pengalamatan IP untuk beberapa VLAN</li>
+            <li>Mengonfigurasi VLAN, trunk, dan Router on a Stick di Cisco Packet Tracer</li>
+            <li>Menguji komunikasi antar-VLAN</li>
+            <li>Menganalisis dan memperbaiki kesalahan konfigurasi</li>
+            <li>Membangun simulasi jaringan perusahaan dengan beberapa divisi</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. APERSEPSI -->
+    <section class="section reveal" id="apersepsi" data-title="Apersepsi" data-kind="read">
+      <span class="section-eyebrow">02 &middot; Pemantik</span>
+      <h2 class="section-title">Mengapa VLAN perlu dihubungkan?</h2>
+      <p class="section-desc">Sebuah perusahaan memiliki tiga divisi: <strong>VLAN 10 &mdash; Administrasi</strong>, <strong>VLAN 20 &mdash; Keuangan</strong>, dan <strong>VLAN 30 &mdash; IT</strong>. Setiap divisi memiliki subnet IP berbeda. Pada BAB 3 kamu sudah belajar memisahkan jaringan dengan VLAN.</p>
+      <div class="note note-info" style="margin-top:0;margin-bottom:1.5rem;font-size:1rem;"><i class="fas fa-circle-question"></i><strong>Pertanyaan pemantik:</strong> Jika komputer Administrasi perlu mengakses server yang berada di jaringan IT, bagaimana komunikasi tersebut dapat dilakukan tanpa menghilangkan pemisahan VLAN?</div>
+      <div class="card static">
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem;">
+          <button class="btn btn-outline btn-sm" id="btnBefore" data-state="before"><i class="fas fa-ban"></i> Sebelum Inter-VLAN Routing</button>
+          <button class="btn btn-primary btn-sm" id="btnAfter" data-state="after"><i class="fas fa-check"></i> Sesudah Inter-VLAN Routing</button>
+          <span style="font-size:.8rem;color:var(--text-muted);align-self:center;">&larr; klik "Lihat Perbedaannya"</span>
+        </div>
+        <div class="svg-wrap" id="apersepsiDiagram" aria-label="Diagram perbandingan sebelum dan sesudah Inter-VLAN Routing"></div>
+        <div id="apersepsiText" class="result-badge result-fail"></div>
+      </div>
+      <p style="text-align:center;font-weight:700;margin-top:1.5rem;color:var(--primary);">VLAN &rarr; Subnet berbeda &rarr; Perangkat Layer 3 &rarr; Routing antar-VLAN</p>
+      <div class="note note-warn"><i class="fas fa-shield-halved"></i><strong>Penting:</strong> Mengaktifkan routing tidak otomatis berarti semua akses harus diizinkan. Kebijakan <em>firewall</em> atau <em>ACL</em> dapat digunakan untuk mengontrol komunikasi antar-VLAN (dikembangkan pada bab keamanan jaringan).</div>
+    </section>
+
+    <!-- 4. REVIEW -->
+    <section class="section reveal" id="review" data-title="Review Materi VLAN" data-kind="read">
+      <span class="section-eyebrow">03 &middot; Review Prasyarat</span>
+      <h2 class="section-title">Review Singkat dari BAB 3</h2>
+      <p class="section-desc">Klik setiap kartu untuk membuka penjelasan singkat. Hanya konsep yang menjadi prasyarat Inter-VLAN Routing yang diulas di sini.</p>
+      <div class="grid-auto" id="reviewCards" style="grid-template-columns:repeat(auto-fit,minmax(230px,1fr));"></div>
+      <div class="card static" style="margin-top:1.8rem;">
+        <h3 class="sub-title" style="margin-top:0;"><i class="fas fa-circle-question" style="color:var(--accent);"></i> Apa yang terjadi ketika PC VLAN 10 mengirim paket menuju PC di VLAN 20?</h3>
+        <button class="btn btn-outline btn-sm" id="btnRevAnswer"><i class="fas fa-eye"></i> Lihat Jawaban</button>
+        <div id="revAnswer" class="prose" style="display:none;margin-top:1rem;">
+          PC membandingkan alamat IP tujuan dengan <strong>IP dan subnet mask miliknya</strong>. Karena <code>192.168.20.10</code> berada di luar jaringan lokal <code>192.168.10.0/24</code>, PC tidak mengirim langsung ke tujuan. Paket dikirim ke <strong>default gateway</strong> (alamat router pada VLAN 10), lalu router yang menentukan jalur menuju jaringan VLAN 20.
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. PENGERTIAN -->
+    <section class="section reveal" id="pengertian" data-title="Pengertian Inter-VLAN Routing" data-kind="read">
+      <span class="section-eyebrow">04 &middot; Konsep Inti</span>
+      <h2 class="section-title">Pengertian Inter-VLAN Routing</h2>
+      <p class="section-desc"><strong>Inter-VLAN Routing</strong> adalah proses meneruskan paket dari satu VLAN ke VLAN lain menggunakan perangkat <strong>Layer 3</strong> (router atau Layer 3 Switch). Karena setiap VLAN biasanya memiliki subnet IP sendiri, perpindahan antar-VLAN adalah perpindahan antar-subnet, dan itu adalah tugas <em>routing</em>, bukan <em>switching</em>.</p>
+      <div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
+        <div class="card static" style="padding:1.2rem;"><p style="font-weight:700;margin:0 0 .4rem;color:var(--primary);"><i class="fas fa-bullseye"></i> Tujuan</p><p class="prose" style="margin:0;">Memungkinkan komunikasi antar-divisi secara terkontrol, tanpa menyatukan broadcast domain semua divisi.</p></div>
+        <div class="card static" style="padding:1.2rem;"><p style="font-weight:700;margin:0 0 .4rem;color:var(--primary);"><i class="fas fa-route"></i> Peran Router / L3 Switch</p><p class="prose" style="margin:0;">Menjadi default gateway tiap VLAN, memeriksa alamat tujuan, lalu meneruskan paket ke jaringan yang tepat.</p></div>
+        <div class="card static" style="padding:1.2rem;"><p style="font-weight:700;margin:0 0 .4rem;color:var(--primary);"><i class="fas fa-link"></i> VLAN &harr; Subnet</p><p class="prose" style="margin:0;">Praktik umum: 1 VLAN = 1 subnet IP. Contoh VLAN 10 &rarr; 192.168.10.0/24.</p></div>
+      </div>
+
+      <h3 class="sub-title">Switching vs Routing</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Aspek</th><th>Switching (Layer 2)</th><th>Routing (Layer 3)</th></tr></thead>
+          <tbody>
+            <tr><td>Dasar keputusan</td><td>MAC Address tujuan</td><td>IP Address tujuan</td></tr>
+            <tr><td>Satuan data</td><td>Frame</td><td>Paket (packet)</td></tr>
+            <tr><td>Lingkup</td><td>Dalam satu VLAN / broadcast domain</td><td>Antar jaringan / subnet berbeda</td></tr>
+            <tr><td>Broadcast</td><td>Diteruskan dalam VLAN yang sama</td><td>Tidak diteruskan antar jaringan</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note note-info"><i class="fas fa-lightbulb"></i><strong>Analogi:</strong> VLAN adalah kelompok ruangan yang dipisahkan. Router bertindak sebagai petugas penghubung yang memeriksa alamat tujuan dan menentukan jalur komunikasi antarkelompok. <em>Analogi ini hanya membantu pemahaman; penjelasan teknisnya ada pada langkah-langkah di bawah.</em></div>
+
+      <h3 class="sub-title">Alur Paket: PC VLAN 10 &rarr; PC VLAN 20</h3>
+      <div class="diagram">
+        <div id="flowSteps" style="display:flex;flex-direction:column;gap:.4rem;max-width:520px;margin:0 auto;"></div>
+      </div>
+      <p class="prose" style="margin-top:1rem;">Klik setiap langkah di atas untuk melihat penjelasannya.</p>
+      <div id="flowExplain" class="result-badge result-warn" style="font-weight:500;">Klik salah satu langkah untuk membaca penjelasan.</div>
+    </section>
+
+    <!-- 6. MENGAPA DIBUTUHKAN -->
+    <section class="section reveal" id="mengapa" data-title="Mengapa Dibutuhkan?" data-kind="read">
+      <span class="section-eyebrow">05 &middot; Alasan</span>
+      <h2 class="section-title">Mengapa Inter-VLAN Routing Dibutuhkan?</h2>
+      <p class="section-desc">VLAN sengaja dibuat terpisah, tetapi dalam kenyataannya divisi-divisi tetap perlu berbagi sumber daya tertentu seperti server, printer, atau aplikasi internal.</p>
+      <div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
+        <div class="card static" style="padding:1.2rem;border-top:4px solid #3b82f6;"><p style="font-weight:700;margin:0 0 .4rem;">1. Switch Layer 2 tidak melakukan routing</p><p class="prose" style="margin:0;">Switch biasa hanya meneruskan frame di dalam satu VLAN. Frame dari VLAN 10 tidak akan dimasukkan ke VLAN 20.</p></div>
+        <div class="card static" style="padding:1.2rem;border-top:4px solid #f59e0b;"><p style="font-weight:700;margin:0 0 .4rem;">2. Subnet berbeda</p><p class="prose" style="margin:0;">VLAN berbeda memakai subnet berbeda. Komunikasi antar-subnet memerlukan perangkat yang memahami alamat IP (Layer 3).</p></div>
+        <div class="card static" style="padding:1.2rem;border-top:4px solid #22c55e;"><p style="font-weight:700;margin:0 0 .4rem;">3. Broadcast tidak menyeberang</p><p class="prose" style="margin:0;">ARP broadcast hanya sampai ke anggota VLAN yang sama. PC tidak bisa mencari MAC tujuan di VLAN lain; ia harus menuju gateway.</p></div>
+        <div class="card static" style="padding:1.2rem;border-top:4px solid #a855f7;"><p style="font-weight:700;margin:0 0 .4rem;">4. Titik kontrol</p><p class="prose" style="margin:0;">Karena semua lalu lintas antar-VLAN melewati perangkat Layer 3, di situlah kebijakan (ACL/firewall) dapat diterapkan.</p></div>
+      </div>
+    </section>
+
+    <!-- 7. DEFAULT GATEWAY -->
+    <section class="section reveal" id="gateway" data-title="Default Gateway" data-kind="act">
+      <span class="section-eyebrow">06 &middot; Pengalamatan</span>
+      <h2 class="section-title">Konsep Default Gateway</h2>
+      <p class="section-desc"><strong>Default gateway</strong> adalah alamat IP perangkat Layer 3 (pada VLAN yang sama dengan PC) yang menjadi jalur keluar ketika tujuan berada di luar subnet lokal. Setiap subnet memerlukan gateway yang berada <strong>di subnet itu sendiri</strong>.</p>
+
+      <div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-bottom:1.5rem;">
+        <div class="card static" style="padding:1.2rem;"><p style="font-weight:700;margin:0 0 .4rem;">Hubungan IP, Mask, Gateway</p><p class="prose" style="margin:0;">IP + subnet mask menentukan <em>network</em> PC. Gateway harus berada di network yang sama agar PC bisa menjangkaunya langsung melalui ARP.</p></div>
+        <div class="card static" style="padding:1.2rem;"><p style="font-weight:700;margin:0 0 .4rem;">Jika gateway salah?</p><p class="prose" style="margin:0;">PC tetap bisa berkomunikasi di dalam VLAN-nya, tetapi gagal ke subnet lain karena paket dikirim ke alamat yang tidak ada atau tidak dapat dijangkau.</p></div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>VLAN</th><th>Nama</th><th>Network</th><th>Gateway</th></tr></thead>
+          <tbody>
+            <tr><td>10</td><td>Administrasi</td><td><code>192.168.10.0/24</code></td><td><code>192.168.10.1</code></td></tr>
+            <tr><td>20</td><td>Keuangan</td><td><code>192.168.20.0/24</code></td><td><code>192.168.20.1</code></td></tr>
+            <tr><td>30</td><td>IT</td><td><code>192.168.30.0/24</code></td><td><code>192.168.30.1</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:.82rem;color:var(--text-muted);margin-top:.5rem;">Semua alamat di atas adalah contoh untuk laboratorium.</p>
+
+      <h3 class="sub-title">Alat 1: Apakah tujuan lokal atau lewat gateway?</h3>
+      <div class="card static">
+        <div class="form-row">
+          <label class="field">IP PC sumber<input id="lrSrc" value="192.168.10.10"></label>
+          <label class="field">IP tujuan<input id="lrDst" value="192.168.20.10"></label>
+          <label class="field">Prefix subnet<select id="lrPrefix"><option value="24" selected>/24 (255.255.255.0)</option><option value="25">/25 (255.255.255.128)</option><option value="26">/26 (255.255.255.192)</option><option value="16">/16 (255.255.0.0)</option></select></label>
+          <button class="btn btn-primary btn-sm" id="btnLocalRemote"><i class="fas fa-code-compare"></i> Periksa</button>
+        </div>
+        <div id="lrResult"></div>
+      </div>
+
+      <h3 class="sub-title">Alat 2: Periksa konfigurasi IP &amp; gateway PC</h3>
+      <div class="card static">
+        <div class="form-row">
+          <label class="field">PC berada di VLAN<select id="gcVlan"><option value="10">VLAN 10 &mdash; Administrasi</option><option value="20">VLAN 20 &mdash; Keuangan</option><option value="30">VLAN 30 &mdash; IT</option></select></label>
+          <label class="field">IP Address PC<input id="gcIp" placeholder="192.168.10.10" value="192.168.10.10"></label>
+          <label class="field">Subnet mask<select id="gcMask"><option value="255.255.255.0" selected>255.255.255.0</option><option value="255.255.255.128">255.255.255.128</option><option value="255.255.0.0">255.255.0.0</option></select></label>
+          <label class="field">Default gateway<input id="gcGw" placeholder="192.168.10.1" value="192.168.10.254"></label>
+          <button class="btn btn-primary btn-sm" id="btnGwCheck"><i class="fas fa-circle-check"></i> Periksa</button>
+        </div>
+        <div id="gcResult"></div>
+      </div>
+    </section>
+
+    <!-- 8. ROUTER ON A STICK -->
+    <section class="section reveal" id="ros" data-title="Router on a Stick" data-kind="read">
+      <span class="section-eyebrow">07 &middot; Materi Utama</span>
+      <h2 class="section-title">Router on a Stick</h2>
+      <p class="section-desc"><strong>Router on a Stick</strong> adalah metode Inter-VLAN Routing yang menggunakan <strong>satu link fisik</strong> antara router dan managed switch. Link itu dikonfigurasi sebagai <strong>trunk</strong> di sisi switch dan dibagi menjadi beberapa <strong>subinterface</strong> logis di sisi router, satu untuk setiap VLAN.</p>
+
+      <div class="card static"><div class="svg-wrap" id="rosDiagram" aria-label="Diagram Router on a Stick"></div></div>
+
+      <div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:1.5rem;">
+        <div class="card static" style="padding:1.2rem;"><p style="font-weight:700;margin:0 0 .4rem;"><i class="fas fa-code-branch" style="color:var(--secondary);"></i> Fungsi trunk</p><p class="prose" style="margin:0;">Membawa frame dari banyak VLAN melewati satu kabel dengan label (tag) IEEE 802.1Q.</p></div>
+        <div class="card static" style="padding:1.2rem;"><p style="font-weight:700;margin:0 0 .4rem;"><i class="fas fa-sitemap" style="color:var(--secondary);"></i> Fungsi subinterface</p><p class="prose" style="margin:0;">Antarmuka logis pada satu antarmuka fisik router. Tiap subinterface dikaitkan dengan satu VLAN dan memiliki IP gateway VLAN tersebut.</p></div>
+        <div class="card static" style="padding:1.2rem;"><p style="font-weight:700;margin:0 0 .4rem;"><i class="fas fa-tag" style="color:var(--secondary);"></i> Hubungan VLAN ID</p><p class="prose" style="margin:0;">VLAN ditentukan oleh perintah <code>encapsulation dot1Q &lt;VLAN-ID&gt;</code>, <strong>bukan</strong> oleh nama subinterface.</p></div>
+      </div>
+
+      <div class="note note-warn"><i class="fas fa-triangle-exclamation"></i><strong>Jangan salah paham:</strong> nama subinterface seperti <code>G0/0.10</code> tidak otomatis menentukan VLAN 10. Angka setelah titik hanyalah konvensi penamaan agar mudah dibaca. Hubungan VLAN ditentukan oleh enkapsulasi VLAN ID pada konfigurasi subinterface.</div>
+
+      <h3 class="sub-title">Kelebihan &amp; Kekurangan</h3>
+      <div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));">
+        <div class="card static" style="padding:1.2rem;background:var(--ok-bg);border-color:#86efac;"><p style="font-weight:700;margin:0 0 .5rem;color:var(--ok-tx);"><i class="fas fa-thumbs-up"></i> Kelebihan</p><ul class="prose" style="margin:0;padding-left:1.1rem;color:var(--ok-tx);"><li>Hemat: hanya satu port/kabel router</li><li>Cukup dengan router + managed switch Layer 2</li><li>Mudah dipraktikkan di Packet Tracer</li><li>Pas untuk jaringan kecil</li></ul></div>
+        <div class="card static" style="padding:1.2rem;background:var(--bad-bg);border-color:#fca5a5;"><p style="font-weight:700;margin:0 0 .5rem;color:var(--bad-tx);"><i class="fas fa-thumbs-down"></i> Kekurangan</p><ul class="prose" style="margin:0;padding-left:1.1rem;color:var(--bad-tx);"><li>Semua trafik antar-VLAN berbagi kapasitas satu link</li><li>Router menjadi titik tunggal kegagalan dan potensi bottleneck</li><li>Kurang skalabel untuk VLAN dan trafik besar</li></ul></div>
+      </div>
+      <p class="prose"><strong>Kapan sesuai digunakan?</strong> Pada sekolah, laboratorium, atau kantor kecil dengan beberapa VLAN dan trafik antar-VLAN yang tidak terlalu tinggi, terutama bila perangkat yang tersedia hanya router dan switch Layer 2.</p>
+    </section>
+
+    <!-- 9. SUBINTERFACE & 802.1Q & KONFIGURASI -->
+    <section class="section reveal" id="subinterface" data-title="Subinterface, 802.1Q &amp; Konfigurasi" data-kind="read">
+      <span class="section-eyebrow">08 &middot; Konfigurasi</span>
+      <h2 class="section-title">Subinterface, IEEE 802.1Q, dan Konfigurasi</h2>
+      <p class="section-desc">Saat frame melewati trunk, switch menyisipkan <strong>tag 802.1Q</strong> sebesar 4 byte di antara header Ethernet agar penerima tahu frame tersebut milik VLAN yang mana.</p>
+
+      <div class="card static">
+        <h3 style="margin:0 0 .4rem;font-weight:700;font-size:1.05rem;">Frame Ethernet dengan Tag 802.1Q</h3>
+        <div class="frame-row" id="frameRow">
+          <div class="frame-cell">Dest MAC<small>6 byte</small></div>
+          <div class="frame-cell">Src MAC<small>6 byte</small></div>
+          <div class="frame-cell tag">TAG 802.1Q<small>4 byte</small></div>
+          <div class="frame-cell">EtherType<small>2 byte</small></div>
+          <div class="frame-cell">Payload (paket IP)<small>data</small></div>
+          <div class="frame-cell">FCS<small>4 byte</small></div>
+        </div>
+        <div class="frame-row">
+          <div class="frame-cell tag">TPID<small>16 bit &middot; 0x8100</small></div>
+          <div class="frame-cell tag">PCP<small>3 bit &middot; prioritas</small></div>
+          <div class="frame-cell tag">DEI<small>1 bit</small></div>
+          <div class="frame-cell tag">VLAN ID<small>12 bit &middot; 1&ndash;4094</small></div>
+        </div>
+        <p class="prose" style="margin:0;">Pada Router on a Stick, router membaca <strong>VLAN ID</strong> pada tag untuk menentukan subinterface mana yang menerima frame, lalu menambahkan tag yang sesuai ketika mengirim balik ke VLAN tujuan.</p>
+      </div>
+
+      <h3 class="sub-title">Topologi &amp; Tabel Konfigurasi</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>VLAN</th><th>Nama</th><th>Subinterface</th><th>Gateway</th><th>Port PC (switch)</th></tr></thead>
+          <tbody>
+            <tr><td>10</td><td>ADMIN</td><td><code>G0/0.10</code></td><td><code>192.168.10.1/24</code></td><td>Fa0/1</td></tr>
+            <tr><td>20</td><td>KEUANGAN</td><td><code>G0/0.20</code></td><td><code>192.168.20.1/24</code></td><td>Fa0/2</td></tr>
+            <tr><td>30</td><td>IT</td><td><code>G0/0.30</code></td><td><code>192.168.30.1/24</code></td><td>Fa0/3</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tabs-nav" style="margin-top:1.8rem;" id="cfgTabs">
+        <button class="tab-btn active" data-tab="cfgSwitch">Konfigurasi Switch</button>
+        <button class="tab-btn" data-tab="cfgRouter">Konfigurasi Router</button>
+      </div>
+      <div class="tab-panel active" id="cfgSwitch" data-group="cfgTabs">
+<pre class="code">enable
+configure terminal
+
+vlan 10
+ name ADMIN
+exit
+
+vlan 20
+ name KEUANGAN
+exit
+
+vlan 30
+ name IT
+exit
+
+interface fa0/1
+ switchport mode access
+ switchport access vlan 10
+exit
+
+interface fa0/2
+ switchport mode access
+ switchport access vlan 20
+exit
+
+interface fa0/3
+ switchport mode access
+ switchport access vlan 30
+exit
+
+interface gi0/1
+ switchport mode trunk
+exit
+
+end
+show vlan brief
+show interfaces trunk</pre>
+        <p class="prose">Nama dan nomor interface harus disesuaikan dengan perangkat yang kamu pilih di Packet Tracer. Switch seri 2960 di Packet Tracer hanya mendukung 802.1Q sehingga <code>switchport mode trunk</code> cukup. Pada model lain (misalnya 3560) kadang perlu <code>switchport trunk encapsulation dot1q</code> terlebih dahulu sebelum <code>switchport mode trunk</code>.</p>
+      </div>
+      <div class="tab-panel" id="cfgRouter" data-group="cfgTabs">
+<pre class="code">enable
+configure terminal
+
+interface gigabitEthernet0/0
+ no shutdown
+exit
+
+interface gigabitEthernet0/0.10
+ encapsulation dot1Q 10
+ ip address 192.168.10.1 255.255.255.0
+exit
+
+interface gigabitEthernet0/0.20
+ encapsulation dot1Q 20
+ ip address 192.168.20.1 255.255.255.0
+exit
+
+interface gigabitEthernet0/0.30
+ encapsulation dot1Q 30
+ ip address 192.168.30.1 255.255.255.0
+exit
+
+end
+show ip interface brief
+show running-config</pre>
+        <p class="prose">Interface fisik yang dipakai harus sesuai dengan port router yang benar-benar terhubung ke switch. Pada router tanpa port Gigabit (misalnya 2811) gunakan <code>fastEthernet0/0</code> dan <code>fastEthernet0/0.10</code>, dan seterusnya. Perintah <code>encapsulation dot1Q</code> harus diberikan <strong>sebelum</strong> <code>ip address</code> pada subinterface.</p>
+      </div>
+      <button class="btn btn-outline btn-sm" id="btnCfgExplain" style="margin-top:.5rem;"><i class="fas fa-comment-dots"></i> Lihat Penjelasan Konfigurasi</button>
+
+      <div class="note note-info"><i class="fas fa-circle-info"></i> Jika VLAN native (untagged) dipakai pada trunk router, subinterface-nya dapat diberi kata kunci <code>native</code>, misalnya <code>encapsulation dot1Q 99 native</code>. Pada praktik BAB ini kita tidak memakai VLAN native khusus.</div>
+    </section>
+
+    <!-- 10. LAYER 3 SWITCH -->
+    <section class="section reveal" id="layer3" data-title="Layer 3 Switch" data-kind="read">
+      <span class="section-eyebrow">09 &middot; Alternatif</span>
+      <h2 class="section-title">Layer 3 Switch</h2>
+      <p class="section-desc"><strong>Layer 3 Switch</strong> adalah switch yang selain meneruskan frame (Layer 2) juga mampu melakukan <em>routing</em> antar-subnet (Layer 3). Routing dilakukan di dalam perangkat yang sama menggunakan <strong>Switch Virtual Interface (SVI)</strong>.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Aspek</th><th>Layer 2 Switch</th><th>Layer 3 Switch</th></tr></thead>
+          <tbody>
+            <tr><td>Keputusan penerusan</td><td>MAC Address</td><td>MAC Address dan IP Address</td></tr>
+            <tr><td>Routing antar-VLAN</td><td>Tidak bisa</td><td>Bisa (bila diaktifkan &amp; didukung)</td></tr>
+            <tr><td>Gateway VLAN</td><td>Harus perangkat lain</td><td>SVI pada switch itu sendiri</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin-top:1.5rem;">
+        <div class="card static" style="padding:1.2rem;"><p style="font-weight:700;margin:0 0 .4rem;">SVI</p><p class="prose" style="margin:0;">Interface virtual (<code>interface vlan 10</code>) yang menjadi gateway VLAN tersebut. SVI umumnya baru berstatus up bila VLAN ada dan minimal satu port aktif pada VLAN itu.</p></div>
+        <div class="card static" style="padding:1.2rem;"><p style="font-weight:700;margin:0 0 .4rem;"><code>ip routing</code></p><p class="prose" style="margin:0;">Perintah global yang mengaktifkan fungsi routing pada switch Layer 3. Tanpa ini, SVI ada tetapi switch tidak merutekan antar-VLAN.</p></div>
+        <div class="card static" style="padding:1.2rem;"><p style="font-weight:700;margin:0 0 .4rem;">Penggunaan</p><p class="prose" style="margin:0;">Banyak dipakai pada jaringan perusahaan dan kampus dengan banyak VLAN dan trafik antar-VLAN yang besar.</p></div>
+      </div>
+
+      <h3 class="sub-title">Contoh konsep konfigurasi</h3>
+<pre class="code">vlan 10
+vlan 20
+vlan 30
+
+interface vlan 10
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+
+interface vlan 20
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+
+interface vlan 30
+ ip address 192.168.30.1 255.255.255.0
+ no shutdown
+
+ip routing</pre>
+      <div class="note note-warn"><i class="fas fa-triangle-exclamation"></i><strong>Perhatian:</strong> sintaks dan dukungan routing bergantung pada <strong>model switch dan sistem operasinya</strong>. Tidak semua managed switch mendukung Layer 3. Di Packet Tracer, misalnya, switch seri 3560 mendukung <code>ip routing</code>, sedangkan switch seri 2960 pada umumnya tidak. Selalu periksa spesifikasi perangkat.</div>
+
+      <h3 class="sub-title">Perbedaan konseptual kedua metode</h3>
+      <div class="card static"><div class="svg-wrap" id="l3Diagram" aria-label="Diagram Router on a Stick dan Layer 3 Switch"></div></div>
+      <div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:1rem;">
+        <div class="prose"><strong>Router on a Stick:</strong> routing menggunakan router dan subinterface; switch cukup Layer 2 dengan trunk ke router.</div>
+        <div class="prose"><strong>Layer 3 Switch:</strong> routing dilakukan oleh switch yang mendukung fungsi Layer 3, biasanya menggunakan SVI.</div>
+      </div>
+    </section>
+
+    <!-- 11. PERBANDINGAN -->
+    <section class="section reveal" id="perbandingan" data-title="Perbandingan Metode" data-kind="act">
+      <span class="section-eyebrow">10 &middot; Analisis</span>
+      <h2 class="section-title">Router on a Stick vs Layer 3 Switch</h2>
+      <p class="section-desc">Gunakan tombol untuk menyorot kolom yang ingin dibandingkan, lalu jawab studi kasus di bawah tabel.</p>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem;" id="cmpButtons">
+        <button class="btn btn-outline btn-sm" data-hl="none">Normal</button>
+        <button class="btn btn-outline btn-sm" data-hl="1">Sorot Router on a Stick</button>
+        <button class="btn btn-outline btn-sm" data-hl="2">Sorot Layer 3 Switch</button>
+      </div>
+      <div class="table-wrap">
+        <table id="cmpTable">
+          <thead><tr><th>Aspek</th><th>Router on a Stick</th><th>Layer 3 Switch</th></tr></thead>
+          <tbody>
+            <tr><td>Perangkat yang dibutuhkan</td><td>Router + managed switch Layer 2</td><td>Switch yang mendukung Layer 3</td></tr>
+            <tr><td>Metode konfigurasi</td><td>Subinterface + <code>encapsulation dot1Q</code></td><td>SVI per VLAN + <code>ip routing</code></td></tr>
+            <tr><td>Penggunaan trunk</td><td>Wajib pada link switch&ndash;router</td><td>Tidak perlu ke router untuk routing antar-VLAN (trunk tetap dipakai antar switch bila ada banyak switch)</td></tr>
+            <tr><td>Kinerja secara umum</td><td>Dibatasi kapasitas satu link dan kemampuan router</td><td>Umumnya lebih tinggi karena routing dilakukan di perangkat switching, tergantung model</td></tr>
+            <tr><td>Biaya implementasi</td><td>Relatif murah bila router &amp; switch sudah ada</td><td>Perangkat Layer 3 umumnya lebih mahal</td></tr>
+            <tr><td>Skalabilitas</td><td>Terbatas untuk banyak VLAN/trafik besar</td><td>Lebih cocok untuk jaringan yang berkembang</td></tr>
+            <tr><td>Kemudahan laboratorium</td><td>Mudah, router dan switch 2960 tersedia di Packet Tracer</td><td>Perlu memilih model switch Layer 3 di Packet Tracer</td></tr>
+            <tr><td>Kesesuaian</td><td>Sekolah/kantor kecil</td><td>Kantor menengah&ndash;besar, kampus</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note note-info"><i class="fas fa-circle-info"></i> Kinerja nyata dipengaruhi spesifikasi perangkat, kapasitas link, jumlah trafik, dan rancangan jaringan. <strong>Tidak ada satu metode yang selalu lebih baik untuk semua kondisi.</strong></div>
+
+      <h3 class="sub-title">Studi Kasus: Pilih metode yang sesuai</h3>
+      <div id="cmpCases"></div>
+    </section>
+
+    <!-- 12. SIMULASI -->
+    <section class="section reveal" id="simulasi" data-title="Simulasi Interaktif" data-kind="act">
+      <span class="section-eyebrow">11 &middot; Interaktif</span>
+      <h2 class="section-title">Simulasi Inter-VLAN Routing</h2>
+      <p class="section-desc">Pilih PC sumber dan tujuan, ubah gateway atau matikan routing/trunk, lalu kirim paket. Hasilnya dihitung dari kondisi yang kamu pilih. Kirim minimal <strong>3 paket</strong> untuk menandai bagian ini selesai.</p>
+      <div class="card static">
+        <div class="svg-wrap" id="simSvgWrap">
+          <svg viewBox="0 0 800 400" role="img" aria-label="Topologi simulasi: tiga PC, switch, dan router">
+            <line x1="140" y1="320" x2="400" y2="190" stroke="#3b82f6" stroke-width="3"/>
+            <line x1="400" y1="320" x2="400" y2="190" stroke="#f59e0b" stroke-width="3"/>
+            <line x1="660" y1="320" x2="400" y2="190" stroke="#22c55e" stroke-width="3"/>
+            <line id="simTrunk" x1="400" y1="190" x2="400" y2="62" stroke="#a855f7" stroke-width="5"/>
+            <text x="418" y="130" class="svg-muted" style="font-size:12px;font-weight:600;" id="simTrunkLabel">Trunk 802.1Q</text>
+            <polyline id="simPath" points="" fill="none" stroke="#16a34a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".55"/>
+            <g>
+              <rect x="320" y="26" width="160" height="56" rx="12" class="svg-box"/>
+              <text x="400" y="50" text-anchor="middle" class="svg-text" style="font-size:14px;font-weight:700;">Router</text>
+              <text x="400" y="68" text-anchor="middle" class="svg-muted" style="font-size:11px;">G0/0.10 .20 .30</text>
+            </g>
+            <g>
+              <rect x="330" y="160" width="140" height="48" rx="12" style="fill:#3b82f6;stroke:#1e40af"/>
+              <text x="400" y="190" text-anchor="middle" style="fill:#fff;font-size:14px;font-weight:700;font-family:Inter,sans-serif;">Managed Switch</text>
+            </g>
+            <g>
+              <rect x="70" y="300" width="140" height="70" rx="12" class="svg-box" style="stroke:#3b82f6;stroke-width:2"/>
+              <text x="140" y="324" text-anchor="middle" class="svg-text" style="font-size:13px;font-weight:700;">PC Administrasi</text>
+              <text x="140" y="342" text-anchor="middle" class="svg-muted" style="font-size:11px;">192.168.10.10</text>
+              <text x="140" y="358" text-anchor="middle" class="svg-muted" style="font-size:11px;">VLAN 10</text>
+            </g>
+            <g>
+              <rect x="330" y="300" width="140" height="70" rx="12" class="svg-box" style="stroke:#f59e0b;stroke-width:2"/>
+              <text x="400" y="324" text-anchor="middle" class="svg-text" style="font-size:13px;font-weight:700;">PC Keuangan</text>
+              <text x="400" y="342" text-anchor="middle" class="svg-muted" style="font-size:11px;">192.168.20.10</text>
+              <text x="400" y="358" text-anchor="middle" class="svg-muted" style="font-size:11px;">VLAN 20</text>
+            </g>
+            <g>
+              <rect x="590" y="300" width="140" height="70" rx="12" class="svg-box" style="stroke:#22c55e;stroke-width:2"/>
+              <text x="660" y="324" text-anchor="middle" class="svg-text" style="font-size:13px;font-weight:700;">PC IT</text>
+              <text x="660" y="342" text-anchor="middle" class="svg-muted" style="font-size:11px;">192.168.30.10</text>
+              <text x="660" y="358" text-anchor="middle" class="svg-muted" style="font-size:11px;">VLAN 30</text>
+            </g>
+            <text id="simFail" x="0" y="0" text-anchor="middle" style="fill:#dc2626;font-size:34px;font-weight:800;font-family:Inter,sans-serif;" visibility="hidden">&#10006;</text>
+            <circle id="simDot" cx="140" cy="320" r="9" fill="#f59e0b" stroke="#fff" stroke-width="2" visibility="hidden"/>
+          </svg>
+        </div>
+
+        <div class="form-row" style="margin-top:1rem;">
+          <label class="field">PC Sumber<select id="simSrc"></select></label>
+          <label class="field">PC Tujuan<select id="simDst"></select></label>
+          <button class="btn btn-primary btn-sm" id="btnSimSend"><i class="fas fa-paper-plane"></i> Kirim Paket</button>
+        </div>
+        <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:1rem;">
+          <label class="toggle"><input type="checkbox" id="simRouting" checked> Routing pada router aktif</label>
+          <label class="toggle"><input type="checkbox" id="simTrunkOn" checked> Trunk switch&ndash;router aktif</label>
+          <button class="btn btn-outline btn-sm" id="btnSimReset"><i class="fas fa-rotate-left"></i> Reset Konfigurasi</button>
+        </div>
+
+        <div class="table-wrap" style="margin-top:1.2rem;">
+          <table>
+            <thead><tr><th>PC</th><th>VLAN</th><th>IP Address</th><th>Default Gateway (bisa diubah)</th></tr></thead>
+            <tbody id="simPcTable"></tbody>
+          </table>
+        </div>
+        <p style="font-size:.8rem;color:var(--text-muted);margin:.5rem 0 0;">Gateway yang benar mengikuti alamat subinterface router: 192.168.10.1, 192.168.20.1, 192.168.30.1.</p>
+
+        <div id="simResult"></div>
+        <h4 style="margin:1.2rem 0 .2rem;font-size:.9rem;">Riwayat pengujian</h4>
+        <ul class="log-list" id="simLog"><li>Belum ada pengujian.</li></ul>
+        <p class="prose" style="font-size:.8rem;margin:.8rem 0 0;"><i class="fas fa-circle-info"></i> Simulasi ini adalah <em>model pembelajaran</em>, bukan emulator Cisco IOS sesungguhnya.</p>
+      </div>
+    </section>
+
+    <!-- 13. PRAKTIK 1 -->
+    <section class="section reveal" id="praktik1" data-title="Praktik 1: Topologi" data-kind="act">
+      <span class="section-eyebrow">12 &middot; Praktik Packet Tracer</span>
+      <h2 class="section-title">Praktik 1 &mdash; Membangun Topologi</h2>
+      <p class="section-desc">Perangkat: 1 router yang mendukung subinterface, 1 managed switch, dan 3 PC.</p>
+      <div class="card static"><div class="svg-wrap" id="labTopology" aria-label="Topologi praktik"></div></div>
+      <h3 class="sub-title">Tabel Alamat IP</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Perangkat</th><th>Port</th><th>VLAN</th><th>IP Address</th><th>Subnet Mask</th><th>Gateway</th></tr></thead>
+          <tbody>
+            <tr><td>PC Admin</td><td>Fa0/1</td><td>10</td><td><code>192.168.10.10</code></td><td>255.255.255.0</td><td><code>192.168.10.1</code></td></tr>
+            <tr><td>PC Keuangan</td><td>Fa0/2</td><td>20</td><td><code>192.168.20.10</code></td><td>255.255.255.0</td><td><code>192.168.20.1</code></td></tr>
+            <tr><td>PC IT</td><td>Fa0/3</td><td>30</td><td><code>192.168.30.10</code></td><td>255.255.255.0</td><td><code>192.168.30.1</code></td></tr>
+            <tr><td>Router G0/0.10</td><td>&mdash;</td><td>10</td><td><code>192.168.10.1</code></td><td>255.255.255.0</td><td>&mdash;</td></tr>
+            <tr><td>Router G0/0.20</td><td>&mdash;</td><td>20</td><td><code>192.168.20.1</code></td><td>255.255.255.0</td><td>&mdash;</td></tr>
+            <tr><td>Router G0/0.30</td><td>&mdash;</td><td>30</td><td><code>192.168.30.1</code></td><td>255.255.255.0</td><td>&mdash;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 class="sub-title">Checklist Praktik 1</h3>
+      <div id="checklistP1"></div>
+      <p style="font-size:.82rem;color:var(--text-muted);">Gunakan kabel <strong>Copper Straight-Through</strong> untuk PC&ndash;switch dan switch&ndash;router. Centang akan tersimpan di perangkat ini.</p>
+    </section>
+
+    <!-- 14. PRAKTIK 2 -->
+    <section class="section reveal" id="praktik2" data-title="Praktik 2: Konfigurasi" data-kind="act">
+      <span class="section-eyebrow">13 &middot; Praktik Packet Tracer</span>
+      <h2 class="section-title">Praktik 2 &mdash; Konfigurasi Inter-VLAN Routing</h2>
+      <p class="section-desc">Kerjakan tahap A&ndash;G secara berurutan. Centang setiap tahap yang sudah selesai dan sudah kamu verifikasi.</p>
+      <div class="accordion" id="accP2"></div>
+      <div class="progress-track" style="margin-top:1rem;"><div class="progress-fill" id="p2Fill" style="width:0%"></div></div>
+      <p style="font-size:.82rem;color:var(--text-muted);" id="p2Text">0 dari 7 tahap selesai</p>
+    </section>
+
+    <!-- 15. PRAKTIK 3 -->
+    <section class="section reveal" id="praktik3" data-title="Praktik 3: Pengujian" data-kind="act">
+      <span class="section-eyebrow">14 &middot; Praktik Packet Tracer</span>
+      <h2 class="section-title">Praktik 3 &mdash; Pengujian Komunikasi</h2>
+      <p class="section-desc">Gunakan <code>ping</code> dari Command Prompt PC untuk membuktikan Inter-VLAN Routing berfungsi.</p>
+<pre class="code">PC Admin&gt;    ping 192.168.10.1     <span class="cmt">(gateway sendiri)</span>
+PC Admin&gt;    ping 192.168.20.10    <span class="cmt">(PC Keuangan)</span>
+PC Keuangan&gt; ping 192.168.30.10    <span class="cmt">(PC IT)</span>
+PC IT&gt;       ping 192.168.10.10    <span class="cmt">(PC Admin)</span></pre>
+      <p class="prose">Ujilah: (1) PC Admin ke gateway sendiri, (2) PC Admin ke PC Keuangan, (3) PC Keuangan ke PC IT, (4) PC IT ke PC Admin.</p>
+      <div class="note note-info"><i class="fas fa-circle-info"></i> Keberhasilan ping dipengaruhi konfigurasi IP, gateway, VLAN, trunk, router, dan kondisi perangkat. <strong>Ping pertama dapat gagal (Request timed out) sesaat</strong> karena proses ARP atau kondisi awal simulasi. Ulangi ping sebelum menyimpulkan gagal.</div>
+
+      <h3 class="sub-title">Tabel Hasil Pengujian</h3>
+      <div class="card static">
+        <div class="form-row">
+          <label class="field">IP sumber<input id="pgSrc" placeholder="192.168.10.10"></label>
+          <label class="field">IP tujuan<input id="pgDst" placeholder="192.168.20.10"></label>
+          <label class="field">Hasil ping<select id="pgRes"><option value="Berhasil">Berhasil</option><option value="Gagal">Gagal</option></select></label>
+          <label class="field" style="flex:2;">Kesimpulan<input id="pgNote" placeholder="mis. Routing antar-VLAN berfungsi"></label>
+        </div>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem;">
+          <button class="btn btn-primary btn-sm" id="btnPgAdd"><i class="fas fa-plus"></i> Tambah Baris</button>
+          <button class="btn btn-outline btn-sm" id="btnPgTemplate"><i class="fas fa-list-check"></i> Isi Template 4 Pengujian</button>
+          <button class="btn btn-danger btn-sm" id="btnPgClear"><i class="fas fa-trash"></i> Hapus Semua</button>
+        </div>
+        <div class="table-wrap" style="margin-top:1rem;">
+          <table>
+            <thead><tr><th>#</th><th>IP Sumber</th><th>IP Tujuan</th><th>Hasil</th><th>Kesimpulan</th><th>Aksi</th></tr></thead>
+            <tbody id="pgBody"></tbody>
+          </table>
+        </div>
+        <p style="font-size:.8rem;color:var(--text-muted);margin:.6rem 0 0;">Bagian ini selesai setelah tabel berisi minimal 4 pengujian dengan hasil terisi. Data tersimpan lokal di perangkat ini.</p>
+      </div>
+    </section>
+
+    <!-- 16. TROUBLESHOOTING -->
+    <section class="section reveal" id="troubleshooting" data-title="Troubleshooting" data-kind="act">
+      <span class="section-eyebrow">15 &middot; Analisis Masalah</span>
+      <h2 class="section-title">Jaringan Tidak Bisa Terhubung!</h2>
+      <p class="section-desc">Baca gejala, pilih penyebab dan solusi yang paling tepat, lalu tekan Periksa Jawaban. Selesaikan keenam kasus untuk menandai bagian ini selesai.</p>
+      <div class="accordion" id="troubleCases"></div>
+
+      <h3 class="sub-title">Perintah Pemeriksaan</h3>
+<pre class="code">show vlan brief
+show interfaces trunk
+show ip interface brief
+show running-config
+show ip route</pre>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Perintah</th><th>Dijalankan di</th><th>Fungsi</th></tr></thead>
+          <tbody>
+            <tr><td><code>show vlan brief</code></td><td>Switch</td><td>Daftar VLAN dan port anggotanya (cek access port)</td></tr>
+            <tr><td><code>show interfaces trunk</code></td><td>Switch</td><td>Port trunk aktif, VLAN yang diizinkan, dan native VLAN</td></tr>
+            <tr><td><code>show ip interface brief</code></td><td>Router (atau switch Layer 3)</td><td>Ringkasan interface/subinterface: IP dan status (up/down)</td></tr>
+            <tr><td><code>show running-config</code></td><td>Router &amp; switch</td><td>Konfigurasi yang sedang berjalan, untuk memeriksa enkapsulasi dan IP</td></tr>
+            <tr><td><code>show ip route</code></td><td>Router (atau switch Layer 3)</td><td>Tabel routing: jaringan yang terhubung langsung dan jalur lainnya</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 17. MINI PROJECT -->
+    <section class="section reveal" id="miniproject" data-title="Mini Project" data-kind="act">
+      <span class="section-eyebrow">16 &middot; Proyek Kelompok</span>
+      <h2 class="section-title">Membangun Komunikasi Antar-Divisi Perusahaan</h2>
+      <p class="section-desc">Sebuah perusahaan memiliki tiga divisi. Rancang dan bangun jaringan yang menghubungkan ketiganya menggunakan Router on a Stick. Semua perangkat merupakan contoh untuk proyek pembelajaran.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Divisi</th><th>Perangkat</th><th>VLAN</th><th>Network</th><th>Gateway</th></tr></thead>
+          <tbody>
+            <tr><td>Administrasi</td><td>10 komputer</td><td>10</td><td><code>192.168.10.0/24</code></td><td><code>192.168.10.1</code></td></tr>
+            <tr><td>Keuangan</td><td>10 komputer</td><td>20</td><td><code>192.168.20.0/24</code></td><td><code>192.168.20.1</code></td></tr>
+            <tr><td>IT</td><td>5 komputer + 1 server</td><td>30</td><td><code>192.168.30.0/24</code></td><td><code>192.168.30.1</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="prose" style="margin-top:.8rem;">Perangkat laboratorium: 1 router, 2 managed switch, PC simulasi, dan 1 server.</p>
+
+      <h3 class="sub-title">Tahapan Proyek (centang setelah selesai)</h3>
+      <div id="checklistMP"></div>
+
+      <h3 class="sub-title">Petunjuk Per Tahap</h3>
+      <div class="tabs-nav" id="mpTabs"></div>
+      <div id="mpPanels"></div>
+
+      <div class="note note-warn"><i class="fas fa-shield-halved"></i><strong>Catatan keamanan:</strong> jangan menganggap seluruh komunikasi harus selalu diizinkan. Pengaturan akses antar-divisi (misalnya Keuangan tidak boleh mengakses server IT) adalah bagian dari desain keamanan dan dapat dikembangkan pada bab firewall/ACL.</div>
+
+      <h3 class="sub-title">Output Proyek</h3>
+      <div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));">
+        <div class="stat-pill"><i class="fas fa-file"></i> File Cisco Packet Tracer</div>
+        <div class="stat-pill"><i class="fas fa-diagram-project"></i> Diagram jaringan</div>
+        <div class="stat-pill"><i class="fas fa-table"></i> Tabel VLAN</div>
+        <div class="stat-pill"><i class="fas fa-table-list"></i> Tabel IP Address</div>
+        <div class="stat-pill"><i class="fas fa-terminal"></i> Konfigurasi router &amp; switch</div>
+        <div class="stat-pill"><i class="fas fa-satellite-dish"></i> Tabel hasil ping</div>
+        <div class="stat-pill"><i class="fas fa-wrench"></i> Laporan troubleshooting</div>
+        <div class="stat-pill"><i class="fas fa-flag-checkered"></i> Kesimpulan</div>
+      </div>
+
+      <h3 class="sub-title">Rubrik Penilaian</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Aspek</th><th style="text-align:right;">Bobot</th><th>Sangat Baik</th><th>Baik</th><th>Cukup</th><th>Perlu Bimbingan</th></tr></thead>
+          <tbody>
+            <tr><td>Analisis kebutuhan dan desain topologi</td><td style="text-align:right;">15%</td><td>Kebutuhan lengkap; topologi tepat dan rapi</td><td>Kebutuhan hampir lengkap; topologi tepat</td><td>Sebagian kebutuhan terlewat; topologi kurang rapi</td><td>Analisis tidak lengkap; topologi tidak sesuai</td></tr>
+            <tr><td>Pengalamatan IP dan VLAN</td><td style="text-align:right;">20%</td><td>Semua VLAN &amp; IP konsisten, tanpa tumpang tindih</td><td>Hampir semua konsisten, 1&ndash;2 kekeliruan kecil</td><td>Beberapa kesalahan pengalamatan</td><td>Banyak kesalahan / VLAN-subnet tidak konsisten</td></tr>
+            <tr><td>Konfigurasi trunk dan access port</td><td style="text-align:right;">15%</td><td>Semua port tepat dan terverifikasi</td><td>Mayoritas tepat, verifikasi sebagian</td><td>Sebagian port salah, perlu perbaikan</td><td>Port banyak salah / tidak terverifikasi</td></tr>
+            <tr><td>Konfigurasi Inter-VLAN Routing</td><td style="text-align:right;">25%</td><td>Subinterface &amp; gateway benar, routing berfungsi penuh</td><td>Berfungsi, ada 1 kekeliruan kecil</td><td>Berfungsi sebagian</td><td>Routing belum berfungsi</td></tr>
+            <tr><td>Pengujian dan troubleshooting</td><td style="text-align:right;">15%</td><td>Pengujian sistematis; masalah dianalisis &amp; diperbaiki</td><td>Pengujian lengkap; perbaikan dengan sedikit arahan</td><td>Pengujian terbatas; perbaikan dengan banyak arahan</td><td>Pengujian tidak lengkap; belum mampu memperbaiki</td></tr>
+            <tr><td>Dokumentasi dan presentasi</td><td style="text-align:right;">10%</td><td>Lengkap, jelas, presentasi percaya diri</td><td>Lengkap, presentasi cukup jelas</td><td>Kurang lengkap</td><td>Tidak lengkap / tidak dipresentasikan</td></tr>
+            <tr><th>Total</th><th style="text-align:right;">100%</th><th colspan="4"></th></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub-title">Kalkulator Penilaian Mandiri</h3>
+      <div class="card static">
+        <p class="prose" style="margin-top:0;">Contoh skala untuk penilaian mandiri: Sangat Baik = 100, Baik = 80, Cukup = 60, Perlu Bimbingan = 40. Skala resmi mengikuti ketentuan guru.</p>
+        <div id="rubricCalc" class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));"></div>
+        <p style="font-weight:800;font-size:1.2rem;margin:1rem 0 0;">Estimasi nilai: <span id="rubricScore" style="color:var(--primary);">0</span> / 100</p>
+      </div>
+    </section>
+
+    <!-- 18. QUIZ -->
+    <section class="section reveal" id="quiz" data-title="Quiz Interaktif" data-kind="act">
+      <span class="section-eyebrow">17 &middot; Evaluasi</span>
+      <h2 class="section-title">Quiz Interaktif BAB 4</h2>
+      <p class="section-desc">30 soal: 15 pilihan ganda, 5 benar/salah, 5 mencocokkan istilah, dan 5 studi kasus. Urutan soal dan pilihan jawaban diacak setiap kali kamu mulai.</p>
+      <div class="card static">
+        <div id="quizIntro">
+          <p style="color:var(--text-muted);">Soal hanya mencakup materi BAB 4. Setiap jawaban disertai pembahasan.</p>
+          <p id="quizBest" style="font-weight:600;color:var(--primary);"></p>
+          <button class="btn btn-primary" id="btnQuizStart"><i class="fas fa-play"></i> Mulai Quiz</button>
+        </div>
+        <div id="quizBody" style="display:none;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;font-size:.85rem;color:var(--text-muted);font-weight:600;">
+            <span id="quizProgressText">Soal 1/30</span>
+            <span id="quizScoreText">Skor: 0</span>
+          </div>
+          <div class="progress-track" style="margin-bottom:1.5rem;"><div class="progress-fill" id="quizProgressFill" style="width:0%;"></div></div>
+          <p id="quizQuestionCat" class="badge badge-blue" style="margin-bottom:.7rem;"></p>
+          <h3 id="quizQuestion" style="font-weight:700;margin:0 0 1.2rem;line-height:1.5;"></h3>
+          <div id="quizOptions"></div>
+          <p id="quizExplanation" style="display:none;background:var(--surface-2);padding:1rem;border-radius:.7rem;font-size:.87rem;color:var(--text-muted);margin-top:1rem;line-height:1.7;"></p>
+          <div style="text-align:right;margin-top:1.2rem;">
+            <button class="btn btn-primary btn-sm" id="quizNextBtn" style="display:none;">Selanjutnya <i class="fas fa-arrow-right"></i></button>
+          </div>
+        </div>
+        <div id="quizResult" style="display:none;text-align:center;">
+          <i class="fas fa-trophy" style="font-size:2.5rem;color:var(--accent);"></i>
+          <h3 style="margin:.8rem 0 .2rem;font-weight:800;font-size:1.6rem;" id="quizFinalScore"></h3>
+          <p id="quizFinalCategory" style="font-weight:700;color:var(--primary);"></p>
+          <div id="quizCatBreakdown" style="margin:1rem auto;max-width:420px;text-align:left;font-size:.88rem;"></div>
+          <button class="btn btn-outline" style="margin-top:1rem;" id="btnQuizRestart"><i class="fas fa-rotate-right"></i> Ulangi Quiz</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 19. RINGKASAN -->
+    <section class="section reveal" id="ringkasan" data-title="Ringkasan" data-kind="read">
+      <span class="section-eyebrow">18 &middot; Rangkuman</span>
+      <h2 class="section-title">Ringkasan Alur Materi</h2>
+      <div style="display:flex;flex-direction:column;gap:0;max-width:460px;" id="summaryFlow"></div>
+      <h3 class="sub-title">Ringkasan Singkat</h3>
+      <div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+        <div class="card static" style="padding:1.1rem;"><p style="font-weight:700;margin:0 0 .3rem;color:var(--primary);">VLAN</p><p class="prose" style="margin:0;">Memisahkan jaringan secara logis.</p></div>
+        <div class="card static" style="padding:1.1rem;"><p style="font-weight:700;margin:0 0 .3rem;color:var(--primary);">Trunk</p><p class="prose" style="margin:0;">Membawa trafik beberapa VLAN dalam satu link.</p></div>
+        <div class="card static" style="padding:1.1rem;"><p style="font-weight:700;margin:0 0 .3rem;color:var(--primary);">Router</p><p class="prose" style="margin:0;">Melakukan routing antarjaringan.</p></div>
+        <div class="card static" style="padding:1.1rem;"><p style="font-weight:700;margin:0 0 .3rem;color:var(--primary);">Default Gateway</p><p class="prose" style="margin:0;">Jalur keluar dari subnet lokal.</p></div>
+        <div class="card static" style="padding:1.1rem;"><p style="font-weight:700;margin:0 0 .3rem;color:var(--primary);">Layer 3 Switch</p><p class="prose" style="margin:0;">Dapat melakukan routing bila perangkat mendukungnya.</p></div>
+      </div>
+    </section>
+
+    <!-- 20. GLOSARIUM -->
+    <section class="section reveal" id="glosarium" data-title="Glosarium" data-kind="read">
+      <span class="section-eyebrow">19 &middot; Kamus Istilah</span>
+      <h2 class="section-title">Glosarium</h2>
+      <input type="search" id="glossarySearch" placeholder="Cari istilah... contoh: gateway" aria-label="Cari istilah glosarium" style="width:100%;padding:.9rem 1.1rem;border-radius:.8rem;border:1px solid var(--border);margin-bottom:1.5rem;background:var(--surface);color:var(--text);font-size:.95rem;font-family:inherit;">
+      <div id="glossaryList" class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));"></div>
+    </section>
+
+    <!-- 21. REFLEKSI -->
+    <section class="section reveal" id="refleksi" data-title="Refleksi" data-kind="act">
+      <span class="section-eyebrow">20 &middot; Refleksi Diri</span>
+      <h2 class="section-title">Refleksi Pembelajaran</h2>
+      <p class="section-desc">Jawabanmu disimpan <strong>secara lokal di browser perangkat ini</strong> (localStorage) dan <strong>tidak otomatis dikirim kepada guru</strong>. Salin atau tunjukkan jawabanmu bila diminta.</p>
+      <div class="card static" id="reflectionForm" style="display:flex;flex-direction:column;gap:1.3rem;"></div>
+      <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.2rem;">
+        <button class="btn btn-primary" id="btnReflSave"><i class="fas fa-floppy-disk"></i> Simpan Refleksi</button>
+        <button class="btn btn-danger" id="btnReflClear"><i class="fas fa-trash"></i> Hapus Refleksi</button>
+      </div>
+    </section>
+
+    <!-- 22. PROGRESS -->
+    <section class="section reveal" id="progress-belajar" data-title="Progress Belajar" data-kind="none">
+      <span class="section-eyebrow">21 &middot; Progress</span>
+      <h2 class="section-title">Progress Belajar BAB 4</h2>
+      <div class="card static">
+        <div class="progress-track"><div class="progress-fill" id="mainProgressFill" style="width:0%;"></div></div>
+        <p style="margin:.8rem 0 .2rem;font-weight:700;" id="mainProgressText">0%</p>
+        <p style="color:var(--text-muted);font-size:.85rem;margin:0 0 1.2rem;">Bagian bacaan dihitung setelah kamu benar-benar berada di bagian itu beberapa detik. Bagian aktivitas (simulasi, praktik, quiz, dll.) dihitung setelah aktivitasnya dikerjakan. Progress tersimpan di perangkat ini dan dapat dilanjutkan.</p>
+        <div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-bottom:1.2rem;">
+          <div class="stat-pill" id="stPraktik"><i class="fas fa-flask"></i> <span>Praktik: belum</span></div>
+          <div class="stat-pill" id="stQuiz"><i class="fas fa-circle-question"></i> <span>Quiz: belum</span></div>
+          <div class="stat-pill" id="stRefl"><i class="fas fa-pen"></i> <span>Refleksi: belum</span></div>
+        </div>
+        <h3 style="font-size:1rem;font-weight:700;margin:0 0 .6rem;">Checklist bagian materi</h3>
+        <div id="progressChecklist" class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.5rem;"></div>
+        <button class="btn btn-danger btn-sm" id="btnResetProgress" style="margin-top:1.2rem;"><i class="fas fa-rotate-left"></i> Reset Progress BAB 4</button>
+      </div>
+    </section>
+
+    <!-- 23. NAVIGASI -->
+    <div class="card static" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:4rem;">
+      <a href="bab3.html" class="btn btn-outline"><i class="fas fa-arrow-left"></i> BAB 3: Switching</a>
+      <a href="index.html" class="btn btn-outline"><i class="fas fa-map"></i> Kembali ke Roadmap</a>
+      <a href="bab5.html" class="btn btn-primary">BAB 5: Static Routing <i class="fas fa-arrow-right"></i></a>
+    </div>
+
+    </div><!-- /content -->
+  </div><!-- /layout -->
+</main>
+
+<!-- FOOTER -->
+<footer style="background:var(--dark);color:#94a3b8;padding:2.5rem 0;margin-top:2rem;">
+  <div class="container foot">
+    <div>
+      <p style="color:#fff;font-weight:700;margin:0 0 .2rem;">SMK Bintang Raudloh</p>
+      <p style="font-size:.85rem;margin:0;">Teknik Komputer dan Jaringan</p>
+    </div>
+    <div style="font-size:.85rem;">&copy; 2026 Roadmap Pembelajaran TLJ Kelas XII. Guru Pengampu: Khalid Nabawi, S.Kom.</div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalCfg" role="dialog" aria-modal="true" aria-labelledby="modalCfgTitle">
+  <div class="modal-box">
+    <h3 id="modalCfgTitle" style="margin-top:0;font-weight:700;">Penjelasan Konfigurasi</h3>
+    <div class="tabs-nav" id="cfgExpTabs">
+      <button class="tab-btn active" data-tab="expSwitch">Switch</button>
+      <button class="tab-btn" data-tab="expRouter">Router</button>
+      <button class="tab-btn" data-tab="expL3">Layer 3 Switch</button>
+    </div>
+    <div class="tab-panel active" id="expSwitch" data-group="cfgExpTabs"></div>
+    <div class="tab-panel" id="expRouter" data-group="cfgExpTabs"></div>
+    <div class="tab-panel" id="expL3" data-group="cfgExpTabs"></div>
+    <button class="btn btn-outline btn-sm" data-close="modalCfg">Tutup</button>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<button id="backToTop" aria-label="Kembali ke atas"><i class="fas fa-arrow-up"></i></button>
+
+<script>
+/* ============================================================
+   UTIL: localStorage aman + helper
+============================================================ */
+const store = {
+  get(key, def){ try{ const v = localStorage.getItem(key); return v===null ? def : JSON.parse(v); }catch(e){ return def; } },
+  set(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){} },
+  del(key){ try{ localStorage.removeItem(key); }catch(e){} },
+  getRaw(key){ try{ return localStorage.getItem(key); }catch(e){ return null; } },
+  setRaw(key,v){ try{ localStorage.setItem(key,v); }catch(e){} }
+};
+const KEYS = {
+  theme:'tlj_bab4_theme', progress:'tlj_bab4_progress', checks:'tlj_bab4_checklists',
+  ping:'tlj_bab4_ping', reflection:'tlj_bab4_reflection', trouble:'tlj_bab4_trouble',
+  quiz:'tlj_bab4_quiz', sim:'tlj_bab4_sim', rubric:'tlj_bab4_rubric', cmp:'tlj_bab4_cmp'
+};
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ============================================================
+   IP helpers
+============================================================ */
+function isValidIP(s){
+  if(typeof s!=='string') return false;
+  const p = s.trim().split('.');
+  if(p.length!==4) return false;
+  return p.every(x=>/^\d{1,3}$/.test(x) && Number(x)>=0 && Number(x)<=255);
+}
+function ipToInt(s){ return s.trim().split('.').reduce((a,b)=>((a<<8)>>>0)+Number(b),0)>>>0; }
+function intToIp(n){ return [n>>>24,(n>>>16)&255,(n>>>8)&255,n&255].join('.'); }
+function prefixToMask(p){ return p===0?0:((0xFFFFFFFF<<(32-p))>>>0); }
+function maskToPrefix(m){
+  const n = ipToInt(m); let c=0, seen0=false;
+  for(let i=31;i>=0;i--){ const bit=(n>>>i)&1; if(bit){ if(seen0) return -1; c++; } else seen0=true; }
+  return c;
+}
+function networkOf(ip,prefix){ return (ipToInt(ip) & prefixToMask(prefix))>>>0; }
+
+/* ============================================================
+   THEME
+============================================================ */
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  const icon = t==='dark' ? 'fa-sun' : 'fa-moon';
+  document.querySelectorAll('#themeToggle i, #themeToggleMobile i').forEach(i=>i.className='fas '+icon);
+  const m = $('themeToggleMobile'); if(m) m.lastChild.textContent = t==='dark' ? '  Mode Terang' : '  Mode Gelap';
+}
+applyTheme(store.getRaw(KEYS.theme)==='dark' ? 'dark' : 'light');
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+  store.setRaw(KEYS.theme,cur); applyTheme(cur);
+}
+$('themeToggle').addEventListener('click',toggleTheme);
+$('themeToggleMobile').addEventListener('click',toggleTheme);
+
+/* mobile menu */
+$('hamburgerBtn').addEventListener('click',()=>{
+  const m=$('mobileMenu'); const open = m.style.display==='none';
+  m.style.display = open ? 'block' : 'none';
+  $('hamburgerBtn').setAttribute('aria-expanded', String(open));
+});
+$('tocToggle').addEventListener('click',()=>{
+  const sb=$('sidebar'); const open = sb.classList.toggle('mobile-open');
+  $('tocToggle').setAttribute('aria-expanded', String(open));
+});
+
+/* toast */
+let toastTimer;
+function showToast(msg,icon){
+  const t=$('toast');
+  t.innerHTML='<i class="fas '+(icon||'fa-circle-check')+'"></i> '+esc(msg);
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+/* modal */
+function openModal(id){ $(id).classList.add('show'); }
+function closeModal(id){ $(id).classList.remove('show'); }
+document.querySelectorAll('.modal-overlay').forEach(ov=>{
+  ov.addEventListener('click',e=>{ if(e.target===ov) closeModal(ov.id); });
+});
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal-overlay.show').forEach(m=>closeModal(m.id)); });
+
+/* accordion (delegasi) */
+document.addEventListener('click',e=>{
+  const head = e.target.closest('.accordion-head');
+  if(!head) return;
+  if(e.target.closest('input,label.check-item')) return;
+  const item = head.parentElement;
+  const open = item.classList.contains('open');
+  item.parentElement.querySelectorAll(':scope > .accordion-item').forEach(i=>{ i.classList.remove('open'); const h=i.querySelector('.accordion-head'); if(h) h.setAttribute('aria-expanded','false'); });
+  if(!open){ item.classList.add('open'); head.setAttribute('aria-expanded','true'); }
+});
+function accItem(title, bodyHtml, headExtra){
+  return '<div class="accordion-item"><button class="accordion-head" aria-expanded="false"><span>'+title+'</span><span style="display:flex;gap:.6rem;align-items:center;">'+(headExtra||'')+'<i class="fas fa-chevron-down chev"></i></span></button>'+
+    '<div class="accordion-body"><div class="accordion-clip"><div class="accordion-body-inner">'+bodyHtml+'</div></div></div></div>';
+}
+
+/* tabs (delegasi, per grup) */
+document.addEventListener('click',e=>{
+  const btn = e.target.closest('.tab-btn');
+  if(!btn || !btn.dataset.tab) return;
+  const nav = btn.parentElement;
+  nav.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-panel[data-group="'+nav.id+'"]').forEach(p=>p.classList.remove('active'));
+  const panel=$(btn.dataset.tab); if(panel) panel.classList.add('active');
+});
+
+/* ============================================================
+   PROGRESS (aktivitas nyata)
+============================================================ */
+const allSections = Array.from(document.querySelectorAll('main section.section'));
+const countedSections = allSections.filter(s=>s.dataset.kind==='read' || s.dataset.kind==='act');
+let progress = store.get(KEYS.progress,{});
+function markDone(id){
+  if(progress[id]) return;
+  progress[id]=true; store.set(KEYS.progress,progress);
+  updateProgressUI();
+  const sec=$(id);
+  if(sec && sec.dataset.kind==='act') showToast('Bagian "'+sec.dataset.title+'" selesai ✓','fa-circle-check');
+}
+function updateProgressUI(){
+  const total = countedSections.length;
+  const done = countedSections.filter(s=>progress[s.id]).length;
+  const pct = Math.round(done/total*100);
+  ['sideProgressFill','mainProgressFill','heroProgressFill'].forEach(id=>{ $(id).style.width=pct+'%'; });
+  $('sideProgressText').textContent=pct+'%';
+  $('heroProgressText').textContent=pct+'%';
+  $('heroProgressBar').setAttribute('aria-valuenow',pct);
+  $('mainProgressText').textContent=pct+'% selesai ('+done+'/'+total+' bagian)';
+  document.querySelectorAll('.toc-link').forEach(l=>l.classList.toggle('done',!!progress[l.dataset.target]));
+  const list=$('progressChecklist');
+  list.innerHTML = countedSections.map(s=>{
+    const d=!!progress[s.id];
+    return '<div class="stat-pill '+(d?'done':'')+'"><i class="fas '+(d?'fa-circle-check':'fa-circle')+'"></i><span>'+s.dataset.title+(s.dataset.kind==='act'?' <small>(aktivitas)</small>':'')+'</span></div>';
+  }).join('');
+  const praktikDone = ['praktik1','praktik2','praktik3'].filter(i=>progress[i]).length;
+  setPill('stPraktik', praktikDone===3, 'Praktik: '+praktikDone+'/3 selesai');
+  const qz = store.get(KEYS.quiz,null);
+  setPill('stQuiz', !!(qz&&qz.done), qz&&qz.done ? 'Quiz: skor terbaik '+qz.best+'/'+qz.total : 'Quiz: belum');
+  setPill('stRefl', !!progress['refleksi'], progress['refleksi'] ? 'Refleksi: tersimpan' : 'Refleksi: belum');
+}
+function setPill(id,done,text){
+  const el=$(id); el.classList.toggle('done',done);
+  el.querySelector('span').textContent=text;
+}
+$('btnResetProgress').addEventListener('click',()=>{
+  if(!confirm('Reset semua progress, checklist, dan hasil aktivitas BAB 4 di perangkat ini? Refleksi tidak dihapus.')) return;
+  [KEYS.progress,KEYS.checks,KEYS.ping,KEYS.trouble,KEYS.quiz,KEYS.sim,KEYS.rubric,KEYS.cmp].forEach(k=>store.del(k));
+  location.reload();
+});
+
+/* TOC */
+const tocNav=$('tocNav');
+allSections.forEach((sec,i)=>{
+  const a=document.createElement('a');
+  a.href='#'+sec.id; a.className='toc-link'; a.dataset.target=sec.id;
+  a.innerHTML='<span class="toc-num">'+(i+1)+'</span><span>'+sec.dataset.title+'</span>';
+  a.addEventListener('click',()=>{ $('sidebar').classList.remove('mobile-open'); });
+  tocNav.appendChild(a);
+});
+const tocLinks = Array.from(document.querySelectorAll('.toc-link'));
+
+/* IntersectionObserver: reveal + aktif + dwell time */
+const dwellTimers = {};
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    const sec=entry.target;
+    if(entry.isIntersecting){
+      sec.classList.add('in');
+      tocLinks.forEach(l=>l.classList.toggle('active', l.dataset.target===sec.id));
+      if(sec.dataset.kind==='read' && !progress[sec.id] && !dwellTimers[sec.id]){
+        dwellTimers[sec.id]=setTimeout(()=>{ markDone(sec.id); delete dwellTimers[sec.id]; },4000);
+      }
+    }else if(dwellTimers[sec.id]){
+      clearTimeout(dwellTimers[sec.id]); delete dwellTimers[sec.id];
+    }
+  });
+},{threshold:0.3});
+allSections.forEach(s=>observer.observe(s));
+window.addEventListener('scroll',()=>{ $('backToTop').classList.toggle('show',window.scrollY>500); });
+$('backToTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'}));
+
+/* Search materi */
+$('materialSearch').addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase();
+  let hits=0, first=null;
+  allSections.forEach(sec=>{
+    const link=document.querySelector('.toc-link[data-target="'+sec.id+'"]');
+    const match = !q || sec.dataset.title.toLowerCase().includes(q) || sec.textContent.toLowerCase().includes(q);
+    link.classList.toggle('hidden',!match);
+    if(match && q){ hits++; if(!first) first=sec; }
+  });
+  $('searchInfo').textContent = q ? (hits ? hits+' bagian ditemukan (Enter: ke hasil pertama)' : 'Tidak ada bagian yang cocok.') : '';
+  e.target._first = first;
+});
+$('materialSearch').addEventListener('keydown',e=>{
+  if(e.key==='Enter' && e.target._first){ e.target._first.scrollIntoView({behavior:reduceMotion?'auto':'smooth'}); }
+});
+
+/* ============================================================
+   SVG helpers
+============================================================ */
+function svgBox(x,y,w,h,label,sub,opt){
+  opt=opt||{};
+  const fill=opt.fill||'var(--surface)', stroke=opt.stroke||'var(--border)', tx=opt.text||'var(--text)';
+  let s='<rect x="'+(x-w/2)+'" y="'+(y-h/2)+'" width="'+w+'" height="'+h+'" rx="12" style="fill:'+fill+';stroke:'+stroke+';stroke-width:'+(opt.sw||1.5)+'"/>';
+  s+='<text x="'+x+'" y="'+(y+(sub?-3:5))+'" text-anchor="middle" style="fill:'+tx+';font:700 13px Inter,sans-serif">'+label+'</text>';
+  if(sub) s+='<text x="'+x+'" y="'+(y+14)+'" text-anchor="middle" style="fill:'+tx+';font:500 11px Inter,sans-serif;opacity:.8">'+sub+'</text>';
+  return s;
+}
+function svgLine(x1,y1,x2,y2,color,w,dash){
+  return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+color+'" stroke-width="'+(w||3)+'"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/>';
+}
+function svgText(x,y,t,size,color,anchor,weight){
+  return '<text x="'+x+'" y="'+y+'" text-anchor="'+(anchor||'middle')+'" style="fill:'+(color||'var(--text-muted)')+';font:'+(weight||600)+' '+(size||12)+'px Inter,sans-serif">'+t+'</text>';
+}
+const VC = {10:'#3b82f6',20:'#f59e0b',30:'#22c55e'};
+
+/* ---- Apersepsi: sebelum/sesudah ---- */
+function drawApersepsi(after){
+  let s='<svg viewBox="0 0 800 380" role="img">';
+  const pcs=[[140,320,'PC Administrasi','VLAN 10',10],[400,320,'PC Keuangan','VLAN 20',20],[660,320,'Server IT','VLAN 30',30]];
+  pcs.forEach(p=>{ s+=svgLine(p[0],p[1]-35,400,200,VC[p[4]],3); });
+  if(after){
+    s+=svgLine(400,176,400,86,'#a855f7',5);
+    s+=svgText(470,135,'Trunk 802.1Q','12','#a855f7','middle',700);
+    s+=svgBox(400,55,170,56,'Router','gateway tiap VLAN',{stroke:'#a855f7',sw:2});
+  }else{
+    s+=svgBox(400,55,170,56,'(Tidak ada router)','',{stroke:'var(--border)'});
+    s+=svgLine(400,176,400,86,'#dc2626',3,'6 6');
+    s+=svgText(400,135,'&#10006; tidak ada jalur antar-VLAN','12','#dc2626','middle',700);
+  }
+  s+=svgBox(400,200,170,44,'Switch','',{fill:'#3b82f6',stroke:'#1e40af',text:'#fff'});
+  pcs.forEach(p=>{ s+=svgBox(p[0],p[1],150,66,p[2],p[3],{stroke:VC[p[4]],sw:2}); });
+  s+='</svg>';
+  $('apersepsiDiagram').innerHTML=s;
+  const t=$('apersepsiText');
+  if(after){
+    t.className='result-badge result-ok';
+    t.innerHTML='✅ <strong>Sesudah:</strong> PC Administrasi mengirim paket ke gateway (router), router memeriksa tabel jaringannya dan meneruskan paket ke VLAN 30 (server IT). Pemisahan VLAN tetap ada, hanya jalur komunikasinya yang disediakan dan dapat dikontrol (misalnya dengan ACL).';
+  }else{
+    t.className='result-badge result-fail';
+    t.innerHTML='❌ <strong>Sebelum:</strong> tiap VLAN adalah broadcast domain dan subnet sendiri. Switch Layer 2 tidak dapat merutekan antar-subnet, sehingga PC Administrasi tidak dapat menjangkau server IT.';
+  }
+  $('btnBefore').className = after ? 'btn btn-outline btn-sm' : 'btn btn-primary btn-sm';
+  $('btnAfter').className = after ? 'btn btn-primary btn-sm' : 'btn btn-outline btn-sm';
+}
+$('btnBefore').addEventListener('click',()=>drawApersepsi(false));
+$('btnAfter').addEventListener('click',()=>drawApersepsi(true));
+drawApersepsi(false);
+
+/* ---- Router on a Stick diagram ---- */
+function drawROS(){
+  let s='<svg viewBox="0 0 800 440" role="img" aria-label="Router on a Stick">';
+  s+=svgLine(150,380,400,215,VC[10],3)+svgLine(400,380,400,215,VC[20],3)+svgLine(650,380,400,215,VC[30],3);
+  s+=svgLine(400,190,400,140,'#a855f7',6);
+  s+=svgText(520,168,'Satu link fisik &middot; TRUNK 802.1Q','12','#a855f7','middle',700);
+  s+=svgBox(400,205,200,44,'MANAGED SWITCH','',{fill:'#3b82f6',stroke:'#1e40af',text:'#fff'});
+  s+=svgBox(400,95,200,70,'ROUTER','Gi0/0 (fisik, no shutdown)',{stroke:'#a855f7',sw:2});
+  s+=svgBox(150,40,150,34,'G0/0.10','VLAN 10 &middot; .10.1',{stroke:VC[10],sw:2}).replace(/y="(\d+)"/,'y="$1"');
+  s+=svgLine(250,40,300,70,VC[10],2,'4 4');
+  s+=svgBox(150,90,150,34,'G0/0.20','VLAN 20 &middot; .20.1',{stroke:VC[20],sw:2});
+  s+=svgLine(225,90,300,95,VC[20],2,'4 4');
+  s+=svgBox(150,140,150,34,'G0/0.30','VLAN 30 &middot; .30.1',{stroke:VC[30],sw:2});
+  s+=svgLine(225,140,300,115,VC[30],2,'4 4');
+  s+=svgBox(150,380,150,66,'PC Admin','VLAN 10 &middot; Fa0/1',{stroke:VC[10],sw:2});
+  s+=svgBox(400,380,150,66,'PC Keuangan','VLAN 20 &middot; Fa0/2',{stroke:VC[20],sw:2});
+  s+=svgBox(650,380,150,66,'PC IT','VLAN 30 &middot; Fa0/3',{stroke:VC[30],sw:2});
+  s+=svgText(150,300,'access','11','var(--text-muted)');
+  s+='</svg>';
+  $('rosDiagram').innerHTML=s;
+}
+drawROS();
+
+/* ---- Perbandingan dua metode ---- */
+function drawL3(){
+  let s='<svg viewBox="0 0 800 330" role="img" aria-label="Perbandingan Router on a Stick dan Layer 3 Switch">';
+  // kiri
+  s+=svgText(200,24,'Router on a Stick','15','var(--text)','middle',800);
+  s+=svgBox(200,75,150,46,'Router','subinterface',{stroke:'#a855f7',sw:2});
+  s+=svgLine(200,98,200,150,'#a855f7',5);
+  s+=svgText(262,128,'trunk','11','#a855f7','start',700);
+  s+=svgBox(200,172,150,44,'Switch L2','',{fill:'#3b82f6',stroke:'#1e40af',text:'#fff'});
+  s+=svgLine(130,194,95,262,VC[10],3)+svgLine(200,194,200,262,VC[20],3)+svgLine(270,194,305,262,VC[30],3);
+  s+=svgBox(95,285,90,40,'VLAN 10','',{stroke:VC[10],sw:2})+svgBox(200,285,90,40,'VLAN 20','',{stroke:VC[20],sw:2})+svgBox(305,285,90,40,'VLAN 30','',{stroke:VC[30],sw:2});
+  s+=svgLine(400,15,400,320,'var(--border)',2,'5 5');
+  // kanan
+  s+=svgText(600,24,'Layer 3 Switch','15','var(--text)','middle',800);
+  s+=svgBox(600,110,200,86,'Layer 3 Switch','SVI vlan10 &middot; vlan20 &middot; vlan30',{fill:'#3b82f6',stroke:'#1e40af',text:'#fff'});
+  s+=svgText(600,166,'ip routing','11','#16a34a','middle',700);
+  s+=svgLine(535,153,495,262,VC[10],3)+svgLine(600,153,600,262,VC[20],3)+svgLine(665,153,705,262,VC[30],3);
+  s+=svgBox(495,285,90,40,'VLAN 10','',{stroke:VC[10],sw:2})+svgBox(600,285,90,40,'VLAN 20','',{stroke:VC[20],sw:2})+svgBox(705,285,90,40,'VLAN 30','',{stroke:VC[30],sw:2});
+  s+='</svg>';
+  $('l3Diagram').innerHTML=s;
+}
+drawL3();
+
+/* ---- Topologi praktik ---- */
+function drawLab(){
+  let s='<svg viewBox="0 0 800 400" role="img" aria-label="Topologi praktik: router, switch, dan tiga PC">';
+  s+=svgLine(400,198,400,112,'#a855f7',5);
+  s+=svgText(415,160,'Gi0/0 &harr; Gi0/1 (trunk)','12','#a855f7','start',700);
+  s+=svgLine(150,330,380,222,VC[10],3)+svgLine(400,330,400,222,VC[20],3)+svgLine(650,330,420,222,VC[30],3);
+  s+=svgBox(400,85,200,52,'Router','Gi0/0.10 .20 .30',{stroke:'#a855f7',sw:2});
+  s+=svgBox(400,210,200,44,'Switch','Fa0/1-3 access &middot; Gi0/1 trunk',{fill:'#3b82f6',stroke:'#1e40af',text:'#fff'});
+  s+=svgBox(150,350,170,66,'PC Admin','192.168.10.10 &middot; Fa0/1',{stroke:VC[10],sw:2});
+  s+=svgBox(400,350,170,66,'PC Keuangan','192.168.20.10 &middot; Fa0/2',{stroke:VC[20],sw:2});
+  s+=svgBox(650,350,170,66,'PC IT','192.168.30.10 &middot; Fa0/3',{stroke:VC[30],sw:2});
+  s+='</svg>';
+  $('labTopology').innerHTML=s;
+}
+drawLab();
+
+/* ============================================================
+   REVIEW CARDS
+============================================================ */
+const reviewData=[
+  ['VLAN','Teknik membagi satu jaringan fisik menjadi beberapa jaringan logis (broadcast domain) yang terpisah.'],
+  ['VLAN ID','Nomor identitas VLAN (1-4094). Contoh: VLAN 10 untuk Administrasi.'],
+  ['Access Port','Port switch yang membawa satu VLAN, dipakai untuk end device seperti PC dan printer.'],
+  ['Trunk Port','Port yang membawa banyak VLAN sekaligus dalam satu link, antar switch atau switch ke router.'],
+  ['IEEE 802.1Q','Standar tagging VLAN pada frame Ethernet di link trunk.'],
+  ['Broadcast Domain','Area jaringan yang menerima broadcast yang sama. Tiap VLAN adalah satu broadcast domain.'],
+  ['IP Address & Subnet','IP + subnet mask menentukan network sebuah perangkat. Praktik umum: 1 VLAN = 1 subnet.'],
+  ['Default Gateway','Alamat perangkat Layer 3 yang dituju PC untuk menjangkau subnet lain.']
+];
+(function buildReview(){
+  const wrap=$('reviewCards');
+  reviewData.forEach(r=>{
+    const b=document.createElement('button');
+    b.className='rev-card'; b.setAttribute('aria-expanded','false');
+    b.innerHTML='<div style="font-weight:700;display:flex;justify-content:space-between;gap:.5rem;"><span>'+r[0]+'</span><i class="fas fa-plus" style="color:var(--secondary);"></i></div><div class="rev-body">'+r[1]+'</div>';
+    b.addEventListener('click',()=>{
+      const o=b.classList.toggle('open'); b.setAttribute('aria-expanded',String(o));
+      b.querySelector('i').className='fas '+(o?'fa-minus':'fa-plus');
+    });
+    wrap.appendChild(b);
+  });
+})();
+$('btnRevAnswer').addEventListener('click',()=>{
+  const a=$('revAnswer'); const show=a.style.display==='none';
+  a.style.display=show?'block':'none';
+  $('btnRevAnswer').innerHTML=show?'<i class="fas fa-eye-slash"></i> Sembunyikan Jawaban':'<i class="fas fa-eye"></i> Lihat Jawaban';
+});
+
+/* ============================================================
+   ALUR PAKET (pengertian)
+============================================================ */
+const flowData=[
+  ['PC VLAN 10','PC (192.168.10.10) membuat paket dengan tujuan 192.168.20.10. Ia membandingkan tujuan dengan network miliknya (192.168.10.0/24) dan menyadari tujuan berada di luar subnet.'],
+  ['Default Gateway','Karena tujuan di luar subnet, PC mengirim frame ke MAC address gateway (192.168.10.1), yang ia dapatkan melalui ARP. IP tujuan paket tetap 192.168.20.10.'],
+  ['Router','Router menerima frame di subinterface VLAN 10, membuka paket IP, dan mencari jaringan 192.168.20.0/24 pada tabel routing-nya. Jaringan itu terhubung langsung melalui subinterface VLAN 20.'],
+  ['Jaringan VLAN 20','Router membungkus paket dalam frame baru dengan tag VLAN 20, lalu mengirimnya melalui trunk ke switch. Switch meneruskan frame hanya ke port anggota VLAN 20.'],
+  ['PC Tujuan','PC tujuan (192.168.20.10) menerima paket. Balasan akan mengikuti jalur sebaliknya melalui gateway VLAN 20 (192.168.20.1).']
+];
+(function buildFlow(){
+  const wrap=$('flowSteps');
+  flowData.forEach((f,i)=>{
+    const b=document.createElement('button');
+    b.className='node'; b.style.cursor='pointer'; b.style.width='100%'; b.style.fontFamily='inherit'; b.style.color='var(--text)';
+    b.innerHTML=(i+1)+'. '+f[0];
+    b.addEventListener('click',()=>{
+      wrap.querySelectorAll('.node').forEach(n=>{ n.style.borderColor='var(--border)'; n.style.background='var(--surface)'; });
+      b.style.borderColor='var(--secondary)'; b.style.background='var(--info-bg)';
+      $('flowExplain').innerHTML='<strong>Langkah '+(i+1)+' &mdash; '+f[0]+':</strong> '+f[1];
+    });
+    wrap.appendChild(b);
+    if(i<flowData.length-1){ const a=document.createElement('div'); a.className='arrow-down'; a.innerHTML='<i class="fas fa-arrow-down"></i>'; wrap.appendChild(a); }
+  });
+})();
+
+/* ============================================================
+   DEFAULT GATEWAY: alat 1 (lokal/remote) & alat 2 (cek konfigurasi)
+============================================================ */
+$('btnLocalRemote').addEventListener('click',()=>{
+  const src=$('lrSrc').value.trim(), dst=$('lrDst').value.trim(), p=parseInt($('lrPrefix').value,10);
+  const out=$('lrResult');
+  if(!isValidIP(src)||!isValidIP(dst)){ out.innerHTML='<div class="result-badge result-fail">❌ Alamat IP tidak valid. Gunakan format 4 angka 0&ndash;255 dipisah titik, misalnya 192.168.10.10.</div>'; return; }
+  const netS=networkOf(src,p), netD=networkOf(dst,p);
+  const mask=intToIp(prefixToMask(p));
+  let html;
+  if(netS===netD){
+    html='<div class="result-badge result-ok">✅ <strong>Tujuan berada di subnet yang sama.</strong><ul><li>Network PC sumber: <code>'+intToIp(netS)+'/'+p+'</code> (mask '+mask+')</li><li>Network tujuan: <code>'+intToIp(netD)+'/'+p+'</code></li><li>PC mengirim langsung ke tujuan (ARP ke IP tujuan), tanpa melalui gateway.</li></ul></div>';
+  }else{
+    html='<div class="result-badge result-warn">➡ <strong>Tujuan berada di subnet lain.</strong><ul><li>Network PC sumber: <code>'+intToIp(netS)+'/'+p+'</code> (mask '+mask+')</li><li>Network tujuan: <code>'+intToIp(netD)+'/'+p+'</code> &mdash; berbeda.</li><li>PC mengirim paket ke <strong>default gateway</strong> (ARP ke IP gateway), lalu router yang meneruskannya.</li></ul></div>';
+  }
+  out.innerHTML=html;
+});
+$('gcVlan').addEventListener('change',()=>{
+  const v=$('gcVlan').value; $('gcIp').placeholder='192.168.'+v+'.10'; $('gcGw').placeholder='192.168.'+v+'.1';
+});
+$('btnGwCheck').addEventListener('click',()=>{
+  const vlan=parseInt($('gcVlan').value,10);
+  const ip=$('gcIp').value.trim(), mask=$('gcMask').value, gw=$('gcGw').value.trim();
+  const netStr='192.168.'+vlan+'.0', expGw='192.168.'+vlan+'.1';
+  const rows=[]; let fatal=false;
+  function add(state,msg){ rows.push({state,msg}); if(state==='bad') fatal=true; }
+  if(!isValidIP(ip)){ add('bad','IP Address PC <code>'+esc(ip||'(kosong)')+'</code> tidak valid. Gunakan format a.b.c.d dengan angka 0&ndash;255.'); }
+  else{
+    if(ipToInt(ip)>>>8 !== ipToInt(netStr)>>>8) add('bad','IP <code>'+esc(ip)+'</code> bukan bagian dari network VLAN '+vlan+' (<code>'+netStr+'/24</code>). PC pada VLAN '+vlan+' harus memakai alamat <code>192.168.'+vlan+'.x</code>.');
+    else add('ok','IP berada pada network VLAN '+vlan+' (<code>'+netStr+'/24</code>).');
+    const last=ipToInt(ip)&255;
+    if(last===0) add('bad','Alamat <code>.0</code> adalah alamat network, tidak boleh dipakai untuk PC.');
+    else if(last===255) add('bad','Alamat <code>.255</code> adalah alamat broadcast, tidak boleh dipakai untuk PC.');
+    else if(last===1) add('bad','Alamat <code>.1</code> sudah dipakai sebagai gateway (router). Gunakan alamat lain untuk PC, misalnya <code>.10</code>.');
+  }
+  const pre=maskToPrefix(mask);
+  if(pre!==24) add('warn','Subnet mask <code>'+mask+'</code> (/'+pre+') berbeda dari desain lab (<code>255.255.255.0</code>/24). Mask yang salah mengubah perhitungan PC tentang mana yang lokal dan mana yang remote.');
+  else add('ok','Subnet mask sesuai desain (/24).');
+  if(!isValidIP(gw)){ add('bad','Default gateway <code>'+esc(gw||'(kosong)')+'</code> tidak valid. Tanpa gateway yang benar PC tidak bisa menjangkau subnet lain.'); }
+  else if(isValidIP(ip)){
+    const sameNet = networkOf(gw,pre<0?24:pre)===networkOf(ip,pre<0?24:pre);
+    if(!sameNet) add('bad','Gateway <code>'+gw+'</code> berada di network berbeda dari PC. Gateway harus satu subnet dengan PC agar bisa dijangkau langsung. Untuk VLAN '+vlan+' gunakan <code>'+expGw+'</code>.');
+    else if(gw!==expGw) add('bad','Gateway <code>'+gw+'</code> satu subnet dengan PC, tetapi router di desain ini memakai <code>'+expGw+'</code> pada subinterface VLAN '+vlan+'. Tidak ada perangkat yang menjawab ARP di alamat <code>'+gw+'</code>, sehingga paket ke subnet lain tidak terkirim.');
+    else if(gw===ip) add('bad','Gateway tidak boleh sama dengan IP PC itu sendiri.');
+    else add('ok','Gateway <code>'+gw+'</code> sesuai dengan alamat subinterface router untuk VLAN '+vlan+'.');
+  }
+  const icons={ok:'✅',bad:'❌',warn:'⚠️'};
+  const anyWarn=rows.some(r=>r.state==='warn');
+  const cls = fatal?'result-fail':(anyWarn?'result-warn':'result-ok');
+  const verdict = fatal?'Konfigurasi belum benar. Perbaiki poin bertanda ❌.':(anyWarn?'Konfigurasi dapat berjalan tetapi perhatikan peringatan.':'Konfigurasi benar dan sesuai desain.');
+  $('gcResult').innerHTML='<div class="result-badge '+cls+'"><strong>'+verdict+'</strong><ul style="list-style:none;padding-left:0;">'+rows.map(r=>'<li style="margin-bottom:.4rem;">'+icons[r.state]+' '+r.msg+'</li>').join('')+'</ul></div>';
+  markDone('gateway');
+});
+
+/* ============================================================
+   KONFIGURASI: penjelasan (modal)
+============================================================ */
+const cmdExplain={
+  expSwitch:[
+    ['enable','Masuk ke mode privileged EXEC.'],
+    ['configure terminal','Masuk ke mode konfigurasi global.'],
+    ['vlan 10 / name ADMIN','Membuat VLAN 10 dan memberi nama agar mudah dikenali.'],
+    ['interface fa0/1','Masuk ke konfigurasi port FastEthernet 0/1 (port yang terhubung ke PC).'],
+    ['switchport mode access','Menetapkan port sebagai access port (membawa satu VLAN).'],
+    ['switchport access vlan 10','Menjadikan port anggota VLAN 10.'],
+    ['interface gi0/1','Masuk ke port yang terhubung ke router.'],
+    ['switchport mode trunk','Menjadikan port trunk (802.1Q) agar membawa banyak VLAN.'],
+    ['show vlan brief','Memeriksa daftar VLAN dan port anggotanya.'],
+    ['show interfaces trunk','Memeriksa port trunk, VLAN yang diizinkan, dan native VLAN.']
+  ],
+  expRouter:[
+    ['interface gigabitEthernet0/0','Masuk ke interface fisik router yang terhubung ke switch. Nama harus sesuai port yang dipakai.'],
+    ['no shutdown','Mengaktifkan interface. Interface router secara default shutdown, dan subinterface tidak akan up selama interface fisiknya mati.'],
+    ['interface gigabitEthernet0/0.10','Membuat subinterface logis. Angka 10 hanya penamaan; VLAN ditentukan oleh perintah encapsulation.'],
+    ['encapsulation dot1Q 10','Mengaitkan subinterface dengan VLAN ID 10 menggunakan tag 802.1Q. Harus diberikan sebelum ip address.'],
+    ['ip address 192.168.10.1 255.255.255.0','Memberi alamat IP yang berfungsi sebagai default gateway VLAN 10.'],
+    ['show ip interface brief','Menampilkan ringkasan interface: IP address dan status (up/down) setiap subinterface.'],
+    ['show running-config','Menampilkan konfigurasi yang sedang berjalan.']
+  ],
+  expL3:[
+    ['interface vlan 10','Membuat SVI untuk VLAN 10, yaitu interface virtual yang menjadi gateway VLAN tersebut.'],
+    ['ip address 192.168.10.1 255.255.255.0','Alamat IP SVI = default gateway untuk PC di VLAN 10.'],
+    ['no shutdown','Mengaktifkan SVI. SVI umumnya baru up bila VLAN ada dan ada port aktif pada VLAN itu.'],
+    ['ip routing','Mengaktifkan fungsi routing pada switch Layer 3. Hanya tersedia pada model yang mendukung Layer 3.']
+  ]
+};
+(function buildCmdExplain(){
+  Object.keys(cmdExplain).forEach(id=>{
+    $(id).innerHTML='<div class="table-wrap" style="margin-bottom:1rem;"><table><thead><tr><th>Perintah</th><th>Arti</th></tr></thead><tbody>'+
+      cmdExplain[id].map(r=>'<tr><td><code>'+esc(r[0])+'</code></td><td>'+esc(r[1])+'</td></tr>').join('')+'</tbody></table></div>';
+  });
+})();
+$('btnCfgExplain').addEventListener('click',()=>openModal('modalCfg'));
+
+/* ============================================================
+   PERBANDINGAN
+============================================================ */
+document.querySelectorAll('#cmpButtons button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const hl=b.dataset.hl;
+    document.querySelectorAll('#cmpTable tr').forEach(tr=>{
+      Array.from(tr.children).forEach((cell,i)=>cell.classList.toggle('hl-col', hl!=='none' && i===parseInt(hl,10)));
+    });
+  });
+});
+const cmpCases=[
+  {q:'Sebuah lab sekolah memiliki 1 router bekas, 1 switch Layer 2 (seri 2960), 3 VLAN, dan anggaran terbatas. Metode apa yang paling sesuai?',
+   opts:['Router on a Stick','Layer 3 Switch','Tidak ada yang bisa dipakai'],ans:0,
+   fb:['Tepat. Perangkat yang tersedia adalah router dan switch Layer 2 yang tidak mendukung routing, jadi Router on a Stick adalah pilihan yang praktis dan murah untuk 3 VLAN.','Kurang tepat. Switch 2960 pada umumnya tidak mendukung routing Layer 3 dan anggaran terbatas, sehingga membeli Layer 3 Switch tidak diperlukan.','Kurang tepat. Router + switch Layer 2 yang bertrunk sudah cukup untuk Router on a Stick.']},
+  {q:'Sebuah kampus memiliki 40 VLAN dan trafik antar-VLAN sangat besar pada jaringan distribusi. Metode apa yang lebih sesuai?',
+   opts:['Router on a Stick','Layer 3 Switch','Keduanya sama baiknya'],ans:1,
+   fb:['Kurang tepat. Seluruh trafik antar-VLAN akan berbagi satu link dan satu router, sehingga mudah menjadi bottleneck pada trafik sebesar ini.','Tepat. Dengan banyak VLAN dan trafik besar, routing pada Layer 3 Switch lebih skalabel dan umumnya lebih cepat (bergantung model perangkat).','Kurang tepat. Pada skala ini perbedaan kapasitas dan skalabilitas menjadi penentu.']},
+  {q:'Kantor kecil (15 PC, 3 VLAN) sudah punya 1 router dan 1 managed switch Layer 2, tanpa rencana ekspansi dalam waktu dekat. Apa yang paling masuk akal?',
+   opts:['Router on a Stick','Layer 3 Switch','Beli switch Layer 3 sekarang juga'],ans:0,
+   fb:['Tepat. Perangkat sudah tersedia dan trafik kecil, sehingga Router on a Stick cukup. Bila nanti berkembang, pertimbangkan Layer 3 Switch.','Kurang tepat jika tidak ada kebutuhan lain. Layer 3 Switch tentu bisa, tetapi menambah biaya yang belum diperlukan.','Kurang tepat. Membeli perangkat baru tanpa kebutuhan jelas tidak efisien, padahal perangkat yang ada sudah cukup.']}
+];
+(function buildCmpCases(){
+  const saved=store.get(KEYS.cmp,{});
+  const wrap=$('cmpCases');
+  cmpCases.forEach((c,ci)=>{
+    const d=document.createElement('div');
+    d.className='card static'; d.style.marginBottom='1rem'; d.style.padding='1.3rem';
+    d.innerHTML='<p style="font-weight:600;margin:0 0 .8rem;"><span class="badge badge-blue">Kasus '+(ci+1)+'</span> '+c.q+'</p><div style="display:flex;flex-direction:column;gap:.5rem;"></div><div class="result-badge" style="display:none;"></div>';
+    const box=d.children[1], fb=d.children[2];
+    c.opts.forEach((o,oi)=>{
+      const b=document.createElement('button');
+      b.className='choice-btn'; b.textContent=o;
+      b.addEventListener('click',()=>{
+        box.querySelectorAll('button').forEach((x,xi)=>{ x.classList.remove('correct','wrong'); if(xi===c.ans) x.classList.add('correct'); else if(xi===oi) x.classList.add('wrong'); });
+        fb.style.display='block'; fb.className='result-badge '+(oi===c.ans?'result-ok':'result-fail');
+        fb.textContent=c.fb[oi];
+        saved[ci]=true; store.set(KEYS.cmp,saved);
+        if(Object.keys(saved).length>=cmpCases.length) markDone('perbandingan');
+      });
+      box.appendChild(b);
+    });
+    wrap.appendChild(d);
+  });
+  if(Object.keys(saved).length>=cmpCases.length) markDone('perbandingan');
+})();
+
+/* ============================================================
+   SIMULASI INTER-VLAN
+============================================================ */
+const simPcs=[
+  {id:'admin',name:'PC Administrasi',vlan:10,ip:'192.168.10.10',gwDefault:'192.168.10.1',pos:[140,320]},
+  {id:'keu',name:'PC Keuangan',vlan:20,ip:'192.168.20.10',gwDefault:'192.168.20.1',pos:[400,320]},
+  {id:'it',name:'PC IT',vlan:30,ip:'192.168.30.10',gwDefault:'192.168.30.1',pos:[660,320]}
+];
+const routerSubIp={10:'192.168.10.1',20:'192.168.20.1',30:'192.168.30.1'};
+const simGw={}; simPcs.forEach(p=>simGw[p.id]=p.gwDefault);
+const NODE={sw:[400,190],rt:[400,62]};
+function pcById(id){ return simPcs.find(p=>p.id===id); }
+(function initSim(){
+  const src=$('simSrc'), dst=$('simDst');
+  src.innerHTML=simPcs.map(p=>'<option value="'+p.id+'">'+p.name+'</option>').join('');
+  dst.innerHTML=src.innerHTML; dst.selectedIndex=2;
+  renderSimTable();
+})();
+function renderSimTable(){
+  $('simPcTable').innerHTML=simPcs.map(p=>
+    '<tr><td><strong>'+p.name+'</strong></td><td><span class="badge" style="background:'+VC[p.vlan]+'22;color:'+VC[p.vlan]+';">VLAN '+p.vlan+'</span></td><td><code>'+p.ip+'</code></td>'+
+    '<td><input class="gw-input" data-pc="'+p.id+'" value="'+esc(simGw[p.id])+'" aria-label="Default gateway '+p.name+'"></td></tr>').join('');
+  $('simPcTable').querySelectorAll('.gw-input').forEach(inp=>{
+    inp.addEventListener('input',()=>{
+      simGw[inp.dataset.pc]=inp.value.trim();
+      inp.classList.toggle('bad', inp.value.trim()!==pcById(inp.dataset.pc).gwDefault);
+    });
+  });
+}
+$('btnSimReset').addEventListener('click',()=>{
+  simPcs.forEach(p=>simGw[p.id]=p.gwDefault);
+  $('simRouting').checked=true; $('simTrunkOn').checked=true;
+  renderSimTable(); clearSimVisual(); $('simResult').innerHTML='';
+  updateTrunkVisual();
+});
+function updateTrunkVisual(){
+  const on=$('simTrunkOn').checked;
+  const t=$('simTrunk'); t.setAttribute('stroke',on?'#a855f7':'#dc2626'); t.setAttribute('stroke-dasharray',on?'':'8 8');
+  $('simTrunkLabel').textContent = on ? 'Trunk 802.1Q' : 'Trunk MATI';
+}
+$('simTrunkOn').addEventListener('change',updateTrunkVisual);
+
+/* Logika evaluasi: murni mengikuti kondisi yang dipilih siswa */
+function evalSim(src,dst){
+  const steps=[]; const S=src.pos, D=dst.pos;
+  const gwS=simGw[src.id], gwD=simGw[dst.id];
+  if(src.vlan===dst.vlan){
+    steps.push(src.name+' dan '+dst.name+' berada pada VLAN '+src.vlan+' dan subnet yang sama, jadi frame diteruskan langsung oleh switch (Layer 2) tanpa router.');
+    return {ok:true,type:'switching',path:[S,NODE.sw,D],steps,title:'Berhasil — komunikasi dalam satu VLAN (switching Layer 2).'};
+  }
+  steps.push('Tujuan '+dst.ip+' berada di subnet berbeda dari '+src.name+' (192.168.'+src.vlan+'.0/24), sehingga paket harus dikirim ke default gateway.');
+  const expectedS=routerSubIp[src.vlan];
+  if(!isValidIP(gwS)){
+    steps.push('Gateway "'+(gwS||'kosong')+'" pada '+src.name+' tidak valid, sehingga PC tidak tahu ke mana mengirim paket.');
+    return {ok:false,path:[S],failAt:S,steps,title:'Gagal — gateway '+src.name+' tidak valid atau kosong.'};
+  }
+  if(networkOf(gwS,24)!==networkOf(src.ip,24)){
+    steps.push('Gateway '+gwS+' berada di subnet berbeda dari '+src.name+'. PC hanya dapat mengirim ke gateway yang berada di subnet lokalnya.');
+    return {ok:false,path:[S],failAt:S,steps,title:'Gagal — gateway '+src.name+' berada di subnet yang salah.'};
+  }
+  if(gwS!==expectedS){
+    steps.push('Gateway '+gwS+' satu subnet dengan PC, tetapi tidak ada perangkat dengan alamat itu pada VLAN '+src.vlan+' (subinterface router memakai '+expectedS+'). ARP tidak dijawab.');
+    return {ok:false,path:[S,NODE.sw],failAt:NODE.sw,steps,title:'Gagal — gateway '+src.name+' salah ('+gwS+'), seharusnya '+expectedS+'.'};
+  }
+  steps.push('Paket dikirim ke gateway '+gwS+' melalui switch (VLAN '+src.vlan+').');
+  if(!$('simTrunkOn').checked){
+    steps.push('Link trunk antara switch dan router tidak aktif, sehingga frame tidak dapat mencapai router.');
+    return {ok:false,path:[S,NODE.sw],failAt:NODE.sw,steps,title:'Gagal — trunk switch–router nonaktif.'};
+  }
+  steps.push('Frame diberi tag 802.1Q VLAN '+src.vlan+' dan dikirim melalui trunk ke router (subinterface G0/0.'+src.vlan+').');
+  if(!$('simRouting').checked){
+    steps.push('Router menerima paket tetapi fungsi routing nonaktif, sehingga paket tidak diteruskan ke jaringan lain dan dibuang.');
+    return {ok:false,path:[S,NODE.sw,NODE.rt],failAt:NODE.rt,steps,title:'Gagal — routing pada router nonaktif.'};
+  }
+  steps.push('Router mencari jaringan 192.168.'+dst.vlan+'.0/24 di tabel routing (terhubung langsung pada subinterface G0/0.'+dst.vlan+') dan meneruskan paket dengan tag VLAN '+dst.vlan+'.');
+  steps.push('Switch meneruskan frame ke '+dst.name+'.');
+  const expectedD=routerSubIp[dst.vlan];
+  if(gwD!==expectedD){
+    steps.push('Paket tiba di '+dst.name+', tetapi gateway tujuan ('+(gwD||'kosong')+') salah. Saat membalas ke '+src.ip+' (subnet lain), balasan dikirim ke gateway yang tidak ada sehingga tidak kembali ke pengirim.');
+    return {ok:false,path:[S,NODE.sw,NODE.rt,NODE.sw,D],failAt:D,steps,title:'Gagal — balasan tidak kembali: gateway '+dst.name+' salah ('+(gwD||'kosong')+'), seharusnya '+expectedD+'.'};
+  }
+  steps.push(dst.name+' membalas ke gateway '+gwD+', balasan dirutekan kembali ke '+src.name+'.');
+  return {ok:true,type:'routing',path:[S,NODE.sw,NODE.rt,NODE.sw,D],steps,title:'Berhasil — paket dirutekan antar-VLAN (VLAN '+src.vlan+' → VLAN '+dst.vlan+').'};
+}
+let simAnimToken=0;
+function clearSimVisual(){
+  simAnimToken++;
+  $('simPath').setAttribute('points',''); $('simDot').setAttribute('visibility','hidden'); $('simFail').setAttribute('visibility','hidden');
+}
+function animateAlong(points,color,done){
+  const token=++simAnimToken;
+  const dot=$('simDot'), line=$('simPath');
+  line.setAttribute('stroke',color); line.setAttribute('points',points.map(p=>p.join(',')).join(' '));
+  dot.setAttribute('visibility','visible');
+  if(reduceMotion || points.length<2){ dot.setAttribute('cx',points[points.length-1][0]); dot.setAttribute('cy',points[points.length-1][1]); done&&done(); return; }
+  let seg=0, start=null; const dur=520;
+  function step(ts){
+    if(token!==simAnimToken) return;
+    if(start===null) start=ts;
+    const t=Math.min(1,(ts-start)/dur);
+    const a=points[seg], b=points[seg+1];
+    dot.setAttribute('cx',a[0]+(b[0]-a[0])*t); dot.setAttribute('cy',a[1]+(b[1]-a[1])*t);
+    if(t>=1){ seg++; start=null; if(seg>=points.length-1){ done&&done(); return; } }
+    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+function addSimLog(ok,text){
+  const ul=$('simLog');
+  if(ul.children.length===1 && ul.children[0].textContent==='Belum ada pengujian.') ul.innerHTML='';
+  const li=document.createElement('li'); li.className=ok?'ok':'fail'; li.textContent=(ok?'✅ ':'❌ ')+text;
+  ul.insertBefore(li,ul.firstChild);
+  while(ul.children.length>6) ul.removeChild(ul.lastChild);
+}
+$('btnSimSend').addEventListener('click',()=>{
+  const src=pcById($('simSrc').value), dst=pcById($('simDst').value);
+  const out=$('simResult');
+  if(src.id===dst.id){ out.innerHTML='<div class="result-badge result-warn">Pilih PC sumber dan tujuan yang berbeda.</div>'; return; }
+  const btn=$('btnSimSend'); btn.disabled=true;
+  clearSimVisual();
+  const r=evalSim(src,dst);
+  animateAlong(r.path, r.ok?'#16a34a':'#dc2626', ()=>{
+    if(!r.ok){ const f=$('simFail'); f.setAttribute('x',r.failAt[0]); f.setAttribute('y',r.failAt[1]-14); f.setAttribute('visibility','visible'); }
+    out.innerHTML='<div class="result-badge '+(r.ok?'result-ok':'result-fail')+'">'+(r.ok?'✅ ':'❌ ')+esc(r.title)+'<ol>'+r.steps.map(s=>'<li>'+esc(s)+'</li>').join('')+'</ol></div>';
+    addSimLog(r.ok,src.name+' → '+dst.name+': '+r.title);
+    btn.disabled=false;
+    const n=(store.get(KEYS.sim,0)||0)+1; store.set(KEYS.sim,n);
+    if(n>=3) markDone('simulasi');
+  });
+});
+if((store.get(KEYS.sim,0)||0)>=3) markDone('simulasi');
+
+/* ============================================================
+   CHECKLIST (Praktik 1, Praktik 2, Mini project)
+============================================================ */
+let checks=store.get(KEYS.checks,{p1:{},p2:{},mp:{}});
+['p1','p2','mp'].forEach(k=>{ if(!checks[k]) checks[k]={}; });
+function saveChecks(){ store.set(KEYS.checks,checks); }
+const p1Items=[
+  'Menempatkan 1 router, 1 managed switch, dan 3 PC pada workspace Packet Tracer',
+  'Menghubungkan PC Admin ke Fa0/1, PC Keuangan ke Fa0/2, PC IT ke Fa0/3 pada switch',
+  'Menghubungkan port router (Gi0/0) ke port switch (Gi0/1) dengan kabel yang sesuai',
+  'Memastikan jenis kabel dan port benar (lampu link menyala hijau)',
+  'Menentukan VLAN: 10 ADMIN, 20 KEUANGAN, 30 IT',
+  'Menentukan alamat IP dan gateway semua PC sesuai tabel',
+  'Menyimpan file proyek Packet Tracer (.pkt)'
+];
+function buildChecklist(wrapId,key,items,onChange){
+  const wrap=$(wrapId); wrap.innerHTML='';
+  items.forEach((t,i)=>{
+    const lab=document.createElement('label');
+    lab.className='check-item'+(checks[key][i]?' done':'');
+    lab.innerHTML='<input type="checkbox" '+(checks[key][i]?'checked':'')+'><span>'+t+'</span>';
+    lab.querySelector('input').addEventListener('change',e=>{
+      checks[key][i]=e.target.checked; lab.classList.toggle('done',e.target.checked); saveChecks(); onChange&&onChange();
+    });
+    wrap.appendChild(lab);
+  });
+}
+function checkedCount(key,n){ let c=0; for(let i=0;i<n;i++) if(checks[key][i]) c++; return c; }
+buildChecklist('checklistP1','p1',p1Items,()=>{ if(checkedCount('p1',p1Items.length)===p1Items.length) markDone('praktik1'); });
+if(checkedCount('p1',p1Items.length)===p1Items.length) markDone('praktik1');
+
+/* ============================================================
+   PRAKTIK 2: tahap A-G
+============================================================ */
+const p2Stages=[
+  {t:'Tahap A — Membuat VLAN pada switch',
+   goal:'Membuat VLAN 10, 20, dan 30 beserta namanya di managed switch.',
+   steps:['Klik switch, buka tab CLI, tekan Enter.','Masuk ke mode konfigurasi dan buat ketiga VLAN.'],
+   code:'Switch> enable\nSwitch# configure terminal\nSwitch(config)# vlan 10\nSwitch(config-vlan)# name ADMIN\nSwitch(config-vlan)# exit\nSwitch(config)# vlan 20\nSwitch(config-vlan)# name KEUANGAN\nSwitch(config-vlan)# exit\nSwitch(config)# vlan 30\nSwitch(config-vlan)# name IT\nSwitch(config-vlan)# exit',
+   exp:'VLAN harus ada di switch sebelum port dapat dimasukkan ke dalamnya dan sebelum trunk dapat membawanya.',
+   result:'show vlan brief menampilkan VLAN 10, 20, 30 dengan nama masing-masing.',
+   err:'Salah ketik nomor VLAN, lupa exit, atau tidak berada di mode konfigurasi global.'},
+  {t:'Tahap B — Mengatur access port',
+   goal:'Memasukkan port PC ke VLAN yang sesuai.',
+   steps:['Konfigurasi Fa0/1 → VLAN 10, Fa0/2 → VLAN 20, Fa0/3 → VLAN 30.'],
+   code:'Switch(config)# interface fa0/1\nSwitch(config-if)# switchport mode access\nSwitch(config-if)# switchport access vlan 10\nSwitch(config-if)# exit\nSwitch(config)# interface fa0/2\nSwitch(config-if)# switchport mode access\nSwitch(config-if)# switchport access vlan 20\nSwitch(config-if)# exit\nSwitch(config)# interface fa0/3\nSwitch(config-if)# switchport mode access\nSwitch(config-if)# switchport access vlan 30\nSwitch(config-if)# exit',
+   exp:'Access port hanya membawa satu VLAN dan menghubungkan end device. Frame dari PC tidak diberi tag; switch yang menentukan VLAN-nya berdasarkan konfigurasi port.',
+   result:'show vlan brief menampilkan Fa0/1 di VLAN 10, Fa0/2 di VLAN 20, dan Fa0/3 di VLAN 30.',
+   err:'Port masih berada di VLAN 1 (default), nomor port tertukar, atau PC tercolok pada port yang berbeda dari rencana.'},
+  {t:'Tahap C — Mengatur trunk port',
+   goal:'Menjadikan port switch yang menuju router sebagai trunk 802.1Q.',
+   steps:['Konfigurasi gi0/1 (atau port yang terhubung ke router) sebagai trunk.'],
+   code:'Switch(config)# interface gi0/1\nSwitch(config-if)# switchport mode trunk\nSwitch(config-if)# exit\nSwitch(config)# end\nSwitch# show interfaces trunk',
+   exp:'Trunk membawa frame banyak VLAN (bertag 802.1Q) melalui satu kabel ke router. Pada model switch yang mendukung beberapa jenis enkapsulasi, tambahkan switchport trunk encapsulation dot1q sebelum switchport mode trunk.',
+   result:'show interfaces trunk menampilkan Gi0/1 dengan mode on, encapsulasi 802.1q, dan VLAN 10,20,30 diizinkan.',
+   err:'Port yang dipilih bukan port ke router, port masih access, atau daftar VLAN yang diizinkan dibatasi sehingga ada VLAN yang tidak lewat.'},
+  {t:'Tahap D — Mengonfigurasi subinterface router',
+   goal:'Membuat tiga subinterface dengan enkapsulasi VLAN dan alamat gateway.',
+   steps:['Aktifkan interface fisik Gi0/0.','Buat subinterface .10, .20, .30 dengan encapsulation dot1Q dan IP.'],
+   code:'Router> enable\nRouter# configure terminal\nRouter(config)# interface gigabitEthernet0/0\nRouter(config-if)# no shutdown\nRouter(config-if)# exit\nRouter(config)# interface gigabitEthernet0/0.10\nRouter(config-subif)# encapsulation dot1Q 10\nRouter(config-subif)# ip address 192.168.10.1 255.255.255.0\nRouter(config-subif)# exit\nRouter(config)# interface gigabitEthernet0/0.20\nRouter(config-subif)# encapsulation dot1Q 20\nRouter(config-subif)# ip address 192.168.20.1 255.255.255.0\nRouter(config-subif)# exit\nRouter(config)# interface gigabitEthernet0/0.30\nRouter(config-subif)# encapsulation dot1Q 30\nRouter(config-subif)# ip address 192.168.30.1 255.255.255.0\nRouter(config-subif)# exit\nRouter(config)# end',
+   exp:'no shutdown menyalakan interface fisik. encapsulation dot1Q <ID> mengaitkan subinterface dengan VLAN. ip address memberi alamat gateway. Urutannya: encapsulation dulu, baru ip address.',
+   result:'Ketiga subinterface berstatus up/up dan memiliki IP sesuai tabel.',
+   err:'Lupa no shutdown, ip address diberikan sebelum encapsulation, VLAN ID pada encapsulation tidak sesuai, atau memakai nama interface yang tidak sesuai perangkat.'},
+  {t:'Tahap E — IP Address & default gateway pada PC',
+   goal:'Mengatur alamat IP, subnet mask, dan gateway tiap PC.',
+   steps:['Klik PC, tab Desktop → IP Configuration, pilih Static.','Isi sesuai tabel pada Praktik 1.'],
+   code:'PC Admin     IP 192.168.10.10  Mask 255.255.255.0  Gateway 192.168.10.1\nPC Keuangan  IP 192.168.20.10  Mask 255.255.255.0  Gateway 192.168.20.1\nPC IT        IP 192.168.30.10  Mask 255.255.255.0  Gateway 192.168.30.1',
+   exp:'Gateway tiap PC harus berada di subnet PC itu sendiri dan sama dengan IP subinterface router untuk VLAN tersebut.',
+   result:'Setiap PC menampilkan IP, mask, dan gateway yang benar pada IP Configuration.',
+   err:'Gateway kosong, gateway tertukar antar VLAN, atau mask keliru.'},
+  {t:'Tahap F — Memeriksa konfigurasi',
+   goal:'Memverifikasi konfigurasi sebelum menguji ping.',
+   steps:['Di switch jalankan show vlan brief dan show interfaces trunk.','Di router jalankan show ip interface brief dan show running-config, serta show ip route.'],
+   code:'Switch# show vlan brief\nSwitch# show interfaces trunk\nRouter# show ip interface brief\nRouter# show ip route\nRouter# show running-config',
+   exp:'Pemeriksaan ini memastikan VLAN, port, trunk, subinterface, dan jaringan terhubung sudah benar. Pada show ip route, jaringan 192.168.10.0/24, 20.0/24, dan 30.0/24 muncul sebagai jaringan terhubung langsung (C).',
+   result:'VLAN dan port benar, trunk aktif, subinterface up/up, dan tiga jaringan terhubung tampil di tabel routing.',
+   err:'Melewatkan tahap ini sehingga kesalahan baru ketahuan saat ping gagal dan sulit dilacak.'},
+  {t:'Tahap G — Menguji komunikasi',
+   goal:'Membuktikan komunikasi antar-VLAN berfungsi.',
+   steps:['Dari PC Admin: ping 192.168.10.1, lalu ping 192.168.20.10.','Lanjutkan pengujian Praktik 3.'],
+   code:'PC> ping 192.168.10.1\nPC> ping 192.168.20.10\nPC> ping 192.168.30.10',
+   exp:'Ping ke gateway menguji VLAN, trunk, dan subinterface. Ping ke PC VLAN lain menguji routing antar-VLAN. Ping pertama dapat gagal karena ARP; ulangi sebelum menyimpulkan.',
+   result:'Reply dari alamat tujuan (setelah ping pertama yang mungkin timeout).',
+   err:'Request timed out terus-menerus: periksa kembali tahap A–F, terutama gateway dan status interface.'}
+];
+function p2Update(){
+  const n=checkedCount('p2',p2Stages.length);
+  $('p2Fill').style.width=Math.round(n/p2Stages.length*100)+'%';
+  $('p2Text').textContent=n+' dari '+p2Stages.length+' tahap selesai';
+  if(n===p2Stages.length) markDone('praktik2');
+}
+(function buildP2(){
+  const wrap=$('accP2');
+  wrap.innerHTML=p2Stages.map((s,i)=>{
+    const body='<p style="margin:0 0 .4rem;"><strong>Tujuan:</strong> '+esc(s.goal)+'</p>'+
+      '<p style="margin:.6rem 0 .2rem;"><strong>Langkah kerja:</strong></p><ol style="margin:0 0 .4rem;padding-left:1.2rem;">'+s.steps.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol>'+
+      '<pre class="code">'+esc(s.code)+'</pre>'+
+      '<p style="margin:.4rem 0;"><strong>Penjelasan:</strong> '+esc(s.exp)+'</p>'+
+      '<p style="margin:.4rem 0;"><strong>Hasil yang diharapkan:</strong> '+esc(s.result)+'</p>'+
+      '<p style="margin:.4rem 0 .8rem;"><strong>Kemungkinan kesalahan:</strong> '+esc(s.err)+'</p>'+
+      '<label class="check-item'+(checks.p2[i]?' done':'')+'" data-i="'+i+'"><input type="checkbox" '+(checks.p2[i]?'checked':'')+'><span>Saya sudah menyelesaikan dan memverifikasi tahap ini</span></label>';
+    return accItem(esc(s.t),body);
+  }).join('');
+  wrap.querySelectorAll('.check-item').forEach(lab=>{
+    lab.addEventListener('click',e=>e.stopPropagation());
+    lab.querySelector('input').addEventListener('change',e=>{
+      const i=parseInt(lab.dataset.i,10);
+      checks.p2[i]=e.target.checked; lab.classList.toggle('done',e.target.checked); saveChecks(); p2Update();
+    });
+  });
+  p2Update();
+})();
+
+/* ============================================================
+   PRAKTIK 3: tabel hasil ping
+============================================================ */
+let pingRows=store.get(KEYS.ping,[]);
+function savePing(){ store.set(KEYS.ping,pingRows); }
+function renderPing(){
+  const body=$('pgBody');
+  if(!pingRows.length){ body.innerHTML='<tr><td colspan="6" style="color:var(--text-muted);">Belum ada baris. Tambahkan pengujian atau isi template.</td></tr>'; }
+  else{
+    body.innerHTML=pingRows.map((r,i)=>
+      '<tr><td>'+(i+1)+'</td><td><code>'+esc(r.src)+'</code></td><td><code>'+esc(r.dst)+'</code></td>'+
+      '<td><select data-i="'+i+'" class="pg-res" aria-label="Hasil ping baris '+(i+1)+'" style="padding:.3rem;border-radius:.4rem;border:1px solid var(--border);background:var(--surface);color:var(--text);"><option value=""'+(r.res===''?' selected':'')+'>(belum diuji)</option><option value="Berhasil"'+(r.res==='Berhasil'?' selected':'')+'>Berhasil</option><option value="Gagal"'+(r.res==='Gagal'?' selected':'')+'>Gagal</option></select></td>'+
+      '<td><input data-i="'+i+'" class="gw-input pg-note" value="'+esc(r.note||'')+'" aria-label="Kesimpulan baris '+(i+1)+'" style="font-family:inherit;min-width:160px;"></td>'+
+      '<td><button class="btn btn-danger btn-sm pg-del" data-i="'+i+'" aria-label="Hapus baris '+(i+1)+'"><i class="fas fa-trash"></i></button></td></tr>').join('');
+  }
+  body.querySelectorAll('.pg-res').forEach(s=>s.addEventListener('change',()=>{ pingRows[+s.dataset.i].res=s.value; savePing(); checkPingDone(); }));
+  body.querySelectorAll('.pg-note').forEach(s=>s.addEventListener('input',()=>{ pingRows[+s.dataset.i].note=s.value; savePing(); }));
+  body.querySelectorAll('.pg-del').forEach(b=>b.addEventListener('click',()=>{ pingRows.splice(+b.dataset.i,1); savePing(); renderPing(); }));
+}
+function checkPingDone(){
+  if(pingRows.filter(r=>r.res==='Berhasil'||r.res==='Gagal').length>=4) markDone('praktik3');
+}
+$('btnPgAdd').addEventListener('click',()=>{
+  const src=$('pgSrc').value.trim(), dst=$('pgDst').value.trim();
+  if(!isValidIP(src)||!isValidIP(dst)){ showToast('Isi IP sumber dan tujuan dengan format yang valid','fa-triangle-exclamation'); return; }
+  pingRows.push({src,dst,res:$('pgRes').value,note:$('pgNote').value.trim()});
+  savePing(); renderPing(); checkPingDone();
+  $('pgSrc').value=''; $('pgDst').value=''; $('pgNote').value='';
+});
+$('btnPgTemplate').addEventListener('click',()=>{
+  const tpl=[['192.168.10.10','192.168.10.1','PC Admin ke gateway sendiri'],['192.168.10.10','192.168.20.10','PC Admin ke PC Keuangan'],['192.168.20.10','192.168.30.10','PC Keuangan ke PC IT'],['192.168.30.10','192.168.10.10','PC IT ke PC Admin']];
+  tpl.forEach(t=>pingRows.push({src:t[0],dst:t[1],res:'',note:t[2]+': '}));
+  savePing(); renderPing();
+  showToast('Template ditambahkan. Lakukan ping di Packet Tracer lalu isi hasilnya.','fa-list-check');
+});
+$('btnPgClear').addEventListener('click',()=>{
+  if(!pingRows.length) return;
+  if(confirm('Hapus semua baris hasil pengujian?')){ pingRows=[]; savePing(); renderPing(); }
+});
+renderPing(); checkPingDone();
+
+/* ============================================================
+   TROUBLESHOOTING
+============================================================ */
+const troubleCases=[
+  {t:'Kasus 1 — PC tidak dapat melakukan ping ke gateway',
+   sym:'PC Admin (192.168.10.10, gateway 192.168.10.1) mengirim ping ke 192.168.10.1 dan hasilnya Request timed out. Pada switch, show vlan brief menunjukkan Fa0/1 masih berada di VLAN 1 (default).',
+   causes:['Port Fa0/1 belum diatur sebagai access port VLAN 10','Router tidak mendukung subinterface','Server DNS mati','Kabel serial longgar'],cOK:0,
+   sols:['Atur Fa0/1: switchport mode access, switchport access vlan 10','Ganti nama router','Matikan routing di router','Hapus semua VLAN di switch'],sOK:0,
+   exp:'PC berada di VLAN 1 sedangkan gateway ada di VLAN 10, sehingga frame PC tidak pernah sampai ke subinterface VLAN 10. Penyebab lain yang mungkin pada gejala ini: salah kabel/IP, interface bermasalah.',
+   fix:'Switch(config)# interface fa0/1\nSwitch(config-if)# switchport mode access\nSwitch(config-if)# switchport access vlan 10'},
+  {t:'Kasus 2 — Gateway bisa diping, tetapi PC VLAN lain tidak dapat dihubungi',
+   sym:'PC Admin dapat ping 192.168.10.1 namun gagal ping 192.168.20.10. Pada router, show ip interface brief hanya menampilkan Gi0/0.10 dan Gi0/0.30; Gi0/0.20 tidak ada.',
+   causes:['Subinterface untuk VLAN 20 belum dibuat di router','PC Admin salah subnet mask','Switch kehabisan port','Kabel PC Admin rusak'],cOK:0,
+   sols:['Buat Gi0/0.20 dengan encapsulation dot1Q 20 dan IP 192.168.20.1','Ganti IP PC Admin menjadi 192.168.20.10','Matikan Gi0/0.10','Pasang kabel crossover'],sOK:0,
+   exp:'Gateway VLAN 10 berfungsi (ping gateway berhasil) sehingga VLAN, trunk, dan subinterface VLAN 10 baik. Tanpa subinterface VLAN 20 router tidak punya jaringan 192.168.20.0/24, sehingga tidak ada jalur ke VLAN 20. Penyebab lain di kasus serupa: VLAN ID pada enkapsulasi salah, routing belum aktif, atau VLAN/trunk bermasalah.',
+   fix:'Router(config)# interface gigabitEthernet0/0.20\nRouter(config-subif)# encapsulation dot1Q 20\nRouter(config-subif)# ip address 192.168.20.1 255.255.255.0'},
+  {t:'Kasus 3 — Trunk tidak membawa VLAN yang dibutuhkan',
+   sym:'PC Admin dan PC IT dapat ping gateway masing-masing, tetapi PC Keuangan tidak dapat ping 192.168.20.1. show interfaces trunk menampilkan "Vlans allowed on trunk: 10,30".',
+   causes:['VLAN 20 tidak termasuk daftar VLAN yang diizinkan pada trunk','Gateway PC Admin salah','Router kehabisan memori','Alamat IP router duplikat'],cOK:0,
+   sols:['Tambahkan VLAN 20: switchport trunk allowed vlan add 20','Hapus VLAN 10 dan 30','Ubah port trunk menjadi access','Ganti router'],sOK:0,
+   exp:'Trunk hanya meneruskan VLAN yang ada dalam daftar allowed. Frame VLAN 20 dibuang sehingga tidak sampai ke subinterface VLAN 20.',
+   fix:'Switch(config)# interface gi0/1\nSwitch(config-if)# switchport trunk allowed vlan add 20'},
+  {t:'Kasus 4 — Interface router masih shutdown',
+   sym:'Semua PC tidak dapat ping gateway-nya. show ip interface brief di router menampilkan Gi0/0 dan seluruh subinterface berstatus "administratively down / down".',
+   causes:['Interface fisik Gi0/0 belum diberi no shutdown','VLAN belum dinamai','PC memakai IP statis','Switch memakai kabel straight-through'],cOK:0,
+   sols:['Jalankan no shutdown pada interface fisik Gi0/0','Tambahkan nama pada VLAN','Ganti IP PC menjadi DHCP','Ganti semua kabel menjadi crossover'],sOK:0,
+   exp:'Interface router default-nya shutdown. Subinterface tidak akan up selama interface fisiknya belum aktif, meskipun konfigurasi subinterface sudah benar.',
+   fix:'Router(config)# interface gigabitEthernet0/0\nRouter(config-if)# no shutdown'},
+  {t:'Kasus 5 — Subinterface menggunakan alamat gateway yang salah',
+   sym:'PC Keuangan memakai gateway 192.168.20.1 tetapi ping ke gateway timeout. show running-config pada router menunjukkan Gi0/0.20 memakai ip address 192.168.200.1 255.255.255.0.',
+   causes:['Alamat IP pada subinterface router salah ketik (192.168.200.1)','Trunk mati','VLAN 20 tidak ada di switch','Router tidak mendukung dot1Q'],cOK:0,
+   sols:['Ubah ip address Gi0/0.20 menjadi 192.168.20.1 255.255.255.0','Ubah semua PC menjadi VLAN 1','Hapus encapsulation dot1Q','Nonaktifkan routing'],sOK:0,
+   exp:'Alamat subinterface adalah gateway sebenarnya. Jika berbeda dari gateway yang diisi di PC, ARP ke gateway tidak dijawab dan PC tidak dapat keluar dari subnetnya.',
+   fix:'Router(config)# interface gigabitEthernet0/0.20\nRouter(config-subif)# ip address 192.168.20.1 255.255.255.0'},
+  {t:'Kasus 6 — VLAN berbeda memakai subnet IP yang sama',
+   sym:'VLAN 10 dan VLAN 20 sama-sama memakai 192.168.10.0/24. Saat memberi ip address 192.168.10.1/24 pada Gi0/0.20, router menolak dengan pesan alamat tumpang tindih (overlaps) dengan interface lain.',
+   causes:['Desain pengalamatan tidak konsisten: dua VLAN memakai subnet yang sama','Kabel trunk terlalu panjang','Router kehabisan interface','Switch tidak mendukung VLAN'],cOK:0,
+   sols:['Beri setiap VLAN subnet unik (mis. VLAN 20 → 192.168.20.0/24) dan perbarui IP PC serta gateway','Ganti router dengan switch','Hapus VLAN 10','Naikkan nomor VLAN menjadi 4094'],sOK:0,
+   exp:'Router tidak dapat memiliki dua interface dengan network yang sama untuk routing. Aturan praktis: satu VLAN = satu subnet unik.',
+   fix:'Router(config)# interface gigabitEthernet0/0.20\nRouter(config-subif)# ip address 192.168.20.1 255.255.255.0\n(lalu ubah IP & gateway PC VLAN 20 ke 192.168.20.x)'}
+];
+(function buildTrouble(){
+  const solved=store.get(KEYS.trouble,{});
+  const wrap=$('troubleCases');
+  wrap.innerHTML=troubleCases.map((c,i)=>{
+    const body='<p style="margin:0 0 .8rem;"><strong>Gejala:</strong> '+esc(c.sym)+'</p>'+
+      '<label class="field" style="margin-bottom:.8rem;">Penyebab paling mungkin<select data-case="'+i+'" data-kind="cause"><option value="">-- pilih penyebab --</option>'+c.causes.map((x,j)=>'<option value="'+j+'">'+esc(x)+'</option>').join('')+'</select></label>'+
+      '<label class="field" style="margin-bottom:.8rem;">Solusi yang tepat<select data-case="'+i+'" data-kind="sol"><option value="">-- pilih solusi --</option>'+c.sols.map((x,j)=>'<option value="'+j+'">'+esc(x)+'</option>').join('')+'</select></label>'+
+      '<button class="btn btn-primary btn-sm tr-check" data-case="'+i+'"><i class="fas fa-circle-check"></i> Periksa Jawaban</button><div class="tr-out" id="trOut'+i+'"></div>';
+    return accItem(esc(c.t),body,'<span class="badge '+(solved[i]?'badge-green':'badge-amber')+'" id="trBadge'+i+'">'+(solved[i]?'Selesai':'Belum')+'</span>');
+  }).join('');
+  wrap.querySelectorAll('.tr-check').forEach(btn=>btn.addEventListener('click',()=>{
+    const i=+btn.dataset.case, c=troubleCases[i];
+    const cs=wrap.querySelector('select[data-case="'+i+'"][data-kind="cause"]').value;
+    const ss=wrap.querySelector('select[data-case="'+i+'"][data-kind="sol"]').value;
+    const out=$('trOut'+i);
+    if(cs===''||ss===''){ out.innerHTML='<div class="result-badge result-warn">Pilih penyebab dan solusi terlebih dahulu.</div>'; return; }
+    const cOk=+cs===c.cOK, sOk=+ss===c.sOK;
+    let msg;
+    if(cOk&&sOk) msg='<div class="result-badge result-ok">✅ <strong>Tepat!</strong> '+esc(c.exp)+'<br><br><strong>Langkah perbaikan:</strong><pre class="code" style="margin:.6rem 0 0;">'+esc(c.fix)+'</pre></div>';
+    else if(cOk&&!sOk) msg='<div class="result-badge result-fail">❌ Penyebabnya benar, tetapi solusi yang dipilih belum menyelesaikan masalah. Pikirkan perintah/konfigurasi yang langsung menghilangkan penyebab tersebut.</div>';
+    else if(!cOk&&sOk) msg='<div class="result-badge result-fail">❌ Solusinya cocok dengan masalah sebenarnya, tetapi penyebab yang kamu pilih tidak sesuai gejala. Baca kembali bukti pada bagian gejala.</div>';
+    else msg='<div class="result-badge result-fail">❌ Penyebab dan solusi belum tepat. Perhatikan output perintah show yang disebutkan pada gejala; itu petunjuk utamanya.</div>';
+    out.innerHTML=msg;
+    if(cOk&&sOk){
+      solved[i]=true; store.set(KEYS.trouble,solved);
+      const bd=$('trBadge'+i); bd.className='badge badge-green'; bd.textContent='Selesai';
+      if(Object.keys(solved).length>=troubleCases.length) markDone('troubleshooting');
+    }
+  }));
+  if(Object.keys(solved).length>=troubleCases.length) markDone('troubleshooting');
+})();
+
+/* ============================================================
+   MINI PROJECT
+============================================================ */
+const mpStages=[
+  ['Tahap 1 — Analisis kebutuhan jaringan','Hitung jumlah perangkat tiap divisi (10 + 10 + 5 PC + 1 server), tentukan VLAN yang dibutuhkan, jumlah port switch, dan jenis koneksi (access/trunk).'],
+  ['Tahap 2 — Tabel VLAN dan IP Address','Susun tabel VLAN (ID, nama, network, gateway) dan tabel IP perangkat. Pastikan setiap VLAN memiliki subnet unik dan gateway berada di subnet yang sama.'],
+  ['Tahap 3 — Network diagram','Gambar topologi: 1 router, 2 managed switch, PC per divisi, server, dan keterangan VLAN pada tiap link.'],
+  ['Tahap 4 — VLAN dan access port','Buat VLAN 10, 20, 30 pada kedua switch (VLAN harus ada di kedua switch), lalu atur access port PC sesuai divisi.'],
+  ['Tahap 5 — Trunk','Konfigurasikan trunk antar-switch dan trunk menuju router sesuai topologi. Router dapat dihubungkan ke salah satu switch; pastikan VLAN 10, 20, 30 diizinkan di semua trunk yang dilalui.'],
+  ['Tahap 6 — Router on a Stick','Buat subinterface 10/20/30 pada interface fisik router yang terhubung ke switch, lengkap dengan encapsulation dot1Q dan alamat gateway.'],
+  ['Tahap 7 — Pengujian antar-VLAN','Uji ping: gateway tiap VLAN, antar-PC dalam VLAN yang sama di switch berbeda, dan antar-VLAN. Catat hasil pada tabel.'],
+  ['Tahap 8 — Troubleshooting','Selesaikan minimal satu masalah yang diberikan guru: tuliskan gejala, perintah pemeriksaan, penyebab, dan perbaikan.'],
+  ['Tahap 9 — Dokumentasi dan presentasi','Kumpulkan seluruh output proyek lalu presentasikan rancangan, hasil uji, dan pembelajaran kelompok.']
+];
+(function buildMP(){
+  buildChecklist('checklistMP','mp',mpStages.map(s=>s[0]),()=>{ if(checkedCount('mp',mpStages.length)===mpStages.length) markDone('miniproject'); });
+  if(checkedCount('mp',mpStages.length)===mpStages.length) markDone('miniproject');
+  const nav=$('mpTabs'), panels=$('mpPanels');
+  mpStages.forEach((s,i)=>{
+    const b=document.createElement('button'); b.className='tab-btn'+(i===0?' active':''); b.dataset.tab='mp-'+i; b.textContent=(i+1);
+    b.setAttribute('aria-label',s[0]);
+    nav.appendChild(b);
+    const p=document.createElement('div'); p.className='tab-panel'+(i===0?' active':''); p.id='mp-'+i; p.dataset.group='mpTabs';
+    let extra='';
+    if(i===4) extra='<pre class="code">Switch1: gi0/1 -> trunk ke Switch2\nSwitch1: gi0/2 -> trunk ke Router (Gi0/0)\nSwitch2: gi0/1 -> trunk ke Switch1\n(semua trunk mengizinkan VLAN 10,20,30)</pre><p class="prose">Contoh pembagian port saja; sesuaikan dengan model switch yang kamu pilih.</p>';
+    if(i===1) extra='<pre class="code">VLAN 10  ADMIN      192.168.10.0/24  gateway 192.168.10.1\nVLAN 20  KEUANGAN   192.168.20.0/24  gateway 192.168.20.1\nVLAN 30  IT         192.168.30.0/24  gateway 192.168.30.1\nServer IT: 192.168.30.100 (VLAN 30)</pre>';
+    p.innerHTML='<h4 style="margin:0 0 .4rem;">'+esc(s[0])+'</h4><p class="prose" style="margin:0;">'+esc(s[1])+'</p>'+extra;
+    panels.appendChild(p);
+  });
+})();
+
+/* Kalkulator rubrik */
+const rubricAspects=[['Analisis kebutuhan dan desain topologi',15],['Pengalamatan IP dan VLAN',20],['Konfigurasi trunk dan access port',15],['Konfigurasi Inter-VLAN Routing',25],['Pengujian dan troubleshooting',15],['Dokumentasi dan presentasi',10]];
+const rubricLevels=[['Sangat Baik',100],['Baik',80],['Cukup',60],['Perlu Bimbingan',40]];
+(function buildRubric(){
+  const saved=store.get(KEYS.rubric,{});
+  const wrap=$('rubricCalc');
+  wrap.innerHTML=rubricAspects.map((a,i)=>'<label class="field">'+a[0]+' ('+a[1]+'%)<select data-i="'+i+'">'+rubricLevels.map((l,j)=>'<option value="'+j+'"'+((saved[i]!==undefined?saved[i]:3)===j?' selected':'')+'>'+l[0]+'</option>').join('')+'</select></label>').join('');
+  function calc(){
+    let total=0; const data={};
+    wrap.querySelectorAll('select').forEach(s=>{ const i=+s.dataset.i; data[i]=+s.value; total+=rubricAspects[i][1]*rubricLevels[+s.value][1]/100; });
+    $('rubricScore').textContent=(Math.round(total*10)/10).toString();
+    store.set(KEYS.rubric,data);
+  }
+  wrap.querySelectorAll('select').forEach(s=>s.addEventListener('change',calc));
+  calc();
+})();
+
+/* ============================================================
+   QUIZ (30 soal)
+============================================================ */
+const quizBank=[
+ /* --- Pilihan ganda (15) --- */
+ {cat:'Pilihan Ganda',q:'Inter-VLAN Routing adalah...',opts:['Proses menghapus VLAN yang tidak terpakai','Proses meneruskan paket antar VLAN/subnet berbeda menggunakan perangkat Layer 3','Proses menambah kecepatan trunk','Proses memberi nama VLAN'],ans:1,exp:'Inter-VLAN Routing merutekan paket dari satu VLAN ke VLAN lain oleh perangkat Layer 3 (router atau Layer 3 Switch).'},
+ {cat:'Pilihan Ganda',q:'Mengapa dua PC pada VLAN berbeda tidak dapat saling berkomunikasi hanya dengan switch Layer 2 biasa?',opts:['Karena kabelnya berbeda','Karena tiap VLAN adalah broadcast domain dan subnet berbeda, dan switch Layer 2 tidak melakukan routing antar-subnet','Karena switch tidak memiliki MAC Address Table','Karena VLAN memperlambat jaringan'],ans:1,exp:'Switch Layer 2 hanya meneruskan frame di dalam satu VLAN. Antar-subnet memerlukan routing pada Layer 3.'},
+ {cat:'Pilihan Ganda',q:'PC 192.168.10.10/24 mengirim paket ke 192.168.20.10. Paket tersebut pertama-tama dikirim ke...',opts:['Langsung ke 192.168.20.10','Semua PC di jaringan (broadcast)','Default gateway','DNS server'],ans:2,exp:'Tujuan berada di luar subnet lokal, sehingga PC mengirim paket ke default gateway.'},
+ {cat:'Pilihan Ganda',q:'Pada desain BAB 4, default gateway yang benar untuk PC di VLAN 20 adalah...',opts:['192.168.10.1','192.168.20.1','192.168.20.255','192.168.30.1'],ans:1,exp:'VLAN 20 memakai network 192.168.20.0/24 dengan gateway 192.168.20.1 (subinterface Gi0/0.20).'},
+ {cat:'Pilihan Ganda',q:'Router on a Stick menggunakan...',opts:['Satu link fisik trunk antara router dan switch, dengan banyak subinterface','Satu kabel terpisah untuk setiap PC','Dua router tanpa switch','Hanya access port'],ans:0,exp:'Satu interface fisik router dibagi menjadi subinterface logis, dan switch menghubungkannya melalui trunk.'},
+ {cat:'Pilihan Ganda',q:'Subinterface pada router adalah...',opts:['Port fisik tambahan','Antarmuka logis pada satu interface fisik yang dikaitkan dengan VLAN tertentu','Kabel khusus untuk VLAN','Program antivirus router'],ans:1,exp:'Subinterface adalah antarmuka logis (mis. Gi0/0.10) yang berada di atas satu interface fisik.'},
+ {cat:'Pilihan Ganda',q:'Perintah yang mengaitkan subinterface dengan VLAN 20 adalah...',opts:['ip vlan 20','switchport access vlan 20','encapsulation dot1Q 20','vlan 20 trunk'],ans:2,exp:'encapsulation dot1Q 20 mengaitkan subinterface dengan VLAN ID 20 menggunakan tag 802.1Q.'},
+ {cat:'Pilihan Ganda',q:'Standar enkapsulasi yang memberi tag VLAN pada frame di trunk adalah...',opts:['IEEE 802.11','IEEE 802.3','IEEE 802.1Q','IEEE 802.15'],ans:2,exp:'IEEE 802.1Q adalah standar tagging VLAN untuk link trunk.'},
+ {cat:'Pilihan Ganda',q:'Pada Router on a Stick, port switch yang terhubung ke router harus dikonfigurasi sebagai...',opts:['Access port VLAN 1','Trunk port','Port mirroring','Port shutdown'],ans:1,exp:'Port tersebut harus trunk agar membawa frame dari banyak VLAN ke router.'},
+ {cat:'Pilihan Ganda',q:'Perintah yang diperlukan pada interface fisik router agar subinterface dapat aktif adalah...',opts:['no shutdown','shutdown','ip routing','switchport mode access'],ans:0,exp:'Interface router default-nya shutdown. Tanpa no shutdown pada interface fisik, subinterface tidak akan up.'},
+ {cat:'Pilihan Ganda',q:'SVI pada Layer 3 Switch adalah...',opts:['Kabel khusus Layer 3','Interface virtual untuk VLAN (misalnya interface vlan 10) yang dapat menjadi gateway','Fitur pembatas bandwidth','Nama lain dari port trunk'],ans:1,exp:'Switch Virtual Interface adalah interface virtual VLAN pada Layer 3 Switch yang diberi IP sebagai gateway VLAN.'},
+ {cat:'Pilihan Ganda',q:'Perintah yang mengaktifkan routing pada switch Layer 3 yang mendukungnya adalah...',opts:['ip routing','switchport mode trunk','no ip routing','encapsulation dot1Q'],ans:0,exp:'ip routing mengaktifkan fungsi routing pada switch Layer 3 (jika modelnya mendukung).'},
+ {cat:'Pilihan Ganda',q:'Salah satu kekurangan Router on a Stick adalah...',opts:['Tidak memerlukan trunk','Semua trafik antar-VLAN berbagi kapasitas satu link router–switch','Tidak bisa memakai VLAN','Hanya bisa untuk satu VLAN'],ans:1,exp:'Seluruh trafik antar-VLAN melewati satu link yang sama, sehingga bisa menjadi bottleneck.'},
+ {cat:'Pilihan Ganda',q:'Perintah yang menampilkan ringkasan IP dan status interface/subinterface pada router adalah...',opts:['show vlan brief','show interfaces trunk','show ip interface brief','show mac address-table'],ans:2,exp:'show ip interface brief menampilkan IP address dan status up/down setiap interface dan subinterface.'},
+ {cat:'Pilihan Ganda',q:'Perintah yang menampilkan jaringan yang terhubung langsung dan jalur pada tabel routing adalah...',opts:['show ip route','show vlan brief','show interfaces trunk','show version'],ans:0,exp:'show ip route menampilkan tabel routing pada router atau switch Layer 3.'},
+ /* --- Benar/Salah (5) --- */
+ {cat:'Benar/Salah',q:'Benar atau Salah: Semua managed switch pasti mendukung routing Layer 3.',opts:['Benar','Salah'],ans:1,fixed:true,exp:'Salah. Dukungan Layer 3 bergantung pada model dan sistem operasi switch. Banyak managed switch hanya Layer 2.'},
+ {cat:'Benar/Salah',q:'Benar atau Salah: Angka pada nama subinterface (mis. G0/0.10) otomatis menentukan VLAN 10.',opts:['Benar','Salah'],ans:1,fixed:true,exp:'Salah. VLAN ditentukan oleh perintah encapsulation dot1Q <VLAN-ID>. Angka pada nama hanyalah konvensi.'},
+ {cat:'Benar/Salah',q:'Benar atau Salah: Mengaktifkan Inter-VLAN Routing tidak berarti semua akses antar-VLAN harus diizinkan; ACL atau firewall dapat membatasinya.',opts:['Benar','Salah'],ans:0,fixed:true,exp:'Benar. Routing menyediakan jalur, sedangkan kebijakan akses dapat dikontrol dengan ACL/firewall.'},
+ {cat:'Benar/Salah',q:'Benar atau Salah: Dua PC pada VLAN dan subnet yang sama tidak memerlukan default gateway untuk saling berkomunikasi.',opts:['Benar','Salah'],ans:0,fixed:true,exp:'Benar. Komunikasi dalam subnet yang sama dilakukan langsung (Layer 2) tanpa melewati gateway.'},
+ {cat:'Benar/Salah',q:'Benar atau Salah: Ping pertama dapat gagal sesaat karena proses ARP, sehingga ping perlu diulang sebelum menyimpulkan.',opts:['Benar','Salah'],ans:0,fixed:true,exp:'Benar. Pada ping pertama perangkat perlu menyelesaikan ARP terlebih dahulu sehingga timeout awal dapat terjadi.'},
+ /* --- Mencocokkan istilah (5) --- */
+ {cat:'Mencocokkan Istilah',q:'Cocokkan istilah berikut: "Default Gateway" adalah...',opts:['Alamat perangkat Layer 3 yang menjadi jalur keluar dari subnet lokal','Antarmuka logis pada interface fisik router','Interface virtual VLAN pada Layer 3 Switch','Protokol yang memetakan IP ke MAC address'],ans:0,exp:'Default gateway adalah alamat IP perangkat Layer 3 pada subnet lokal yang dipakai untuk menjangkau jaringan lain.'},
+ {cat:'Mencocokkan Istilah',q:'Cocokkan istilah berikut: "Subinterface" adalah...',opts:['Alamat perangkat Layer 3 yang menjadi jalur keluar dari subnet lokal','Antarmuka logis pada interface fisik router yang dikaitkan dengan VLAN','Tabel berisi jaringan tujuan dan jalur penerusan','Standar tagging VLAN'],ans:1,exp:'Subinterface adalah interface logis pada satu interface fisik, dikaitkan dengan VLAN lewat encapsulation dot1Q.'},
+ {cat:'Mencocokkan Istilah',q:'Cocokkan istilah berikut: "SVI (Switch Virtual Interface)" adalah...',opts:['Interface virtual VLAN pada Layer 3 Switch yang dapat berfungsi sebagai gateway','Protokol pemetaan IP ke MAC','Kabel trunk antar-switch','Alamat broadcast'],ans:0,exp:'SVI (interface vlan N) memberi IP gateway pada VLAN di Layer 3 Switch.'},
+ {cat:'Mencocokkan Istilah',q:'Cocokkan istilah berikut: "ARP" adalah...',opts:['Tabel jaringan tujuan pada router','Protokol yang memetakan alamat IP ke MAC address pada jaringan lokal','Standar enkapsulasi trunk','Nama lain dari VLAN ID'],ans:1,exp:'Address Resolution Protocol mencari MAC address dari sebuah IP address pada jaringan lokal.'},
+ {cat:'Mencocokkan Istilah',q:'Cocokkan istilah berikut: "Routing Table" adalah...',opts:['Daftar VLAN pada switch','Tabel MAC address dan port','Tabel pada perangkat Layer 3 berisi jaringan tujuan dan jalur penerusan paket','Daftar user yang boleh login'],ans:2,exp:'Routing table menyimpan jaringan tujuan dan next-hop/interface keluar yang dipakai untuk meneruskan paket.'},
+ /* --- Studi kasus (5) --- */
+ {cat:'Studi Kasus',q:'PC Admin dapat ping gateway 192.168.10.1, tetapi gagal ping PC VLAN 20. Pada router, show ip interface brief tidak menampilkan Gi0/0.20. Tindakan yang tepat adalah...',opts:['Mengganti kabel PC Admin','Membuat subinterface Gi0/0.20 dengan encapsulation dot1Q 20 dan IP 192.168.20.1','Menghapus VLAN 10','Menonaktifkan semua interface router'],ans:1,exp:'Router belum memiliki jaringan VLAN 20 karena subinterface-nya belum dibuat; buat subinterface lengkap dengan enkapsulasi dan IP gateway.'},
+ {cat:'Studi Kasus',q:'Sebuah sekolah memiliki 1 router dan 1 switch Layer 2 dengan 3 VLAN dan anggaran terbatas. Metode Inter-VLAN Routing yang paling sesuai adalah...',opts:['Layer 3 Switch (wajib membeli)','Router on a Stick','Tidak perlu routing sama sekali','Mengganti semua VLAN menjadi satu VLAN'],ans:1,exp:'Dengan router dan switch Layer 2, Router on a Stick adalah solusi praktis dan murah untuk jumlah VLAN kecil.'},
+ {cat:'Studi Kasus',q:'PC Keuangan memiliki IP 192.168.20.15/24 dengan gateway 192.168.10.1. Masalah yang terjadi adalah...',opts:['Gateway berada di subnet yang berbeda dari PC sehingga tidak dapat dijangkau; gateway harus 192.168.20.1','IP PC terlalu kecil','Subnet mask terlalu besar','Tidak ada masalah'],ans:0,exp:'Gateway harus satu subnet dengan PC. Untuk VLAN 20 gunakan 192.168.20.1.'},
+ {cat:'Studi Kasus',q:'Ping dari PC Admin ke PC IT timeout. Konfigurasi router, trunk, dan gateway PC Admin sudah benar, tetapi PC IT tidak memiliki default gateway. Penjelasan yang tepat adalah...',opts:['Paket tidak pernah sampai ke PC IT karena VLAN 10 dan 30 sama','Paket sampai ke PC IT, tetapi balasannya tidak dapat kembali karena PC IT tidak tahu ke mana mengirim balasan ke subnet lain','Router otomatis memberi gateway ke PC IT','Ping tidak membutuhkan balasan'],ans:1,exp:'Komunikasi dua arah. Tanpa gateway, PC IT tidak dapat mengirim balasan ke subnet VLAN 10.'},
+ {cat:'Studi Kasus',q:'Manajemen ingin Administrasi dan Keuangan dapat mengakses server IT, tetapi PC Keuangan tidak boleh mengakses server tersebut. Pendekatan yang tepat adalah...',opts:['Menghapus VLAN Keuangan','Tetap menyediakan Inter-VLAN Routing lalu membatasi akses dengan ACL/firewall','Menonaktifkan seluruh routing','Memberi semua PC alamat IP yang sama'],ans:1,exp:'Routing menyediakan jalur antar-VLAN; pembatasan akses spesifik dilakukan dengan ACL atau firewall.'}
+];
+let quizActive=[], quizIndex=0, quizScore=0, quizAnswered=false, catScores={};
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function prepQuestion(q){
+  const objs=q.opts.map((t,i)=>({t:t,c:i===q.ans}));
+  return {cat:q.cat,q:q.q,exp:q.exp,opts:q.fixed?objs:shuffle(objs)};
+}
+function showQuizBest(){
+  const qz=store.get(KEYS.quiz,null);
+  $('quizBest').textContent = qz&&qz.done ? 'Skor terbaikmu: '+qz.best+' / '+qz.total : '';
+}
+showQuizBest();
+function startQuiz(){
+  quizActive=shuffle(quizBank).map(prepQuestion);
+  quizIndex=0; quizScore=0; catScores={};
+  $('quizIntro').style.display='none'; $('quizResult').style.display='none'; $('quizBody').style.display='block';
+  renderQuizQuestion();
+}
+function renderQuizQuestion(){
+  quizAnswered=false;
+  const q=quizActive[quizIndex];
+  $('quizProgressText').textContent='Soal '+(quizIndex+1)+'/'+quizActive.length;
+  $('quizScoreText').textContent='Skor: '+quizScore;
+  $('quizProgressFill').style.width=(quizIndex/quizActive.length*100)+'%';
+  $('quizQuestionCat').textContent=q.cat;
+  $('quizQuestion').textContent=q.q;
+  $('quizExplanation').style.display='none';
+  $('quizNextBtn').style.display='none';
+  $('quizNextBtn').innerHTML = quizIndex===quizActive.length-1 ? 'Lihat Hasil <i class="fas fa-flag-checkered"></i>' : 'Selanjutnya <i class="fas fa-arrow-right"></i>';
+  const wrap=$('quizOptions'); wrap.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button'); b.className='quiz-option'; b.textContent=o.t;
+    b.addEventListener('click',()=>answerQuiz(i)); wrap.appendChild(b);
+  });
+}
+function answerQuiz(i){
+  if(quizAnswered) return; quizAnswered=true;
+  const q=quizActive[quizIndex];
+  const correct=q.opts[i].c;
+  document.querySelectorAll('#quizOptions .quiz-option').forEach((b,idx)=>{
+    b.disabled=true;
+    if(q.opts[idx].c) b.classList.add('correct'); else if(idx===i) b.classList.add('wrong');
+  });
+  if(!catScores[q.cat]) catScores[q.cat]={ok:0,n:0};
+  catScores[q.cat].n++;
+  if(correct){ quizScore++; catScores[q.cat].ok++; }
+  $('quizScoreText').textContent='Skor: '+quizScore;
+  const ex=$('quizExplanation');
+  ex.innerHTML=(correct?'<strong style="color:var(--ok-tx)">✅ Benar.</strong> ':'<strong style="color:var(--bad-tx)">❌ Kurang tepat.</strong> ')+esc(q.exp);
+  ex.style.display='block';
+  $('quizNextBtn').style.display='inline-flex';
+}
+function nextQuizQuestion(){
+  quizIndex++;
+  if(quizIndex>=quizActive.length) finishQuiz(); else renderQuizQuestion();
+}
+function finishQuiz(){
+  $('quizBody').style.display='none'; $('quizResult').style.display='block';
+  $('quizProgressFill').style.width='100%';
+  const total=quizActive.length, pct=Math.round(quizScore/total*100);
+  $('quizFinalScore').textContent=quizScore+' / '+total+' ('+pct+'%)';
+  let cat='Perlu Belajar Lagi — ulangi materi dan praktik';
+  if(pct>=90) cat='Sangat Menguasai! 🏆'; else if(pct>=75) cat='Menguasai Materi 👍'; else if(pct>=50) cat='Cukup Baik — perdalam bagian yang masih salah';
+  $('quizFinalCategory').textContent=cat;
+  $('quizCatBreakdown').innerHTML=Object.keys(catScores).map(k=>'<div style="display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px solid var(--border);"><span>'+esc(k)+'</span><strong>'+catScores[k].ok+'/'+catScores[k].n+'</strong></div>').join('');
+  const prev=store.get(KEYS.quiz,null);
+  const best=Math.max(quizScore, prev&&prev.best?prev.best:0);
+  store.set(KEYS.quiz,{done:true,best:best,total:total});
+  showQuizBest();
+  markDone('quiz');
+  updateProgressUI();
+}
+$('btnQuizStart').addEventListener('click',startQuiz);
+$('btnQuizRestart').addEventListener('click',startQuiz);
+$('quizNextBtn').addEventListener('click',nextQuizQuestion);
+(function(){ const qz=store.get(KEYS.quiz,null); if(qz&&qz.done) progress['quiz']=true; })();
+
+/* ============================================================
+   RINGKASAN
+============================================================ */
+const summarySteps=[
+  ['VLAN','Memisahkan jaringan secara logis'],
+  ['IP Address dan Subnet','Satu VLAN, satu subnet'],
+  ['Default Gateway','Jalur keluar dari subnet lokal'],
+  ['Trunk','Membawa trafik beberapa VLAN dalam satu link'],
+  ['Router on a Stick','Satu link, banyak subinterface (atau Layer 3 Switch dengan SVI)'],
+  ['Routing Antar-VLAN','Paket diteruskan antar-subnet oleh perangkat Layer 3'],
+  ['Pengujian','ping gateway, lalu ping antar-VLAN'],
+  ['Troubleshooting','show vlan brief, show interfaces trunk, show ip interface brief, show ip route']
+];
+$('summaryFlow').innerHTML=summarySteps.map((s,i)=>
+  '<div class="timeline-step"><div style="display:flex;flex-direction:column;align-items:center;"><div class="step-dot">'+(i+1)+'</div>'+(i<summarySteps.length-1?'<div style="width:2px;flex:1;background:var(--border);min-height:1.6rem;"></div>':'')+'</div>'+
+  '<div style="padding-bottom:1.2rem;"><p style="font-weight:700;margin:.3rem 0 .2rem;">'+s[0]+'</p><p style="color:var(--text-muted);font-size:.85rem;margin:0;">'+s[1]+'</p></div></div>').join('');
+
+/* ============================================================
+   GLOSARIUM
+============================================================ */
+const glossary=[
+  ['Inter-VLAN Routing','Proses merutekan paket antar VLAN berbeda menggunakan perangkat Layer 3.'],
+  ['VLAN','Virtual LAN: pembagian jaringan fisik menjadi beberapa jaringan logis terpisah.'],
+  ['VLAN ID','Nomor identitas VLAN (1-4094).'],
+  ['Access Port','Port switch yang membawa satu VLAN, untuk end device.'],
+  ['Trunk Port','Port yang membawa banyak VLAN sekaligus, biasanya antar switch atau ke router.'],
+  ['IEEE 802.1Q','Standar tagging VLAN pada frame Ethernet di link trunk.'],
+  ['Router on a Stick','Metode Inter-VLAN Routing dengan satu link trunk ke router dan banyak subinterface.'],
+  ['Subinterface','Antarmuka logis pada satu interface fisik router, dikaitkan dengan VLAN tertentu.'],
+  ['Default Gateway','Alamat perangkat Layer 3 yang menjadi jalur keluar dari subnet lokal.'],
+  ['IP Address','Alamat logis perangkat pada jaringan, terdiri dari bagian network dan host.'],
+  ['Subnet Mask','Penentu bagian network dan host pada IP Address, misalnya 255.255.255.0 (/24).'],
+  ['Layer 2','Lapisan Data Link pada model OSI; bekerja dengan frame dan MAC address (switch).'],
+  ['Layer 3','Lapisan Network pada model OSI; bekerja dengan paket dan IP address (router).'],
+  ['Layer 3 Switch','Switch yang juga dapat melakukan routing antar-subnet bila model mendukungnya.'],
+  ['Switch Virtual Interface (SVI)','Interface virtual VLAN pada Layer 3 Switch (interface vlan N) yang dapat menjadi gateway.'],
+  ['Routing Table','Tabel pada perangkat Layer 3 berisi jaringan tujuan dan jalur penerusan.'],
+  ['Ping','Perintah untuk menguji konektivitas dengan mengirim ICMP Echo dan menunggu balasan.'],
+  ['ARP','Address Resolution Protocol: memetakan IP address ke MAC address pada jaringan lokal.'],
+  ['Packet','Satuan data pada Layer 3 yang membawa IP sumber dan tujuan.'],
+  ['Broadcast Domain','Area jaringan yang menerima broadcast yang sama; tiap VLAN adalah satu broadcast domain.']
+];
+function renderGlossary(filter){
+  const list=$('glossaryList'); const f=(filter||'').toLowerCase();
+  const items=glossary.filter(g=>g[0].toLowerCase().includes(f)||g[1].toLowerCase().includes(f));
+  list.innerHTML=items.length ? items.map(g=>'<div class="card static" style="padding:1.1rem;"><p style="font-weight:700;margin:0 0 .4rem;color:var(--primary);">'+esc(g[0])+'</p><p style="font-size:.87rem;color:var(--text-muted);margin:0;line-height:1.65;">'+esc(g[1])+'</p></div>').join('') : '<p style="color:var(--text-muted);">Istilah tidak ditemukan.</p>';
+}
+renderGlossary('');
+$('glossarySearch').addEventListener('input',e=>renderGlossary(e.target.value));
+
+/* ============================================================
+   REFLEKSI
+============================================================ */
+const reflectionQs=[
+  'Apa yang dimaksud dengan Inter-VLAN Routing?',
+  'Mengapa VLAN berbeda memerlukan perangkat Layer 3 untuk berkomunikasi?',
+  'Apa fungsi default gateway?',
+  'Apa perbedaan Router on a Stick dan Layer 3 Switch?',
+  'Mengapa trunk dibutuhkan pada Router on a Stick?',
+  'Apa kesalahan yang paling sering terjadi ketika konfigurasi?',
+  'Bagaimana cara membuktikan bahwa komunikasi antar-VLAN telah berhasil?'
+];
+function renderReflection(){
+  const saved=store.get(KEYS.reflection,{});
+  const wrap=$('reflectionForm'); wrap.innerHTML='';
+  reflectionQs.forEach((q,i)=>{
+    const d=document.createElement('div');
+    d.innerHTML='<label for="refl'+i+'" style="font-weight:600;font-size:.92rem;display:block;margin-bottom:.5rem;">'+(i+1)+'. '+q+'</label><textarea class="reflect" id="refl'+i+'" data-idx="'+i+'"></textarea>';
+    d.querySelector('textarea').value=saved[i]||'';
+    wrap.appendChild(d);
+  });
+}
+renderReflection();
+$('btnReflSave').addEventListener('click',()=>{
+  const data={}; let filled=0;
+  document.querySelectorAll('#reflectionForm textarea').forEach(t=>{ data[t.dataset.idx]=t.value; if(t.value.trim()) filled++; });
+  store.set(KEYS.reflection,data);
+  if(filled>=1){ showToast('Refleksi disimpan di perangkat ini','fa-floppy-disk'); markDone('refleksi'); }
+  else showToast('Isi minimal satu jawaban sebelum menyimpan','fa-triangle-exclamation');
+});
+$('btnReflClear').addEventListener('click',()=>{
+  if(!confirm('Hapus semua jawaban refleksi dari perangkat ini?')) return;
+  store.del(KEYS.reflection); renderReflection();
+  delete progress['refleksi']; store.set(KEYS.progress,progress); updateProgressUI();
+  showToast('Refleksi dihapus','fa-trash');
+});
+(function(){ const r=store.get(KEYS.reflection,{}); if(Object.values(r).some(v=>String(v).trim())) progress['refleksi']=true; })();
+
+/* init */
+updateProgressUI();
+</script>
 </body>
 </html>
