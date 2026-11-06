@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BAB 5 - Static Routing - Roadmap TLJ Kelas XII</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ DESIGN TOKENS (mengikuti index.html & bab3.html) ============ */
+:root{
+  --primary:#1e40af;
+  --primary-dark:#1e3a8a;
+  --secondary:#3b82f6;
+  --accent:#f59e0b;
+  --dark:#1e293b;
+  --light:#f8fafc;
+  --slate-50:#f8fafc;
+  --slate-100:#f1f5f9;
+  --slate-200:#e2e8f0;
+  --slate-400:#94a3b8;
+  --slate-500:#64748b;
+  --slate-600:#475569;
+  --slate-700:#334155;
+  --slate-800:#1e293b;
+  --slate-900:#0f172a;
+  --radius-sm:.75rem;
+  --radius-md:1rem;
+  --radius-lg:1.5rem;
+  --radius-xl:2rem;
+  --shadow-sm:0 4px 6px -1px rgba(0,0,0,.05),0 2px 4px -1px rgba(0,0,0,.03);
+  --shadow-md:0 10px 15px -3px rgba(0,0,0,.07),0 4px 6px -2px rgba(0,0,0,.04);
+  --bg:#f8fafc;
+  --surface:#ffffff;
+  --surface-2:#f8fafc;
+  --text:#1e293b;
+  --text-muted:#64748b;
+  --border:#e2e8f0;
+  --ok-bg:#dcfce7;--ok-tx:#15803d;
+  --bad-bg:#fee2e2;--bad-tx:#b91c1c;
+  --warn-bg:#fffbeb;--warn-bd:#fde68a;--warn-tx:#92400e;
+  --info-bg:#eff6ff;--info-bd:#bfdbfe;--info-tx:#1e3a8a;
+}
+html[data-theme="dark"]{
+  --bg:#0f172a;
+  --surface:#1e293b;
+  --surface-2:#111c30;
+  --text:#e2e8f0;
+  --text-muted:#94a3b8;
+  --border:#334155;
+  --ok-bg:#0f3d24;--ok-tx:#86efac;
+  --bad-bg:#4b1113;--bad-tx:#fca5a5;
+  --warn-bg:#3a2e0d;--warn-bd:#6b5314;--warn-tx:#fcd34d;
+  --info-bg:#142a4d;--info-bd:#1e3a5f;--info-tx:#bfdbfe;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  transition:background .3s ease,color .3s ease;
+}
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:var(--slate-100);}
+::-webkit-scrollbar-thumb{background:var(--slate-400);border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:var(--slate-500);}
+::selection{background:#bfdbfe;color:#1e3a8a;}
+a{color:inherit;text-decoration:none;}
+:focus-visible{outline:3px solid var(--secondary);outline-offset:2px;border-radius:.4rem;}
+code{background:var(--surface-2);border:1px solid var(--border);padding:.05rem .4rem;border-radius:.4rem;font-size:.85em;font-family:'SFMono-Regular',Consolas,monospace;}
+.container{max-width:1180px;margin:0 auto;padding:0 1.25rem;}
+
+.glass-card{
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow:var(--shadow-sm);
+}
+html[data-theme="dark"] .glass-card{
+  background:rgba(30,41,59,.85);
+  border:1px solid rgba(255,255,255,.06);
+}
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm);
+  padding:2rem;
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);}
+.card.static:hover{transform:none;box-shadow:var(--shadow-sm);}
+.badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.3rem .85rem;border-radius:999px;font-size:.78rem;font-weight:600;
+  letter-spacing:.03em;
+}
+.badge-blue{background:#dbeafe;color:var(--primary);}
+html[data-theme="dark"] .badge-blue{background:#1e3a5f;color:#93c5fd;}
+.badge-amber{background:#fef3c7;color:#b45309;}
+html[data-theme="dark"] .badge-amber{background:#4b3a12;color:#fcd34d;}
+.badge-green{background:#dcfce7;color:#15803d;}
+html[data-theme="dark"] .badge-green{background:#0f3d24;color:#86efac;}
+.badge-red{background:#fee2e2;color:#b91c1c;}
+html[data-theme="dark"] .badge-red{background:#4b1113;color:#fca5a5;}
+
+.btn{
+  display:inline-flex;align-items:center;gap:.55rem;
+  padding:.85rem 1.6rem;border-radius:.9rem;font-weight:600;font-size:.95rem;
+  cursor:pointer;border:none;transition:all .2s ease;font-family:inherit;
+}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 8px 20px -6px rgba(30,64,175,.5);}
+.btn-primary:hover{background:var(--primary-dark);transform:translateY(-2px);}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text);}
+.btn-outline:hover{border-color:var(--secondary);color:var(--secondary);}
+.btn-accent{background:var(--accent);color:#fff;}
+.btn-accent:hover{filter:brightness(1.05);transform:translateY(-2px);}
+.btn-danger{background:transparent;border:1.5px solid #fca5a5;color:#b91c1c;}
+.btn-danger:hover{background:#fee2e2;}
+.btn-sm{padding:.55rem 1.1rem;font-size:.85rem;border-radius:.7rem;}
+.btn[disabled]{opacity:.5;cursor:not-allowed;}
+
+.section{padding:4.5rem 0;scroll-margin-top:5rem;}
+.section-title{font-size:2rem;font-weight:800;margin:0 0 .5rem;color:var(--text);}
+.section-eyebrow{font-size:.8rem;font-weight:700;letter-spacing:.1em;color:var(--secondary);text-transform:uppercase;margin-bottom:.6rem;display:block;}
+.section-desc{color:var(--text-muted);max-width:720px;margin:0 0 2rem;line-height:1.75;}
+.sub-title{font-size:1.15rem;font-weight:700;margin:2rem 0 .8rem;}
+.prose{color:var(--text-muted);line-height:1.8;font-size:.95rem;}
+.prose strong{color:var(--text);}
+.prose ul,.prose ol{padding-left:1.3rem;margin:.6rem 0;}
+.prose li{margin-bottom:.3rem;}
+
+table{width:100%;border-collapse:collapse;font-size:.9rem;}
+th,td{padding:.8rem 1rem;border-bottom:1px solid var(--border);text-align:left;vertical-align:top;}
+th{background:var(--surface-2);font-weight:700;color:var(--text);}
+.table-wrap{overflow-x:auto;border-radius:var(--radius-md);border:1px solid var(--border);background:var(--surface);}
+.table-wrap table{min-width:560px;}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* Navbar */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:100;}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;height:4rem;}
+.brand{display:flex;align-items:center;gap:.7rem;font-weight:700;font-size:1.15rem;color:var(--primary);}
+.brand-icon{background:var(--primary);color:#fff;padding:.5rem;border-radius:.6rem;}
+.nav-links{display:flex;align-items:center;gap:1.5rem;}
+.nav-links a{color:var(--text-muted);font-weight:500;font-size:.92rem;transition:color .2s;}
+.nav-links a:hover{color:var(--primary);}
+.icon-btn{width:2.5rem;height:2.5rem;border-radius:.7rem;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border);background:var(--surface);cursor:pointer;color:var(--text);}
+.icon-btn:hover{border-color:var(--secondary);color:var(--secondary);}
+#hamburgerBtn{display:none;}
+
+/* Sidebar TOC */
+.layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:2.5rem;align-items:flex-start;}
+.sidebar{position:sticky;top:5.5rem;max-height:calc(100vh - 6.5rem);overflow-y:auto;padding-right:.5rem;}
+.sidebar-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:.8rem;}
+.toc-link{display:flex;align-items:center;gap:.6rem;padding:.45rem .7rem;border-radius:.6rem;font-size:.85rem;color:var(--text-muted);font-weight:500;}
+.toc-link:hover{background:var(--surface-2);color:var(--primary);}
+.toc-link.active{background:#dbeafe;color:var(--primary);font-weight:700;}
+html[data-theme="dark"] .toc-link.active{background:#1e3a5f;color:#93c5fd;}
+.toc-link.hidden{display:none;}
+.toc-num{font-size:.7rem;width:1.4rem;height:1.4rem;border-radius:.4rem;background:var(--surface-2);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.toc-link.done .toc-num{background:#16a34a;color:#fff;}
+.search-box{width:100%;padding:.6rem .8rem;border-radius:.7rem;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;font-size:.85rem;margin-bottom:1rem;}
+#tocToggle{display:none;width:100%;margin-bottom:1rem;justify-content:center;}
+
+/* Hero */
+.hero{
+  position:relative;overflow:hidden;padding:8rem 0 5rem;color:#fff;
+  background:linear-gradient(135deg,#1e3a8a,#1e40af 45%,#312e81);
+}
+.hero-network{position:absolute;inset:0;width:100%;height:100%;opacity:.2;pointer-events:none;}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:780px;margin:0 auto;}
+.hero h1{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:800;line-height:1.1;margin:1rem 0;}
+.hero p.lead{color:#bfdbfe;font-size:1.1rem;font-weight:500;max-width:600px;margin:0 auto 1.6rem;}
+.hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.hero-meta{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;margin:0 0 1.8rem;}
+.hero-meta span{background:rgba(255,255,255,.12);color:#dbeafe;padding:.35rem .85rem;border-radius:999px;font-size:.8rem;font-weight:600;}
+.hero-progress{max-width:320px;margin:1.8rem auto 0;}
+.hero-progress .progress-track{background:rgba(255,255,255,.2);}
+.hero-icons{display:flex;justify-content:center;gap:1rem;margin-bottom:1rem;font-size:1.6rem;color:#fbbf24;}
+.float{animation:floaty 4s ease-in-out infinite;}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* diagram boxes */
+.diagram{background:var(--surface-2);border:1px dashed var(--border);border-radius:var(--radius-md);padding:1.5rem;}
+.node{background:var(--surface);border:1px solid var(--border);border-radius:.8rem;padding:.9rem 1.1rem;text-align:center;font-weight:600;font-size:.85rem;box-shadow:var(--shadow-sm);}
+.arrow-down{display:flex;justify-content:center;color:var(--secondary);font-size:1.2rem;margin:.2rem 0;}
+.flex-center{display:flex;align-items:center;justify-content:center;}
+.grid-auto{display:grid;gap:1.25rem;}
+.svg-wrap svg{width:100%;height:auto;display:block;}
+.svg-text{fill:var(--text);font-family:Inter,sans-serif;}
+.svg-muted{fill:var(--text-muted);font-family:Inter,sans-serif;}
+.svg-box{fill:var(--surface);stroke:var(--border);}
+
+/* Notes */
+.note{border-radius:var(--radius-md);padding:1rem 1.2rem;font-size:.9rem;line-height:1.7;margin-top:1.2rem;border:1px solid;}
+.note-warn{background:var(--warn-bg);border-color:var(--warn-bd);color:var(--warn-tx);}
+.note-info{background:var(--info-bg);border-color:var(--info-bd);color:var(--info-tx);}
+.note i{margin-right:.4rem;}
+
+/* Tabs */
+.tabs-nav{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;border-bottom:1px solid var(--border);padding-bottom:.75rem;}
+.tab-btn{padding:.6rem 1.1rem;border-radius:.7rem;font-size:.85rem;font-weight:600;background:var(--surface-2);color:var(--text-muted);border:none;cursor:pointer;font-family:inherit;}
+.tab-btn.active{background:var(--primary);color:#fff;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* Accordion (tinggi otomatis) */
+.accordion-item{border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:.85rem;overflow:hidden;background:var(--surface);}
+.accordion-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.1rem 1.4rem;cursor:pointer;font-weight:600;width:100%;text-align:left;background:none;border:none;color:var(--text);font-family:inherit;font-size:.95rem;}
+.accordion-head:hover{color:var(--primary);}
+.accordion-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s ease;}
+.accordion-body > .accordion-clip{min-height:0;overflow:hidden;}
+.accordion-body-inner{padding:0 1.4rem 1.3rem;color:var(--text-muted);line-height:1.75;font-size:.92rem;}
+.accordion-item.open .accordion-body{grid-template-rows:1fr;}
+.accordion-item.open .chev{transform:rotate(180deg);}
+.chev{transition:transform .25s ease;flex-shrink:0;}
+
+/* Code block */
+pre.code{background:var(--slate-900);color:#e2e8f0;padding:1.2rem 1.4rem;border-radius:var(--radius-md);overflow-x:auto;font-size:.84rem;line-height:1.6;font-family:'SFMono-Regular',Consolas,monospace;margin:.8rem 0;}
+pre.code .cmt{color:#94a3b8;}
+pre.code .kw{color:#93c5fd;}
+pre.code .val{color:#fca5a5;}
+
+/* Simulation */
+.pc-card{border:2px solid var(--border);border-radius:var(--radius-md);padding:1.1rem;text-align:center;background:var(--surface);}
+.pc-card select{width:100%;margin-top:.7rem;padding:.5rem;border-radius:.6rem;border:1px solid var(--border);background:var(--surface-2);color:var(--text);font-weight:600;}
+.result-badge{padding:.9rem 1.2rem;border-radius:var(--radius-md);font-weight:600;margin-top:1rem;line-height:1.7;font-size:.92rem;}
+.result-ok{background:var(--ok-bg);color:var(--ok-tx);}
+.result-fail{background:var(--bad-bg);color:var(--bad-tx);}
+.result-warn{background:var(--warn-bg);color:var(--warn-tx);}
+.result-badge ol,.result-badge ul{margin:.5rem 0 0;padding-left:1.2rem;font-weight:500;}
+.field{display:flex;flex-direction:column;gap:.3rem;font-size:.8rem;font-weight:600;color:var(--text-muted);}
+.field input,.field select{padding:.6rem .75rem;border-radius:.6rem;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:inherit;font-size:.9rem;}
+.form-row{display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-end;}
+.form-row .field{flex:1;min-width:150px;}
+.toggle{display:inline-flex;align-items:center;gap:.6rem;font-size:.88rem;font-weight:600;cursor:pointer;}
+.toggle input{width:1.15rem;height:1.15rem;accent-color:var(--primary);}
+.gw-input{width:100%;min-width:120px;padding:.4rem .6rem;border-radius:.5rem;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'SFMono-Regular',Consolas,monospace;font-size:.85rem;}
+.gw-input.bad{border-color:#dc2626;}
+.log-list{list-style:none;margin:.8rem 0 0;padding:0;font-size:.82rem;color:var(--text-muted);}
+.log-list li{padding:.35rem .6rem;border-left:3px solid var(--border);margin-bottom:.3rem;}
+.log-list li.ok{border-color:#16a34a;}
+.log-list li.fail{border-color:#dc2626;}
+
+/* Review cards */
+.rev-card{text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:1.1rem;cursor:pointer;font-family:inherit;color:var(--text);transition:all .2s ease;width:100%;}
+.rev-card:hover{border-color:var(--secondary);transform:translateY(-2px);}
+.rev-card .rev-body{display:none;margin-top:.6rem;color:var(--text-muted);font-size:.85rem;line-height:1.65;font-weight:400;}
+.rev-card.open{border-color:var(--secondary);background:var(--info-bg);}
+.rev-card.open .rev-body{display:block;}
+
+/* Checklist */
+.check-item{display:flex;gap:.8rem;align-items:flex-start;padding:.7rem 1rem;border:1px solid var(--border);border-radius:var(--radius-sm);margin-bottom:.6rem;background:var(--surface);cursor:pointer;font-size:.92rem;}
+.check-item input{width:1.15rem;height:1.15rem;margin-top:.15rem;accent-color:#16a34a;flex-shrink:0;}
+.check-item.done{background:var(--ok-bg);border-color:#86efac;}
+.check-item.done span{text-decoration:line-through;opacity:.8;}
+
+/* Mini game / option buttons */
+.choice-btn{padding:.6rem 1rem;border-radius:.6rem;font-weight:600;font-size:.85rem;border:1.5px solid var(--border);background:var(--surface-2);cursor:pointer;color:var(--text);font-family:inherit;text-align:left;}
+.choice-btn:hover{border-color:var(--secondary);}
+.choice-btn.correct{background:var(--ok-bg);border-color:#16a34a;color:var(--ok-tx);}
+.choice-btn.wrong{background:var(--bad-bg);border-color:#dc2626;color:var(--bad-tx);}
+.hl-col{background:#dbeafe !important;}
+html[data-theme="dark"] .hl-col{background:#1e3a5f !important;}
+
+/* Quiz */
+.progress-track{width:100%;height:.55rem;background:var(--surface-2);border-radius:999px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(to right,var(--primary),var(--secondary));border-radius:999px;transition:width .4s ease;}
+.quiz-option{display:block;width:100%;text-align:left;padding:.9rem 1.1rem;border:1.5px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--surface);margin-bottom:.7rem;cursor:pointer;font-size:.92rem;transition:all .15s ease;color:var(--text);font-family:inherit;}
+.quiz-option:hover:not([disabled]){border-color:var(--secondary);}
+.quiz-option.correct{border-color:#16a34a;background:var(--ok-bg);color:var(--ok-tx);font-weight:600;}
+.quiz-option.wrong{border-color:#dc2626;background:var(--bad-bg);color:var(--bad-tx);font-weight:600;}
+
+/* Toast */
+#toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(150%);
+  background:var(--dark);color:#fff;padding:.9rem 1.5rem;border-radius:.8rem;font-size:.9rem;font-weight:600;
+  box-shadow:0 10px 30px -8px rgba(0,0,0,.4);z-index:400;transition:transform .35s ease;display:flex;align-items:center;gap:.6rem;max-width:92vw;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+/* tooltip */
+.tip{position:relative;cursor:help;border-bottom:1px dashed var(--secondary);}
+.tip .tip-box{visibility:hidden;opacity:0;position:absolute;bottom:135%;left:50%;transform:translateX(-50%);
+  background:var(--dark);color:#fff;padding:.6rem .8rem;border-radius:.5rem;font-size:.78rem;width:220px;
+  transition:opacity .2s;z-index:20;font-weight:400;line-height:1.5;}
+.tip:hover .tip-box,.tip:focus .tip-box{visibility:visible;opacity:1;}
+
+/* back to top */
+#backToTop{position:fixed;bottom:1.5rem;right:1.5rem;width:3rem;height:3rem;border-radius:50%;
+  background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;
+  box-shadow:var(--shadow-md);border:none;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:90;}
+#backToTop.show{opacity:1;pointer-events:auto;}
+
+/* modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);display:none;align-items:center;justify-content:center;z-index:300;padding:1.5rem;}
+.modal-overlay.show{display:flex;}
+.modal-box{background:var(--surface);border-radius:var(--radius-lg);max-width:720px;width:100%;padding:2rem;box-shadow:var(--shadow-md);max-height:88vh;overflow-y:auto;}
+
+textarea.reflect{width:100%;border:1px solid var(--border);border-radius:var(--radius-sm);padding:.9rem;font-family:inherit;
+  background:var(--surface);color:var(--text);min-height:100px;resize:vertical;}
+
+.chip{display:inline-flex;align-items:center;padding:.35rem .8rem;border-radius:999px;background:var(--surface-2);
+  border:1px solid var(--border);font-size:.78rem;font-weight:600;color:var(--text-muted);margin:.2rem;}
+
+/* frame 802.1Q */
+.frame-row{display:flex;flex-wrap:wrap;gap:4px;margin:.8rem 0;}
+.frame-cell{padding:.7rem .6rem;border-radius:.5rem;font-size:.72rem;font-weight:700;text-align:center;background:var(--surface);border:1px solid var(--border);flex:1;min-width:84px;}
+.frame-cell.tag{background:#fef3c7;border-color:#f59e0b;color:#92400e;}
+html[data-theme="dark"] .frame-cell.tag{background:#4b3a12;color:#fcd34d;}
+.frame-cell small{display:block;font-weight:500;opacity:.8;margin-top:.2rem;}
+
+.timeline-step{display:flex;gap:1rem;align-items:flex-start;}
+.step-dot{width:2.4rem;height:2.4rem;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;}
+
+.stat-pill{display:flex;align-items:center;gap:.6rem;padding:.6rem .9rem;border:1px solid var(--border);border-radius:.7rem;font-size:.88rem;background:var(--surface);}
+.stat-pill.done{background:var(--ok-bg);border-color:#86efac;color:var(--ok-tx);}
+
+footer .foot{display:flex;flex-direction:row;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important;scroll-behavior:auto !important;}
+  .reveal{opacity:1;transform:none;}
+}
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;}
+  .sidebar{position:static;max-height:none;display:none;}
+  .sidebar.mobile-open{display:block;margin-bottom:1rem;}
+  #tocToggle{display:flex;}
+  .nav-links{display:none;}
+  #hamburgerBtn{display:flex;}
+  .section-title{font-size:1.6rem;}
+  footer .foot{flex-direction:column;text-align:center;}
+}
+</style>
+</head>
+<body>
+<!-- ============ NAVBAR ============ -->
+<nav id="navbar" class="glass-card" aria-label="Navigasi utama">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-icon"><i class="fas fa-network-wired"></i></span>
+      TLJ Roadmap
+    </a>
+    <div class="nav-links">
+      <a href="bab4.html"><i class="fas fa-arrow-left" style="font-size:.75rem;margin-right:.35rem;"></i>BAB 4</a>
+      <a href="index.html">Roadmap</a>
+      <a href="bab6.html">BAB 6<i class="fas fa-arrow-right" style="font-size:.75rem;margin-left:.35rem;"></i></a>
+      <button class="icon-btn" id="themeToggle" title="Mode gelap/terang" aria-label="Ganti mode gelap/terang"><i class="fas fa-moon"></i></button>
+    </div>
+    <button class="icon-btn" id="hamburgerBtn" aria-label="Buka menu" aria-expanded="false"><i class="fas fa-bars"></i></button>
+  </div>
+  <div id="mobileMenu" style="display:none;border-top:1px solid var(--border);">
+    <div class="container" style="padding:1rem 1.25rem;display:flex;flex-direction:column;gap:.9rem;">
+      <a href="bab4.html">← BAB 4</a>
+      <a href="index.html">Roadmap</a>
+      <a href="bab6.html">BAB 6 →</a>
+      <button class="btn btn-outline btn-sm" id="themeToggleMobile" style="width:fit-content;"><i class="fas fa-moon"></i>&nbsp; Mode Gelap</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="hero"><div class="container hero-content"><div class="hero-icons" aria-hidden="true"><i class="fas fa-route float"></i><i class="fas fa-arrows-left-right float" style="animation-delay:.6s"></i><i class="fas fa-server float" style="animation-delay:1.2s"></i></div>
+<span class="badge badge-blue" style="background:rgba(255,255,255,.12);color:#dbeafe">Semester Ganjil &middot; BAB 5</span><h1>Static<br><span style="color:#fbbf24">Routing</span></h1>
+<p class="lead">Pelajari bagaimana router menentukan jalur pengiriman paket secara manual untuk menghubungkan jaringan yang berbeda.</p>
+<svg viewBox="0 0 560 90" style="width:100%;max-width:520px;margin:0 auto 1.2rem" aria-hidden="true"><rect x="10" y="10" width="150" height="70" rx="12" fill="none" stroke="#bfdbfe" stroke-dasharray="5 4"/><rect x="400" y="10" width="150" height="70" rx="12" fill="none" stroke="#bfdbfe" stroke-dasharray="5 4"/><line x1="130" y1="45" x2="430" y2="45" stroke="#fff" stroke-width="2"/><rect x="105" y="28" width="50" height="34" rx="8" fill="#3b82f6"/><rect x="405" y="28" width="50" height="34" rx="8" fill="#3b82f6"/><text x="130" y="50" fill="#fff" font-size="12" text-anchor="middle">R1</text><text x="430" y="50" fill="#fff" font-size="12" text-anchor="middle">R2</text><text x="60" y="50" fill="#dbeafe" font-size="11" text-anchor="middle">Gedung A</text><text x="500" y="50" fill="#dbeafe" font-size="11" text-anchor="middle">Gedung B</text><circle r="6" fill="#fbbf24"><animateMotion dur="3s" repeatCount="indefinite" path="M130,45 L430,45"/></circle></svg>
+<div class="hero-actions"><a href="#tujuan" class="btn btn-primary" style="background:#fff;color:var(--primary)"><i class="fas fa-play"></i> Mulai Belajar</a><a href="#praktik1" class="btn btn-outline" style="border-color:rgba(255,255,255,.4);color:#fff"><i class="fas fa-flask"></i> Langsung ke Praktik</a></div>
+<div class="hero-progress"><div class="progress-track" role="progressbar" id="heroProgressBar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill" id="heroProgressFill" style="width:0%"></div></div><p style="font-size:.8rem;color:#bfdbfe;margin:.5rem 0 0">Progress belajarmu: <strong id="heroProgressText">0%</strong></p></div>
+<p style="margin-top:1.4rem;font-size:.85rem;color:#bfdbfe">Teknik Layanan Jaringan (TLJ) &middot; Kelas XII &middot; SMK Bintang Raudloh</p><p style="margin:.3rem 0 0;font-size:.85rem;color:#bfdbfe;font-style:italic">Menentukan Jalur Komunikasi Antarjaringan Secara Manual untuk Menghubungkan Dua Gedung atau Lebih.</p></div></header>
+<main class="container" style="padding-top:3rem"><div class="layout"><aside class="sidebar" id="sidebar"><div class="sidebar-title">Progress BAB 5</div><div class="progress-track" style="margin-bottom:.4rem"><div class="progress-fill" id="sideProgressFill" style="width:0%"></div></div><p style="font-size:.78rem;color:var(--text-muted);margin:0 0 1.2rem"><span id="sideProgressText">0%</span> selesai</p><div class="sidebar-title">Cari Materi</div><input type="search" class="search-box" id="materialSearch" placeholder="Cari: next hop, default..." aria-label="Cari materi"><p id="searchInfo" style="font-size:.75rem;color:var(--text-muted);margin:-.6rem 0 .8rem;min-height:1rem"></p><div class="sidebar-title">Daftar Isi</div><nav id="tocNav" style="display:flex;flex-direction:column;gap:.15rem"></nav></aside>
+<div style="min-width:0"><button class="btn btn-outline btn-sm" id="tocToggle" aria-expanded="false"><i class="fas fa-list"></i> Daftar Isi &amp; Cari Materi</button>
+<section class="section reveal" id="tujuan" data-title="Tujuan Pembelajaran" data-kind="read"><span class="section-eyebrow">1</span><h2 class="section-title">Tujuan Pembelajaran</h2><div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));"><div class="card static"><h3 style="margin-top:0">Setelah materi ini, kamu mampu:</h3><ol class="prose"><li>Menjelaskan pengertian routing</li><li>Menjelaskan fungsi router antarjaringan</li><li>Memahami Routing Table</li><li>Membaca dan menganalisis Routing Table</li><li>Membedakan Connected, Static, dan Default Route</li><li>Menjelaskan cara kerja Static Routing</li><li>Menentukan Destination Network</li></ol></div><div class="card static"><h3 style="margin-top:0">&nbsp;</h3><ol class="prose"><li>Menentukan Next Hop</li><li>Mengonfigurasi IP Address interface router</li><li>Mengonfigurasi Static Route</li><li>Mengonfigurasi Default Route</li><li>Menguji komunikasi antarjaringan</li><li>Troubleshooting kesalahan routing</li><li>Membangun jaringan dua gedung dengan dua router</li></ol></div></div></section>
+<section class="section reveal" id="apersepsi" data-title="Apersepsi" data-kind="read"><span class="section-eyebrow">2</span><h2 class="section-title">Apersepsi</h2><p class="prose">Sebuah sekolah memiliki dua gedung. <strong>Gedung A</strong>: Ruang Administrasi, Lab Komputer, satu router, satu switch. <strong>Gedung B</strong>: Ruang Guru, Ruang Kepala Sekolah, satu router, satu switch.</p><div class="card static" id="topoApers"></div><div class="note note-info"><i class="fas fa-circle-info"></i><strong>Pertanyaan pemantik:</strong> Bagaimana komputer di Gedung A dapat berkomunikasi dengan komputer di Gedung B apabila kedua gedung memiliki jaringan IP yang berbeda?</div><p class="prose">Jawabannya: router harus punya <strong>informasi jalur</strong> menuju jaringan tujuan. Itulah inti BAB 5.</p></section>
+<section class="section reveal" id="review" data-title="Review BAB 4" data-kind="read"><span class="section-eyebrow">3</span><h2 class="section-title">Review BAB 4</h2><p class="prose">Di BAB 4 kamu menghubungkan beberapa VLAN dengan router. Di BAB 5 kamu menghubungkan <strong>dua lokasi/gedung</strong> dengan <strong>dua router</strong>. Klik kartu untuk mengingat kembali:</p><div class="accordion-item"><button class="accordion-head" aria-expanded="false"><span>IP Address &amp; Subnet Mask</span><i class="fas fa-chevron-down chev"></i></button><div class="accordion-body"><div class="accordion-clip"><div class="accordion-body-inner">IP Address mengidentifikasi perangkat; Subnet Mask menentukan bagian network dan host. Contoh 192.168.10.10/24: network 192.168.10.0, host .10.</div></div></div></div><div class="accordion-item"><button class="accordion-head" aria-expanded="false"><span>Default Gateway</span><i class="fas fa-chevron-down chev"></i></button><div class="accordion-body"><div class="accordion-clip"><div class="accordion-body-inner">IP router pada LAN yang sama dengan PC. PC mengirim paket ke gateway bila tujuan berbeda jaringan. Untuk PC0: 192.168.10.1.</div></div></div></div><div class="accordion-item"><button class="accordion-head" aria-expanded="false"><span>Router &amp; Routing Antarjaringan</span><i class="fas fa-chevron-down chev"></i></button><div class="accordion-body"><div class="accordion-clip"><div class="accordion-body-inner">Router meneruskan paket antarjaringan berdasarkan IP tujuan. Di BAB 4 router menghubungkan VLAN yang terhubung langsung.</div></div></div></div><div class="accordion-item"><button class="accordion-head" aria-expanded="false"><span>Routing Table</span><i class="fas fa-chevron-down chev"></i></button><div class="accordion-body"><div class="accordion-clip"><div class="accordion-body-inner">Tabel milik router berisi daftar jaringan tujuan dan jalur untuk mencapainya (dibahas mendalam di bagian berikut).</div></div></div></div></section>
+<section class="section reveal" id="routing" data-title="Pengertian Routing" data-kind="read"><span class="section-eyebrow">4</span><h2 class="section-title">Pengertian Routing</h2><p class="prose"><strong>Routing</strong> adalah proses router memilih jalur untuk meneruskan paket IP menuju jaringan tujuan. Router seperti <strong>petunjuk arah</strong> yang menentukan jalur agar paket mencapai tujuan.</p><div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));"><div class="card static"><strong>Fungsi routing</strong><ul class="prose"><li>Menghubungkan jaringan berbeda subnet</li><li>Menentukan jalur terbaik/yang dikonfigurasi</li><li>Meneruskan paket berdasarkan IP tujuan</li></ul></div><div class="card static"><strong>Switch vs Router</strong><ul class="prose"><li>Switch: Layer 2, MAC address, dalam satu jaringan</li><li>Router: Layer 3, IP address, antarjaringan</li></ul></div><div class="card static"><strong>Satu subnet vs beda subnet</strong><ul class="prose"><li>Satu subnet: komunikasi langsung lewat switch</li><li>Beda subnet: wajib lewat router (gateway)</li></ul></div><div class="card static"><strong>Hubungan dengan IP</strong><p class="prose">Router mencocokkan <em>network</em> dari IP tujuan dengan entri Routing Table.</p></div></div></section>
+<section class="section reveal" id="rtable" data-title="Routing Table" data-kind="read"><span class="section-eyebrow">5</span><h2 class="section-title">Routing Table</h2><p class="prose"><strong>Routing Table</strong> adalah tabel di router berisi jaringan yang dikenal dan jalur menujunya. Router membaca tabel ini setiap kali menerima paket.</p><div class="table-wrap"><table><tr><th>Destination</th><th>Next Hop</th><th>Interface</th><th>Jenis</th></tr><tr><td>192.168.10.0/24</td><td>-</td><td>G0/0</td><td>Connected</td></tr><tr><td>10.0.0.0/30</td><td>-</td><td>G0/1</td><td>Connected</td></tr><tr><td>192.168.20.0/24</td><td>10.0.0.2</td><td>G0/1</td><td>Static</td></tr><tr><td>0.0.0.0/0</td><td>10.0.0.2</td><td>G0/1</td><td>Default</td></tr></table></div><ul class="prose"><li><strong>Destination Network + Prefix</strong>: jaringan tujuan</li><li><strong>Next Hop</strong>: IP router berikutnya. Tanda <code>-</code> pada Connected Route = terhubung langsung, tidak butuh router lain</li><li><strong>Outgoing Interface</strong>: interface untuk keluar</li><li><strong>Metric</strong>: nilai biaya jalur (dipakai saat ada beberapa pilihan)</li><li><strong>Sumber rute</strong>: Connected (otomatis), Static (manual), Default (0.0.0.0/0)</li></ul><div class="note note-info"><i class="fas fa-circle-info"></i><strong>Longest prefix match:</strong> bila beberapa rute cocok, router memilih yang prefix-nya paling panjang (paling spesifik). Tujuan 192.168.20.10 cocok dengan /24 dan 0.0.0.0/0, maka dipilih /24.</div></section>
+<section class="section reveal" id="bacatable" data-title="Cara Membaca Routing Table" data-kind="act"><span class="section-eyebrow">6</span><h2 class="section-title">Cara Membaca Routing Table</h2><ol class="prose"><li>Baca IP tujuan paket</li><li>Cari network tujuan di Routing Table</li><li>Tentukan Next Hop</li><li>Tentukan interface keluar</li><li>Teruskan paket</li></ol><h3 class="sub-title">Coba Cari Jalur Paket</h3><div class="card static"><div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center"><input id="fIp" class="search-box" style="width:220px;margin:0" value="192.168.20.10" aria-label="IP tujuan"><label><input type="checkbox" id="fDef"> Sertakan Default Route</label><button class="btn btn-primary btn-sm" id="fGo">Cari Jalur</button></div><div id="fOut" style="margin-top:1rem"></div></div><p class="prose">Coba: 192.168.20.10, 10.0.0.2, lalu 8.8.8.8 dengan dan tanpa Default Route.</p></section>
+<section class="section reveal" id="static" data-title="Static Routing" data-kind="read"><span class="section-eyebrow">7</span><h2 class="section-title">Static Routing</h2><p class="prose"><strong>Static Routing</strong> adalah rute yang dikonfigurasi <strong>manual</strong> oleh administrator: destination network, subnet mask, dan next hop (atau outgoing interface).</p><div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));"><div class="card static"><strong>Kelebihan</strong><ul class="prose"><li>Sederhana dan ringan</li><li>Tanpa trafik protokol routing</li><li>Mudah diprediksi</li></ul></div><div class="card static"><strong>Kekurangan</strong><ul class="prose"><li>Manual, rawan salah ketik</li><li>Tidak adaptif jika link putus</li><li>Sulit untuk jaringan besar</li></ul></div><div class="card static"><strong>Kapan dipakai</strong><ul class="prose"><li>Jaringan kecil (dua gedung)</li><li>Satu jalur keluar</li><li>Jalur yang ingin dikontrol penuh</li></ul></div></div><div class="card static" style="margin-top:1rem"><strong>Contoh:</strong> Gedung A 192.168.10.0/24 dan Gedung B 192.168.20.0/24 dihubungkan dua router. <strong>Setiap router</strong> harus tahu rute ke jaringan di belakang router lain.<br><br>R1: <code>ip route 192.168.20.0 255.255.255.0 10.0.0.2</code><br>R2: <code>ip route 192.168.10.0 255.255.255.0 10.0.0.1</code></div><div class="card static" id="topoStatic" style="margin-top:1rem"></div></section>
+<section class="section reveal" id="destnh" data-title="Destination Network &amp; Next Hop" data-kind="act"><span class="section-eyebrow">8</span><h2 class="section-title">Destination Network &amp; Next Hop</h2><div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));"><div class="card static"><strong>Destination Network</strong><br>Jaringan tujuan yang ingin dicapai (seperti "kota tujuan").</div><div class="card static"><strong>Next Hop</strong><br>IP router berikutnya yang menerima paket (seperti "gerbang tol berikutnya").</div></div><div class="table-wrap"><table><tr><th>Komponen</th><th>Contoh</th></tr><tr><td>Destination Network</td><td>192.168.20.0/24</td></tr><tr><td>Next Hop</td><td>10.0.0.2</td></tr><tr><td>Outgoing Interface</td><td>G0/1</td></tr></table></div><p class="prose">Hubungan: untuk mencapai <em>Destination</em>, kirim paket ke <em>Next Hop</em> lewat <em>Interface</em>. Next Hop harus berada di jaringan yang terhubung langsung dengan router.</p><h3 class="sub-title">Latihan</h3><div id="exDn"></div></section>
+<section class="section reveal" id="default" data-title="Default Route" data-kind="read"><span class="section-eyebrow">9</span><h2 class="section-title">Default Route</h2><p class="prose"><strong>Default Route</strong> (<code>0.0.0.0/0</code>) dipakai ketika <strong>tidak ada rute yang lebih spesifik</strong>. Biasanya mengarah ke router gateway/Internet.</p><pre class="code"><span class="kw">ip route</span> 0.0.0.0 0.0.0.0 10.0.0.2
+<span class="cmt">! ip route = perintah rute statis</span>
+<span class="cmt">! 0.0.0.0 0.0.0.0 = semua jaringan (tujuan apa pun)</span>
+<span class="cmt">! 10.0.0.2 = next hop (router gateway)</span></pre><p class="prose"><strong>Studi kasus:</strong> router kantor mengirim semua trafik yang tidak tercantum spesifik di Routing Table ke router gateway.</p><h3 class="sub-title">Simulasi pilihan rute</h3><div class="card static"><div style="display:flex;gap:.5rem;flex-wrap:wrap"><button class="btn btn-outline btn-sm dr" data-ip="192.168.20.10">Ke 192.168.20.10</button><button class="btn btn-outline btn-sm dr" data-ip="192.168.10.5">Ke 192.168.10.5</button><button class="btn btn-outline btn-sm dr" data-ip="8.8.8.8">Ke 8.8.8.8</button></div><div id="drOut" style="margin-top:1rem"></div></div><div class="note note-warn"><i class="fas fa-triangle-exclamation"></i>Jangan memasang Default Route sembarangan pada topologi dua gedung yang hanya butuh dua subnet. Next Hop harus benar-benar router berikutnya yang dapat dijangkau.</div></section>
+<section class="section reveal" id="perbandingan" data-title="Static Route vs Default Route" data-kind="read"><span class="section-eyebrow">10</span><h2 class="section-title">Static Route vs Default Route</h2><div class="table-wrap"><table><tr><th>Aspek</th><th>Static Route</th><th>Default Route</th></tr><tr><td>Tujuan</td><td>Jaringan tertentu</td><td>Tujuan tanpa rute lebih spesifik</td></tr><tr><td>Network</td><td>Ditentukan</td><td>0.0.0.0/0</td></tr><tr><td>Next Hop</td><td>Ditentukan</td><td>Ditentukan</td></tr><tr><td>Penggunaan</td><td>Antarjaringan</td><td>Jalur keluar utama</td></tr></table></div><div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));"><div class="card static"><strong>Sekolah</strong>: Static Route antar-gedung; Default Route ke router ISP.</div><div class="card static"><strong>Perusahaan</strong>: Static Route ke jaringan cabang; Default Route ke firewall/gateway Internet.</div></div></section>
+<section class="section reveal" id="simulasi" data-title="Simulasi Routing Interaktif" data-kind="act"><span class="section-eyebrow">11</span><h2 class="section-title">Simulasi Routing Interaktif</h2><div class="note note-info"><i class="fas fa-circle-info"></i>Simulasi ini adalah <strong>model pembelajaran</strong>, bukan emulator router sesungguhnya. Hasil ditentukan oleh konfigurasi yang kamu pilih. Awalnya kedua router belum punya Static Route.</div><div class="card static" id="topoSim"></div><div class="card static" style="margin-top:1rem"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.7rem"><label>Router<select id="sRt" class="search-box"><option>R1</option><option>R2</option></select></label><label>Destination (net/prefix)<input id="sNet" class="search-box" value="192.168.20.0/24"></label><label>Next Hop<input id="sNh" class="search-box" value="10.0.0.2"></label></div><div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem"><button class="btn btn-primary btn-sm" id="sAdd"><i class="fas fa-plus"></i> Tambah Static Route</button><button class="btn btn-outline btn-sm" id="sDef">Aktifkan Default Route</button><button class="btn btn-danger btn-sm" id="sDel">Hapus Static Route</button><button class="btn btn-outline btn-sm" id="sOn">Nonaktifkan Routing</button></div><p id="sMsg" style="font-size:.85rem;color:var(--text-muted)"></p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.7rem"><label>Dari<select id="sSrc" class="search-box"><option value="A">PC Gedung A</option><option value="B">PC Gedung B</option></select></label><label>Ke<select id="sDst" class="search-box"><option value="192.168.20.10">PC Gedung B (192.168.20.10)</option><option value="192.168.10.10">PC Gedung A (192.168.10.10)</option><option value="172.16.0.5">Jaringan tidak dikenal (172.16.0.5)</option></select></label></div><button class="btn btn-accent" id="sSend" style="margin-top:.8rem"><i class="fas fa-paper-plane"></i> Kirim Paket</button><div id="sOut" style="margin-top:1rem"></div></div><h3 class="sub-title">Lihat Routing Table</h3><div id="sTbl"></div><p class="prose">Tips: kirim paket A→B tanpa rute (gagal), tambah rute hanya di R1 (balasan gagal), tambah Next Hop salah (mis. 10.0.0.3), lalu lengkapi kedua router (berhasil).</p></section>
+<section class="section reveal" id="studikasus" data-title="Studi Kasus" data-kind="read"><span class="section-eyebrow">12</span><h2 class="section-title">Studi Kasus</h2><div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));"><div class="card static"><strong>Kasus: tanpa rute</strong><br>PC0 (192.168.10.10) ping PC2 (192.168.20.10). R1 hanya mengenal 192.168.10.0/24 dan 10.0.0.0/30, sehingga 192.168.20.0/24 tidak ditemukan dan paket dibuang. Solusi: Static Route di R1.</div><div class="card static"><strong>Kasus: balasan hilang</strong><br>R1 sudah punya rute ke Gedung B, tetapi R2 belum punya rute ke 192.168.10.0/24. Paket sampai, balasan tidak kembali. Routing harus <em>dua arah</em>.</div></div></section>
+<section class="section reveal" id="praktik1" data-title="Praktik 1: Topologi Dua Router" data-kind="act"><span class="section-eyebrow">13</span><h2 class="section-title">Praktik 1: Topologi Dua Router</h2><p class="prose">Gunakan <strong>Cisco Packet Tracer</strong>. Perangkat: 2 Router, 2 Switch, 4 PC, kabel sesuai interface.</p><div class="card static" id="topoP1"></div><ul class="prose"><li><strong>PC</strong>: perangkat pengguna</li><li><strong>Switch</strong>: menghubungkan PC dalam satu LAN</li><li><strong>Router</strong>: menghubungkan LAN dengan jaringan lain</li></ul><div class="table-wrap"><table><tr><th>Koneksi</th><th>Kabel yang umum dipakai</th></tr><tr><td>PC ke Switch; Switch ke Router</td><td>Copper Straight-Through</td></tr><tr><td>Router ke Router (Ethernet langsung)</td><td>Copper Cross-Over (sesuai metode pembelajaran)</td></tr></table></div><div class="note note-info"><i class="fas fa-circle-info"></i>Kabel crossover pada koneksi router-router dipakai pada metode ini. Perangkat modern dengan auto-MDIX atau simulasi tertentu juga dapat bekerja dengan kabel jenis lain, jadi crossover tidak selalu wajib.</div><button class="btn btn-accent btn-sm mark-done" data-id="praktik1" style="margin-top:1.2rem"><i class="fas fa-check"></i> Tandai selesai</button></section>
+<section class="section reveal" id="praktik2" data-title="Praktik 2: IP Addressing" data-kind="act"><span class="section-eyebrow">14</span><h2 class="section-title">Praktik 2: IP Addressing</h2><div class="table-wrap"><table><tr><th>Perangkat</th><th>IP Address</th><th>Gateway</th></tr><tr><td>Router 1 LAN (G0/0)</td><td>192.168.10.1/24</td><td>-</td></tr><tr><td>PC0</td><td>192.168.10.10</td><td>192.168.10.1</td></tr><tr><td>PC1</td><td>192.168.10.11</td><td>192.168.10.1</td></tr><tr><td>Link Router 1 / Router 2</td><td>10.0.0.1/30 / 10.0.0.2/30</td><td>-</td></tr><tr><td>Router 2 LAN (G0/0)</td><td>192.168.20.1/24</td><td>-</td></tr><tr><td>PC2</td><td>192.168.20.10</td><td>192.168.20.1</td></tr><tr><td>PC3</td><td>192.168.20.11</td><td>192.168.20.1</td></tr></table></div><ul class="prose"><li><strong>Network Address</strong>: alamat jaringan (192.168.10.0)</li><li><strong>Host Address</strong>: alamat perangkat</li><li><strong>Subnet Mask</strong>: /24 = 255.255.255.0; /30 = 255.255.255.252</li><li><strong>Default Gateway</strong>: IP router pada LAN PC</li><li><strong>/30</strong> memberi 4 alamat dengan 2 host valid, pas untuk link dua router</li></ul><h3 class="sub-title">Latihan: isi tabel</h3><div class="card static" id="ipEx"></div><button class="btn btn-accent btn-sm mark-done" data-id="praktik2" style="margin-top:1.2rem"><i class="fas fa-check"></i> Tandai selesai</button></section>
+<section class="section reveal" id="praktik3" data-title="Praktik 3: Static Routing via CLI" data-kind="act"><span class="section-eyebrow">15</span><h2 class="section-title">Praktik 3: Static Routing via CLI</h2><p class="prose">Contoh Cisco IOS. Sesuaikan nama/nomor interface dengan model router.</p><div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))"><div><strong>Router 1</strong><pre class="code"><span class="kw">enable</span>
+configure terminal
+interface gigabitEthernet0/0
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+ exit
+interface gigabitEthernet0/1
+ ip address 10.0.0.1 255.255.255.252
+ no shutdown
+ exit
+<span class="kw">ip route</span> 192.168.20.0 255.255.255.0 10.0.0.2
+end
+show ip route</pre></div><div><strong>Router 2</strong><pre class="code"><span class="kw">enable</span>
+configure terminal
+interface gigabitEthernet0/0
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+ exit
+interface gigabitEthernet0/1
+ ip address 10.0.0.2 255.255.255.252
+ no shutdown
+ exit
+<span class="kw">ip route</span> 192.168.10.0 255.255.255.0 10.0.0.1
+end
+show ip route</pre></div></div><p class="prose">Kedua router butuh Static Route masing-masing: paket harus bisa pergi <em>dan</em> balasannya bisa kembali.</p><h3 class="sub-title">Klik untuk Melihat Penjelasan Perintah</h3><div class="accordion-item"><button class="accordion-head" aria-expanded="false"><span><code>interface gigabitEthernet0/0</code></span><i class="fas fa-chevron-down chev"></i></button><div class="accordion-body"><div class="accordion-clip"><div class="accordion-body-inner">Masuk ke mode konfigurasi interface yang menghadap LAN.</div></div></div></div><div class="accordion-item"><button class="accordion-head" aria-expanded="false"><span><code>ip address 192.168.10.1 255.255.255.0</code></span><i class="fas fa-chevron-down chev"></i></button><div class="accordion-body"><div class="accordion-clip"><div class="accordion-body-inner">Memberi IP dan subnet mask pada interface; IP ini menjadi gateway PC.</div></div></div></div><div class="accordion-item"><button class="accordion-head" aria-expanded="false"><span><code>no shutdown</code></span><i class="fas fa-chevron-down chev"></i></button><div class="accordion-body"><div class="accordion-clip"><div class="accordion-body-inner">Mengaktifkan interface (secara default interface router mati).</div></div></div></div><div class="accordion-item"><button class="accordion-head" aria-expanded="false"><span><code>ip route 192.168.20.0 255.255.255.0 10.0.0.2</code></span><i class="fas fa-chevron-down chev"></i></button><div class="accordion-body"><div class="accordion-clip"><div class="accordion-body-inner">Destination 192.168.20.0, mask 255.255.255.0, next hop 10.0.0.2 (Router 2).</div></div></div></div><div class="accordion-item"><button class="accordion-head" aria-expanded="false"><span><code>show ip route</code></span><i class="fas fa-chevron-down chev"></i></button><div class="accordion-body"><div class="accordion-clip"><div class="accordion-body-inner">Menampilkan Routing Table. Rute connected ditandai C, static ditandai S, default S*.</div></div></div></div><h3 class="sub-title">Latihan Default Route</h3><p class="prose">Router Gedung B menuju router pusat/gateway:</p><pre class="code"><span class="kw">ip route</span> 0.0.0.0 0.0.0.0 10.0.0.1</pre><button class="btn btn-accent btn-sm mark-done" data-id="praktik3" style="margin-top:1.2rem"><i class="fas fa-check"></i> Tandai selesai</button></section>
+<section class="section reveal" id="praktik4" data-title="Praktik 4: Static Routing via GUI" data-kind="act"><span class="section-eyebrow">16</span><h2 class="section-title">Praktik 4: Static Routing via GUI</h2><h3 class="sub-title">Belajar Routing Statis Melalui GUI</h3><p class="prose">Konfigurasi router tidak selalu lewat CLI. Pada perangkat simulasi yang mendukung, gunakan tab <strong>Config</strong>. Nama menu dapat berbeda menurut model router dan versi Packet Tracer; bila Static Routing tidak tersedia di GUI, gunakan CLI.</p><div class="tabs-nav" id="guiTabs"><button class="tab-btn active" data-tab="tG">Panduan GUI</button><button class="tab-btn" data-tab="tC">Panduan CLI</button><button class="tab-btn" data-tab="tB">Bandingkan GUI dan CLI</button></div><div class="tab-panel active" id="tG" data-group="guiTabs"><ol class="prose"><li>Buka Cisco Packet Tracer</li><li>Tambahkan dua router</li><li>Tambahkan dua switch</li><li>Tambahkan empat PC</li><li>Hubungkan semua perangkat</li><li>Pilih kabel yang sesuai</li><li>Atur IP interface Router 1 (tab Config, pilih interface)</li><li>Atur IP interface Router 2</li><li>Aktifkan interface (centang On)</li><li>Atur IP setiap PC</li><li>Atur Default Gateway setiap PC</li><li>Buka tab Config pada router</li><li>Cari menu Routing / Static</li><li>Isi Destination Network</li><li>Isi Subnet Mask</li><li>Isi Next Hop</li><li>Tambah rute di Router 1</li><li>Tambah rute di Router 2</li><li>Periksa hasil konfigurasi</li><li>Uji komunikasi dengan ping</li></ol><div class="card static"><strong>Ilustrasi sederhana (bukan tangkapan layar Packet Tracer)</strong><div class="table-wrap"><table><tr><th>Kolom</th><th>Router 1</th><th>Router 2</th><th>Fungsi</th></tr><tr><td>Network</td><td>192.168.20.0</td><td>192.168.10.0</td><td>Jaringan tujuan</td></tr><tr><td>Mask</td><td>255.255.255.0</td><td>255.255.255.0</td><td>Ukuran jaringan</td></tr><tr><td>Next Hop</td><td>10.0.0.2</td><td>10.0.0.1</td><td>Router berikutnya</td></tr></table></div></div></div><div class="tab-panel" id="tC" data-group="guiTabs"><p class="prose">Gunakan perintah CLI pada Praktik 3. Hasilnya sama dengan GUI.</p></div><div class="tab-panel" id="tB" data-group="guiTabs"><div class="table-wrap"><table><tr><th>GUI</th><th>CLI</th></tr><tr><td>Menggunakan tampilan menu</td><td>Menggunakan perintah</td></tr><tr><td>Cocok untuk pengenalan awal</td><td>Cocok untuk administrasi teknis</td></tr><tr><td>Mengisi kolom konfigurasi</td><td>Mengetik command</td></tr><tr><td>Bergantung pada dukungan menu perangkat</td><td>Bergantung pada dukungan perintah IOS</td></tr></table></div></div><div class="card static" style="margin-top:1rem"><i class="fab fa-youtube" style="color:#dc2626"></i> <strong>Konfigurasi Routing Statis | GUI | Kabel Cross Over | 2 Buah Router 2 Switch dan 4 PC</strong><p class="prose">Tonton sebagai pendamping praktik, lalu kerjakan ulang konfigurasi secara mandiri.</p><a class="btn btn-primary btn-sm" target="_blank" rel="noopener" href="https://youtu.be/ghtULwmgjbA?si=RRn9bU4OIyrwC_Ai"><i class="fas fa-play"></i> Tonton Tutorial</a></div><button class="btn btn-accent btn-sm mark-done" data-id="praktik4" style="margin-top:1.2rem"><i class="fas fa-check"></i> Tandai selesai</button></section>
+<section class="section reveal" id="praktik5" data-title="Praktik 5: Pengujian Komunikasi" data-kind="act"><span class="section-eyebrow">17</span><h2 class="section-title">Praktik 5: Pengujian Komunikasi</h2><pre class="code">ping 192.168.20.10
+ping 192.168.20.11
+tracert 192.168.20.10</pre><ul class="prose"><li><strong>Ping</strong>: menguji apakah tujuan dapat dijangkau</li><li><strong>Tracert</strong>: menampilkan router yang dilewati paket</li><li><strong>PDU Simulation</strong>: melihat perjalanan paket di Packet Tracer</li></ul><div class="table-wrap"><table><tr><th>Pengujian</th><th>Hasil yang diharapkan</th><th>Hasil kamu</th></tr><tr><td>PC0 ke PC1</td><td>Berhasil</td><td><input type="checkbox" aria-label="PC0 ke PC1 berhasil"></td></tr><tr><td>PC2 ke PC3</td><td>Berhasil</td><td><input type="checkbox" aria-label="PC2 ke PC3 berhasil"></td></tr><tr><td>PC0 ke PC2</td><td>Berhasil</td><td><input type="checkbox" aria-label="PC0 ke PC2 berhasil"></td></tr><tr><td>PC1 ke PC3</td><td>Berhasil</td><td><input type="checkbox" aria-label="PC1 ke PC3 berhasil"></td></tr></table></div><div class="note note-info"><i class="fas fa-circle-info"></i>Ping pertama bisa lebih lama atau timeout karena proses ARP/kondisi awal simulasi. Lakukan juga pengujian dua arah (PC2 ke PC0).</div><button class="btn btn-accent btn-sm mark-done" data-id="praktik5" style="margin-top:1.2rem"><i class="fas fa-check"></i> Tandai selesai</button></section>
+<section class="section reveal" id="troubleshooting" data-title="Troubleshooting" data-kind="act"><span class="section-eyebrow">18</span><h2 class="section-title">Troubleshooting</h2><h3 class="sub-title">Mengapa Kedua Gedung Tidak Bisa Terhubung?</h3><div id="tsList"></div><div class="table-wrap"><table><tr><th>Command</th><th>Fungsi</th><th>Dijalankan di</th></tr><tr><td>show ip interface brief</td><td>Status &amp; IP interface</td><td>Router</td></tr><tr><td>show ip route</td><td>Lihat Routing Table</td><td>Router</td></tr><tr><td>show running-config</td><td>Lihat seluruh konfigurasi</td><td>Router</td></tr><tr><td>ping</td><td>Uji jangkauan</td><td>PC / Router</td></tr><tr><td>traceroute (tracert di PC)</td><td>Lacak jalur</td><td>Router (PC: tracert)</td></tr></table></div><h3 class="sub-title">Checklist</h3><div id="tsCheck"></div></section>
+<section class="section reveal" id="miniproject" data-title="Mini Project: Jaringan Dua Gedung" data-kind="act"><span class="section-eyebrow">19</span><h2 class="section-title">Mini Project: Jaringan Dua Gedung</h2><p class="prose">SMK Bintang Raudloh punya dua gedung. Gedung A: Admin &amp; Lab Komputer (2 PC, 1 switch, 1 router). Gedung B: Ruang Guru &amp; TU (2 PC, 1 switch, 1 router). IP: A 192.168.10.0/24, B 192.168.20.0/24, link 10.0.0.0/30.</p><ol class="prose"><li>Analisis kebutuhan</li><li>Membuat topologi</li><li>Menentukan IP Address</li><li>Konfigurasi interface router</li><li>Konfigurasi Static Route</li><li>Menguji komunikasi</li><li>Troubleshooting</li><li>Dokumentasi jaringan</li><li>Presentasi</li></ol><p class="prose"><strong>Output:</strong> file Packet Tracer, network diagram, tabel IP, tabel routing, bukti konfigurasi, hasil ping, dokumentasi troubleshooting, kesimpulan.</p><h3 class="sub-title">Rubrik Penilaian</h3><div class="table-wrap"><table><tr><th>Aspek</th><th>Bobot</th><th>Indikator pencapaian</th></tr><tr><td>Analisis kebutuhan &amp; topologi</td><td>15%</td><td>Topologi lengkap, perangkat tepat</td></tr><tr><td>Pengalamatan IP</td><td>20%</td><td>Network, host, mask, gateway benar</td></tr><tr><td>Konfigurasi interface</td><td>15%</td><td>Semua interface up dan ber-IP</td></tr><tr><td>Static Routing</td><td>25%</td><td>Rute dua arah benar, next hop tepat</td></tr><tr><td>Pengujian &amp; troubleshooting</td><td>15%</td><td>Ping berhasil, kendala terdokumentasi</td></tr><tr><td>Dokumentasi &amp; presentasi</td><td>10%</td><td>Rapi, runtut, dapat dijelaskan</td></tr><tr><td><strong>Total</strong></td><td><strong>100%</strong></td><td></td></tr></table></div><button class="btn btn-accent btn-sm mark-done" data-id="miniproject" style="margin-top:1.2rem"><i class="fas fa-check"></i> Tandai selesai</button></section>
+<section class="section reveal" id="quiz" data-title="Quiz Interaktif" data-kind="act"><span class="section-eyebrow">20</span><h2 class="section-title">Quiz Interaktif</h2><div id="quizBox"></div></section>
+<section class="section reveal" id="ringkasan" data-title="Ringkasan" data-kind="read"><span class="section-eyebrow">21</span><h2 class="section-title">Ringkasan</h2><ul class="prose"><li>Routing = memilih jalur paket antarjaringan</li><li>Routing Table berisi Destination, Next Hop, Interface, Metric</li><li>Connected otomatis; Static manual; Default 0.0.0.0/0</li><li>Router memilih rute dengan longest prefix match</li><li>Static Route harus dibuat di <strong>kedua</strong> router</li><li>Pengujian: ping, tracert; diagnosis: show ip route</li><li>Troubleshooting: interface, IP, gateway, next hop, mask</li></ul></section>
+<section class="section reveal" id="glosarium" data-title="Glosarium" data-kind="read"><span class="section-eyebrow">22</span><h2 class="section-title">Glosarium</h2><div id="glos" class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))"></div></section>
+<section class="section reveal" id="refleksi" data-title="Refleksi" data-kind="act"><span class="section-eyebrow">23</span><h2 class="section-title">Refleksi</h2><div class="card static" id="refl"></div><div style="display:flex;gap:.8rem;margin-top:1rem"><button class="btn btn-primary" id="rSave"><i class="fas fa-floppy-disk"></i> Simpan Refleksi</button><button class="btn btn-danger" id="rClr"><i class="fas fa-trash"></i> Hapus</button></div></section>
+<section class="section reveal" id="progress-belajar" data-title="Progress Belajar" data-kind="none"><h2 class="section-title">Progress Belajar BAB 5</h2><div class="card static"><div class="progress-track"><div class="progress-fill" id="mainProgressFill" style="width:0%"></div></div><p style="font-weight:700" id="mainProgressText">0%</p><div class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-bottom:1rem"><div class="stat-pill" id="stPraktik"><i class="fas fa-flask"></i> <span>Praktik: belum</span></div><div class="stat-pill" id="stQuiz"><i class="fas fa-circle-question"></i> <span>Quiz: belum</span></div><div class="stat-pill" id="stRefl"><i class="fas fa-pen"></i> <span>Refleksi: belum</span></div></div><div id="progressChecklist" class="grid-auto" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.5rem"></div><button class="btn btn-danger btn-sm" id="btnResetProgress" style="margin-top:1rem"><i class="fas fa-rotate-left"></i> Reset Progress BAB 5</button></div></section>
+<div class="card static" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:4rem"><a href="bab4.html" class="btn btn-outline"><i class="fas fa-arrow-left"></i> BAB 4: Inter-VLAN Routing</a><a href="index.html" class="btn btn-outline"><i class="fas fa-map"></i> Roadmap</a><a href="bab6.html" class="btn btn-primary">BAB Berikutnya <i class="fas fa-arrow-right"></i></a></div></div></div></main><footer style="background:var(--dark);color:#94a3b8;padding:2.5rem 0;margin-top:2rem"><div class="container foot"><div><p style="color:#fff;font-weight:700;margin:0 0 .2rem">SMK Bintang Raudloh</p><p style="font-size:.85rem;margin:0">Teknik Komputer dan Jaringan</p></div><div style="font-size:.85rem">&copy; 2026 Roadmap Pembelajaran TLJ Kelas XII. Guru Pengampu: Khalid Nabawi, S.Kom.</div></div></footer><div id="toast" role="status" aria-live="polite"></div><button id="backToTop" aria-label="Kembali ke atas"><i class="fas fa-arrow-up"></i></button><script>
+/* ============================================================
+   UTIL: localStorage aman + helper
+============================================================ */
+const store = {
+  get(key, def){ try{ const v = localStorage.getItem(key); return v===null ? def : JSON.parse(v); }catch(e){ return def; } },
+  set(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){} },
+  del(key){ try{ localStorage.removeItem(key); }catch(e){} },
+  getRaw(key){ try{ return localStorage.getItem(key); }catch(e){ return null; } },
+  setRaw(key,v){ try{ localStorage.setItem(key,v); }catch(e){} }
+};
+const KEYS = {
+  theme:'tlj_bab5_theme', progress:'tlj_bab5_progress', checks:'tlj_bab5_checklists',
+  ping:'tlj_bab5_ping', reflection:'tlj_bab5_reflection', trouble:'tlj_bab5_trouble',
+  quiz:'tlj_bab5_quiz', sim:'tlj_bab5_sim', rubric:'tlj_bab5_rubric', cmp:'tlj_bab5_cmp'
+};
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ============================================================
+   IP helpers
+============================================================ */
+function isValidIP(s){
+  if(typeof s!=='string') return false;
+  const p = s.trim().split('.');
+  if(p.length!==4) return false;
+  return p.every(x=>/^\d{1,3}$/.test(x) && Number(x)>=0 && Number(x)<=255);
+}
+function ipToInt(s){ return s.trim().split('.').reduce((a,b)=>((a<<8)>>>0)+Number(b),0)>>>0; }
+function intToIp(n){ return [n>>>24,(n>>>16)&255,(n>>>8)&255,n&255].join('.'); }
+function prefixToMask(p){ return p===0?0:((0xFFFFFFFF<<(32-p))>>>0); }
+function maskToPrefix(m){
+  const n = ipToInt(m); let c=0, seen0=false;
+  for(let i=31;i>=0;i--){ const bit=(n>>>i)&1; if(bit){ if(seen0) return -1; c++; } else seen0=true; }
+  return c;
+}
+function networkOf(ip,prefix){ return (ipToInt(ip) & prefixToMask(prefix))>>>0; }
+
+/* ============================================================
+   THEME
+============================================================ */
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  const icon = t==='dark' ? 'fa-sun' : 'fa-moon';
+  document.querySelectorAll('#themeToggle i, #themeToggleMobile i').forEach(i=>i.className='fas '+icon);
+  const m = $('themeToggleMobile'); if(m) m.lastChild.textContent = t==='dark' ? '  Mode Terang' : '  Mode Gelap';
+}
+applyTheme(store.getRaw(KEYS.theme)==='dark' ? 'dark' : 'light');
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute('data-theme')==='dark' ? 'light' : 'dark';
+  store.setRaw(KEYS.theme,cur); applyTheme(cur);
+}
+$('themeToggle').addEventListener('click',toggleTheme);
+$('themeToggleMobile').addEventListener('click',toggleTheme);
+
+/* mobile menu */
+$('hamburgerBtn').addEventListener('click',()=>{
+  const m=$('mobileMenu'); const open = m.style.display==='none';
+  m.style.display = open ? 'block' : 'none';
+  $('hamburgerBtn').setAttribute('aria-expanded', String(open));
+});
+$('tocToggle').addEventListener('click',()=>{
+  const sb=$('sidebar'); const open = sb.classList.toggle('mobile-open');
+  $('tocToggle').setAttribute('aria-expanded', String(open));
+});
+
+/* toast */
+let toastTimer;
+function showToast(msg,icon){
+  const t=$('toast');
+  t.innerHTML='<i class="fas '+(icon||'fa-circle-check')+'"></i> '+esc(msg);
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+/* modal */
+function openModal(id){ $(id).classList.add('show'); }
+function closeModal(id){ $(id).classList.remove('show'); }
+document.querySelectorAll('.modal-overlay').forEach(ov=>{
+  ov.addEventListener('click',e=>{ if(e.target===ov) closeModal(ov.id); });
+});
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal-overlay.show').forEach(m=>closeModal(m.id)); });
+
+/* accordion (delegasi) */
+document.addEventListener('click',e=>{
+  const head = e.target.closest('.accordion-head');
+  if(!head) return;
+  if(e.target.closest('input,label.check-item')) return;
+  const item = head.parentElement;
+  const open = item.classList.contains('open');
+  item.parentElement.querySelectorAll(':scope > .accordion-item').forEach(i=>{ i.classList.remove('open'); const h=i.querySelector('.accordion-head'); if(h) h.setAttribute('aria-expanded','false'); });
+  if(!open){ item.classList.add('open'); head.setAttribute('aria-expanded','true'); }
+});
+function accItem(title, bodyHtml, headExtra){
+  return '<div class="accordion-item"><button class="accordion-head" aria-expanded="false"><span>'+title+'</span><span style="display:flex;gap:.6rem;align-items:center;">'+(headExtra||'')+'<i class="fas fa-chevron-down chev"></i></span></button>'+
+    '<div class="accordion-body"><div class="accordion-clip"><div class="accordion-body-inner">'+bodyHtml+'</div></div></div></div>';
+}
+
+/* tabs (delegasi, per grup) */
+document.addEventListener('click',e=>{
+  const btn = e.target.closest('.tab-btn');
+  if(!btn || !btn.dataset.tab) return;
+  const nav = btn.parentElement;
+  nav.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tab-panel[data-group="'+nav.id+'"]').forEach(p=>p.classList.remove('active'));
+  const panel=$(btn.dataset.tab); if(panel) panel.classList.add('active');
+});
+
+/* ============================================================
+   PROGRESS (aktivitas nyata)
+============================================================ */
+const allSections = Array.from(document.querySelectorAll('main section.section'));
+const countedSections = allSections.filter(s=>s.dataset.kind==='read' || s.dataset.kind==='act');
+let progress = store.get(KEYS.progress,{});
+function markDone(id){
+  if(progress[id]) return;
+  progress[id]=true; store.set(KEYS.progress,progress);
+  updateProgressUI();
+  const sec=$(id);
+  if(sec && sec.dataset.kind==='act') showToast('Bagian "'+sec.dataset.title+'" selesai ✓','fa-circle-check');
+}
+function updateProgressUI(){
+  const total = countedSections.length;
+  const done = countedSections.filter(s=>progress[s.id]).length;
+  const pct = Math.round(done/total*100);
+  ['sideProgressFill','mainProgressFill','heroProgressFill'].forEach(id=>{ $(id).style.width=pct+'%'; });
+  $('sideProgressText').textContent=pct+'%';
+  $('heroProgressText').textContent=pct+'%';
+  $('heroProgressBar').setAttribute('aria-valuenow',pct);
+  $('mainProgressText').textContent=pct+'% selesai ('+done+'/'+total+' bagian)';
+  document.querySelectorAll('.toc-link').forEach(l=>l.classList.toggle('done',!!progress[l.dataset.target]));
+  const list=$('progressChecklist');
+  list.innerHTML = countedSections.map(s=>{
+    const d=!!progress[s.id];
+    return '<div class="stat-pill '+(d?'done':'')+'"><i class="fas '+(d?'fa-circle-check':'fa-circle')+'"></i><span>'+s.dataset.title+(s.dataset.kind==='act'?' <small>(aktivitas)</small>':'')+'</span></div>';
+  }).join('');
+  const praktikDone = ['praktik1','praktik2','praktik3','praktik4','praktik5'].filter(i=>progress[i]).length;
+  setPill('stPraktik', praktikDone===5, 'Praktik: '+praktikDone+'/5 selesai');
+  const qz = store.get(KEYS.quiz,null);
+  setPill('stQuiz', !!(qz&&qz.done), qz&&qz.done ? 'Quiz: skor terbaik '+qz.best+'/'+qz.total : 'Quiz: belum');
+  setPill('stRefl', !!progress['refleksi'], progress['refleksi'] ? 'Refleksi: tersimpan' : 'Refleksi: belum');
+}
+function setPill(id,done,text){
+  const el=$(id); el.classList.toggle('done',done);
+  el.querySelector('span').textContent=text;
+}
+$('btnResetProgress').addEventListener('click',()=>{
+  if(!confirm('Reset semua progress, checklist, dan hasil aktivitas BAB 5 di perangkat ini? Refleksi tidak dihapus.')) return;
+  [KEYS.progress,KEYS.checks,KEYS.ping,KEYS.trouble,KEYS.quiz,KEYS.sim,KEYS.rubric,KEYS.cmp].forEach(k=>store.del(k));
+  location.reload();
+});
+
+/* TOC */
+const tocNav=$('tocNav');
+allSections.forEach((sec,i)=>{
+  const a=document.createElement('a');
+  a.href='#'+sec.id; a.className='toc-link'; a.dataset.target=sec.id;
+  a.innerHTML='<span class="toc-num">'+(i+1)+'</span><span>'+sec.dataset.title+'</span>';
+  a.addEventListener('click',()=>{ $('sidebar').classList.remove('mobile-open'); });
+  tocNav.appendChild(a);
+});
+const tocLinks = Array.from(document.querySelectorAll('.toc-link'));
+
+/* IntersectionObserver: reveal + aktif + dwell time */
+const dwellTimers = {};
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    const sec=entry.target;
+    if(entry.isIntersecting){
+      sec.classList.add('in');
+      tocLinks.forEach(l=>l.classList.toggle('active', l.dataset.target===sec.id));
+      if(sec.dataset.kind==='read' && !progress[sec.id] && !dwellTimers[sec.id]){
+        dwellTimers[sec.id]=setTimeout(()=>{ markDone(sec.id); delete dwellTimers[sec.id]; },4000);
+      }
+    }else if(dwellTimers[sec.id]){
+      clearTimeout(dwellTimers[sec.id]); delete dwellTimers[sec.id];
+    }
+  });
+},{threshold:0.3});
+allSections.forEach(s=>observer.observe(s));
+window.addEventListener('scroll',()=>{ $('backToTop').classList.toggle('show',window.scrollY>500); });
+$('backToTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'}));
+
+/* Search materi */
+$('materialSearch').addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase();
+  let hits=0, first=null;
+  allSections.forEach(sec=>{
+    const link=document.querySelector('.toc-link[data-target="'+sec.id+'"]');
+    const match = !q || sec.dataset.title.toLowerCase().includes(q) || sec.textContent.toLowerCase().includes(q);
+    link.classList.toggle('hidden',!match);
+    if(match && q){ hits++; if(!first) first=sec; }
+  });
+  $('searchInfo').textContent = q ? (hits ? hits+' bagian ditemukan (Enter: ke hasil pertama)' : 'Tidak ada bagian yang cocok.') : '';
+  e.target._first = first;
+});
+$('materialSearch').addEventListener('keydown',e=>{
+  if(e.key==='Enter' && e.target._first){ e.target._first.scrollIntoView({behavior:reduceMotion?'auto':'smooth'}); }
+});
+
+/* ===== BAB 5: topologi, rute, simulasi, latihan ===== */
+const NX=[[40,60],[150,100],[280,100],[520,100],[650,100],[760,60]];
+function topoSVG(opt){
+  opt=opt||{};
+  const T=(x,y,t,a)=>'<text x="'+x+'" y="'+y+'" text-anchor="'+(a||'middle')+'" font-size="12" style="fill:var(--text-muted)">'+t+'</text>';
+  const L=(a,b)=>'<line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'" stroke="#94a3b8" stroke-width="2"/>';
+  const N=(p,l,c)=>'<rect x="'+(p[0]-26)+'" y="'+(p[1]-16)+'" width="52" height="32" rx="8" fill="'+c+'"/><text x="'+p[0]+'" y="'+(p[1]+4)+'" text-anchor="middle" font-size="12" fill="#fff" font-weight="700">'+l+'</text>';
+  const pc1=[40,150],pc3=[760,150];
+  let s='<svg viewBox="0 0 800 210" style="width:100%;height:auto" role="img" aria-label="Topologi dua gedung dengan dua router">';
+  s+='<rect x="6" y="14" width="310" height="186" rx="16" fill="none" stroke="#3b82f6" stroke-dasharray="6 4"/><rect x="484" y="14" width="310" height="186" rx="16" fill="none" stroke="#f59e0b" stroke-dasharray="6 4"/>';
+  s+=T(18,32,'GEDUNG A - 192.168.10.0/24','start')+T(782,32,'GEDUNG B - 192.168.20.0/24','end');
+  s+=L(NX[0],NX[1])+L(pc1,NX[1])+L(NX[1],NX[2])+L(NX[2],NX[3])+L(NX[3],NX[4])+L(NX[4],NX[5])+L(NX[4],pc3);
+  s+=T(400,92,'10.0.0.0/30');
+  s+=N(NX[0],'PC0','#64748b')+N(pc1,'PC1','#64748b')+N(NX[1],'SW1','#0ea5e9')+N(NX[2],'R1','#1e40af')+N(NX[3],'R2','#1e40af')+N(NX[4],'SW2','#0ea5e9')+N(NX[5],'PC2','#64748b')+N(pc3,'PC3','#64748b');
+  if(opt.ip){ s+=T(280,136,'LAN .1 / Link 10.0.0.1')+T(520,136,'LAN .1 / Link 10.0.0.2'); }
+  if(opt.pkt) s+='<circle id="pkt" r="9" fill="#f59e0b" style="transform:translate(40px,60px);transition:transform .6s;opacity:0"/>';
+  return s+'</svg>';
+}
+$('topoApers').innerHTML=topoSVG();
+$('topoStatic').innerHTML=topoSVG({ip:1});
+$('topoP1').innerHTML=topoSVG({ip:1});
+$('topoSim').innerHTML=topoSVG({ip:1,pkt:1});
+
+/* ===== Routing logic ===== */
+function inNet(ip,r){ return networkOf(ip,r.p)===networkOf(r.net,r.p); }
+function pick(list,ip){ const m=list.filter(r=>inNet(ip,r)).sort((a,b)=>b.p-a.p); return {m:m,best:m[0]||null}; }
+const CONN={R1:[{net:'192.168.10.0',p:24,nh:null,t:'Connected',ifc:'G0/0'},{net:'10.0.0.0',p:30,nh:null,t:'Connected',ifc:'G0/1'}],
+            R2:[{net:'192.168.20.0',p:24,nh:null,t:'Connected',ifc:'G0/0'},{net:'10.0.0.0',p:30,nh:null,t:'Connected',ifc:'G0/1'}]};
+function explain(list,ip){
+  if(!isValidIP(ip)) return '<div class="note note-warn">Masukkan IPv4 yang valid, contoh 192.168.20.10.</div>';
+  const r=pick(list,ip), fmt=x=>x.net+'/'+x.p+' ('+x.t+')';
+  let h='<ol class="prose"><li>IP tujuan: <code>'+esc(ip)+'</code></li><li>Rute yang cocok: '+(r.m.length?r.m.map(fmt).join(', '):'tidak ada')+'</li>';
+  if(!r.best) return h+'</ol><div class="result-box bad">Tidak ada rute yang cocok dan tidak ada Default Route. Jaringan tujuan tidak memiliki rute yang diketahui, paket dibuang (Destination Unreachable).</div>';
+  const b=r.best;
+  h+='<li>Dipilih (longest prefix match): <strong>'+fmt(b)+'</strong></li><li>Next Hop: '+(b.nh||'- (terhubung langsung)')+'</li><li>Interface keluar: '+(b.ifc||'G0/1')+'</li></ol>';
+  return h+'<div class="result-box ok">Paket diteruskan'+(b.nh?' ke '+b.nh:' langsung ke tujuan')+'.</div>';
+}
+function fixedList(def){
+  const l=[CONN.R1[0],CONN.R1[1],{net:'192.168.20.0',p:24,nh:'10.0.0.2',t:'Static',ifc:'G0/1'}];
+  if(def) l.push({net:'0.0.0.0',p:0,nh:'10.0.0.2',t:'Default',ifc:'G0/1'});
+  return l;
+}
+$('fGo').addEventListener('click',()=>{ $('fOut').innerHTML=explain(fixedList($('fDef').checked),$('fIp').value.trim()); markDone('bacatable'); });
+document.querySelectorAll('.dr').forEach(b=>b.addEventListener('click',()=>{ $('drOut').innerHTML=explain(fixedList(true),b.dataset.ip); }));
+
+/* ===== Latihan Destination & Next Hop ===== */
+function miniQ(el,q,opts,a,fb){
+  const d=document.createElement('div'); d.className='card static'; d.style.marginBottom='.8rem';
+  d.innerHTML='<p style="margin-top:0"><strong>'+q+'</strong></p>'+opts.map((o,i)=>'<button class="quiz-option" data-i="'+i+'">'+o+'</button>').join('')+'<p class="fb" style="margin:.6rem 0 0"></p>';
+  d.querySelectorAll('.quiz-option').forEach(b=>b.addEventListener('click',()=>{
+    const ok=+b.dataset.i===a; b.classList.add(ok?'correct':'wrong');
+    d.querySelector('.fb').innerHTML=(ok?'Benar. ':'Belum tepat. ')+fb;
+  }));
+  $(el).appendChild(d);
+}
+miniQ('exDn','Dari R1 (link 10.0.0.1), PC di Gedung A ingin menuju 192.168.20.0/24. Apa Next Hop-nya?',['10.0.0.1','10.0.0.2','192.168.20.1','192.168.10.1'],1,'Next Hop adalah IP router sebelah yang satu jaringan dengan R1: 10.0.0.2.');
+miniQ('exDn','Pada ip route 192.168.10.0 255.255.255.0 10.0.0.1 di R2, mana Destination Network?',['10.0.0.1','255.255.255.0','192.168.10.0','192.168.20.0'],2,'Destination Network = 192.168.10.0 (Gedung A); 10.0.0.1 adalah Next Hop.');
+
+/* ===== Simulasi ===== */
+const SIM={R1:[],R2:[],on:true};
+const LINK={R1:'10.0.0.1',R2:'10.0.0.2'};
+function listOf(n){ return CONN[n].concat(SIM[n]); }
+function renderSim(){
+  $('sTbl').innerHTML=['R1','R2'].map(n=>'<strong>Routing Table '+n+'</strong><div class="table-wrap" style="margin:.4rem 0 1rem"><table><tr><th>Destination</th><th>Next Hop</th><th>Interface</th><th>Jenis</th></tr>'+listOf(n).map(r=>'<tr><td>'+r.net+'/'+r.p+'</td><td>'+(r.nh||'-')+'</td><td>'+(r.ifc||'G0/1')+'</td><td>'+r.t+'</td></tr>').join('')+'</table></div>').join('');
+  $('sOn').textContent=SIM.on?'Nonaktifkan Routing':'Aktifkan Routing';
+}
+function addRoute(net,p,nh){
+  const n=$('sRt').value;
+  if(!isValidIP(net)||p<0||p>32||isNaN(p)||!isValidIP(nh)){ $('sMsg').textContent='Format tidak valid. Contoh: 192.168.20.0/24 dan Next Hop 10.0.0.2.'; return; }
+  if(networkOf(net,p)!==ipToInt(net)>>>0){ $('sMsg').textContent='Alamat '+net+' bukan alamat network untuk /'+p+'. Periksa kembali Destination Network.'; return; }
+  SIM[n]=SIM[n].filter(r=>!(r.net===net&&r.p===p));
+  SIM[n].push({net:net,p:p,nh:nh,t:p===0?'Default':'Static',ifc:'G0/1'});
+  $('sMsg').textContent='Rute ditambahkan pada '+n+'.'; renderSim();
+}
+$('sAdd').addEventListener('click',()=>{ const v=$('sNet').value.trim().split('/'); addRoute(v[0],v.length>1?+v[1]:24,$('sNh').value.trim()); });
+$('sDef').addEventListener('click',()=>addRoute('0.0.0.0',0,$('sNh').value.trim()));
+$('sDel').addEventListener('click',()=>{ SIM[$('sRt').value]=[]; $('sMsg').textContent='Semua rute statis/default '+$('sRt').value+' dihapus.'; renderSim(); });
+$('sOn').addEventListener('click',()=>{ SIM.on=!SIM.on; $('sMsg').textContent='Routing '+(SIM.on?'aktif.':'dinonaktifkan pada kedua router.'); renderSim(); });
+function hop(n,ip,other){
+  if(!SIM.on) return {f:n+': routing dinonaktifkan, router tidak meneruskan paket antarjaringan.'};
+  const r=pick(listOf(n),ip).best;
+  if(!r) return {f:n+' tidak punya rute ke '+ip+' dan tidak ada Default Route (Destination Unreachable).'};
+  if(r.t==='Connected') return {d:1};
+  if(r.nh===LINK[n]) return {f:n+': Next Hop '+r.nh+' adalah IP router itu sendiri.'};
+  if(r.nh!==LINK[other]) return {f:n+': Next Hop '+r.nh+' tidak dapat dijangkau. Router sebelah memakai '+LINK[other]+'.'};
+  return {n:1};
+}
+function trace(side,ip){
+  const o=side==='A'?['R1','R2']:['R2','R1'];
+  const h1=hop(o[0],ip,o[1]); if(h1.f) return {ok:0,up:2,msg:h1.f};
+  if(h1.d) return {ok:1,up:2,msg:'Tujuan satu jaringan dengan pengirim.'};
+  const h2=hop(o[1],ip,o[0]); if(h2.f) return {ok:0,up:3,msg:h2.f};
+  if(!h2.d) return {ok:0,up:3,msg:o[1]+' meneruskan ke router lain, tetapi tidak ada router berikutnya pada topologi ini.'};
+  return {ok:1,up:5,msg:'Paket sampai.'};
+}
+let animT=[];
+function animate(side,up,ok,cb){
+  const seq=side==='A'?[0,1,2,3,4,5]:[5,4,3,2,1,0], p=$('pkt'); animT.forEach(clearTimeout); animT=[];
+  p.style.opacity=1; p.setAttribute('fill',ok?'#f59e0b':'#dc2626');
+  const m=i=>{ p.style.transform='translate('+NX[seq[i]][0]+'px,'+NX[seq[i]][1]+'px)'; };
+  p.style.transition='none'; m(0); void p.getBoundingClientRect(); p.style.transition='transform .6s';
+  for(let i=1;i<=up;i++) animT.push(setTimeout(()=>m(i),i*700));
+  animT.push(setTimeout(cb,up*700+500));
+}
+$('sSend').addEventListener('click',()=>{
+  const side=$('sSrc').value, dst=$('sDst').value, other=side==='A'?'B':'A';
+  const srcIp=side==='A'?'192.168.10.10':'192.168.20.10';
+  const f=trace(side,dst); let ok=f.ok, msg=f.msg, up=f.up, back=null;
+  if(f.ok){ back=trace(other,srcIp); if(!back.ok){ ok=0; msg='Paket sampai, tetapi balasan tidak kembali. '+back.msg+' Routing harus dua arah.'; } else msg='Paket sampai dan balasan kembali. Komunikasi berhasil.'; }
+  else msg='Paket gagal. '+msg;
+  $('sSend').disabled=true;
+  animate(side,up,ok,()=>{
+    $('sOut').innerHTML='<div class="result-box '+(ok?'ok':'bad')+'">'+(ok?'✅ ':'❌ ')+esc(msg)+'</div>';
+    $('sSend').disabled=false;
+    const n=(store.get(KEYS.sim,0)||0)+1; store.set(KEYS.sim,n); if(n>=3) markDone('simulasi');
+  });
+});
+renderSim();
+
+/* ===== Latihan IP ===== */
+(function(){
+  const rows=[['IP Gateway PC2','192.168.20.1'],['Subnet mask link antar-router (/30)','255.255.255.252'],['Network Address Gedung A','192.168.10.0'],['IP Router 2 pada link','10.0.0.2']];
+  $('ipEx').innerHTML=rows.map((r,i)=>'<label style="display:block;margin-bottom:.6rem">'+r[0]+'<input class="search-box ipx" data-i="'+i+'" style="margin:.3rem 0 0"></label>').join('')+'<button class="btn btn-primary btn-sm" id="ipChk">Periksa</button>';
+  $('ipChk').addEventListener('click',()=>document.querySelectorAll('.ipx').forEach(x=>{ const ok=x.value.trim()===rows[+x.dataset.i][1]; x.style.borderColor=ok?'#16a34a':'#dc2626'; }));
+})();
+
+/* ===== Troubleshooting ===== */
+const TS=[
+ ['PC Gedung A tidak dapat ping ke gateway (192.168.10.1).',['Static Route R2 belum ada','Interface LAN R1 masih shutdown atau IP/gateway PC tidak satu subnet','DNS salah','Metric terlalu besar'],1,'Gateway adalah langkah pertama; masalahnya di LAN lokal, bukan routing.','Cek show ip interface brief di R1 dan konfigurasi IP PC.'],
+ ['Router 1 tidak dapat ping Router 2 (10.0.0.2).',['Static Route ke 192.168.20.0 belum ada','Interface link shutdown atau IP link tidak satu subnet /30','Gateway PC salah','Default Route berlebih'],1,'Link langsung tidak butuh rute; periksa interface dan IP link.','show ip interface brief pada kedua router.'],
+ ['PC A ping router lokal berhasil, tetapi tidak sampai Gedung B.',['Rute menuju Gedung B belum/kurang benar di router','Kabel PC rusak','Mask PC terlalu kecil','Switch kurang port'],0,'LAN lokal normal, jadi periksa Routing Table.','show ip route di R1 dan R2.'],
+ ['R1 punya rute ke Gedung B, ping tetap timeout.',['R2 belum punya rute kembali ke 192.168.10.0/24','R1 perlu reboot','PC perlu Default Route','Kabel crossover wajib diganti'],0,'Paket sampai tetapi balasan tidak tahu jalur pulang.','Tambahkan ip route 192.168.10.0 255.255.255.0 10.0.0.1 di R2.'],
+ ['show ip route menampilkan rute ke 192.168.20.0 via 10.0.0.3, ping gagal.',['Next Hop harus 10.0.0.2 (IP R2)','Ganti prefix menjadi /32','Hapus IP R1','Aktifkan Default Route'],0,'Next Hop harus IP router sebelah yang dapat dijangkau.','Hapus rute lama dengan no ip route, lalu buat dengan Next Hop benar.'],
+ ['Perintah ip route 192.168.20.0 255.255.255.255 10.0.0.2 tidak mengenai host lain.',['Mask harus 255.255.255.0 untuk jaringan /24','Mask /32 sudah benar','Ganti Next Hop ke 192.168.20.1','Nonaktifkan routing'],0,'/32 hanya mencocokkan satu host.','Periksa destination dan mask di show running-config.'],
+ ['show ip interface brief: G0/1 "administratively down".',['Jalankan no shutdown pada interface','Tambah Default Route','Ganti kabel ke straight','Ubah gateway PC'],0,'Interface mati karena belum diaktifkan.','interface g0/1 lalu no shutdown.'],
+ ['PC A ping PC lain di Gedung A berhasil, tetapi ke luar jaringan gagal. Gateway PC 192.168.10.5.',['Gateway PC harus 192.168.10.1 (IP router)','Tambah Static Route di PC','Ubah mask menjadi /30','Matikan switch'],0,'Gateway harus IP interface router di LAN tersebut.','Periksa ipconfig di PC.']
+];
+(function(){
+  const stat=store.get(KEYS.trouble,{});
+  $('tsList').innerHTML=TS.map((c,i)=>'<div class="card static" style="margin-bottom:.9rem" data-i="'+i+'"><span class="badge badge-amber">Kasus '+(i+1)+'</span><p><strong>'+c[0]+'</strong></p>'+c[1].map((o,j)=>'<button class="quiz-option" data-j="'+j+'">'+o+'</button>').join('')+'<p class="fb" style="margin:.6rem 0 0"></p></div>').join('');
+  document.querySelectorAll('#tsList .card').forEach(card=>{
+    const i=+card.dataset.i, c=TS[i];
+    card.querySelectorAll('.quiz-option').forEach(b=>b.addEventListener('click',()=>{
+      const ok=+b.dataset.j===c[2]; b.classList.add(ok?'correct':'wrong');
+      card.querySelector('.fb').innerHTML=(ok?'Benar. ':'Belum tepat. ')+c[3]+'<br><strong>Langkah pemeriksaan:</strong> '+c[4];
+      if(ok){ stat[i]=1; store.set(KEYS.trouble,stat); if(Object.keys(stat).length>=TS.length) markDone('troubleshooting'); }
+    }));
+  });
+  const ck=store.get(KEYS.checks,{}), items=['Kabel terpasang dan link menyala','Interface router no shutdown','IP dan mask interface benar','Gateway PC = IP router LAN','Static Route ada di kedua router','Next Hop = IP router sebelah','Destination dan mask rute benar','Ping lokal, lalu gateway, lalu seberang'];
+  $('tsCheck').innerHTML=items.map((t,i)=>'<label class="check-item'+(ck[i]?' done':'')+'"><input type="checkbox" data-i="'+i+'"'+(ck[i]?' checked':'')+'><span>'+t+'</span></label>').join('');
+  $('tsCheck').addEventListener('change',e=>{ const c=e.target; ck[c.dataset.i]=c.checked; c.parentElement.classList.toggle('done',c.checked); store.set(KEYS.checks,ck); });
+})();
+
+/* ===== Quiz ===== */
+const QZ=[
+ ['Router meneruskan paket berdasarkan...',['MAC tujuan','IP tujuan','Nama host','Warna kabel'],1,'Router bekerja di Layer 3 dengan IP tujuan.'],
+ ['Sumber rute yang dibuat otomatis saat interface aktif ber-IP:',['Static','Default','Connected','Dynamic'],2,'Connected Route muncul otomatis.'],
+ ['0.0.0.0/0 adalah...',['Rute broadcast','Default Route','Rute loopback','Rute host'],1,'0.0.0.0/0 cocok dengan semua tujuan.'],
+ ['Next Hop adalah...',['IP PC tujuan','IP router berikutnya','IP switch','Subnet mask'],1,'Alamat router berikutnya.'],
+ ['Pada rute 192.168.20.0/24 dan 0.0.0.0/0, tujuan 192.168.20.10 memakai...',['0.0.0.0/0','192.168.20.0/24','Keduanya','Tidak ada'],1,'Longest prefix match memilih /24.'],
+ ['Perintah menampilkan Routing Table:',['show vlan','show ip route','show mac','ping'],1,'show ip route.'],
+ ['Mengapa link antar-router memakai /30?',['Agar banyak host','Hanya perlu 2 host valid','Agar lebih cepat','Wajib'],1,'/30 memiliki 2 host valid.'],
+ ['Untuk komunikasi dua arah A dan B, Static Route perlu di...',['R1 saja','R2 saja','Kedua router','PC'],2,'Balasan butuh jalur pulang.'],
+ ['(B/S) Kabel crossover wajib untuk semua koneksi antar-router.',['Benar','Salah'],1,'Auto-MDIX atau simulasi dapat memakai kabel lain.'],
+ ['(B/S) Connected Route tidak membutuhkan Next Hop router lain.',['Benar','Salah'],0,'Terhubung langsung.'],
+ ['(B/S) Default Route boleh dipasang sembarangan pada semua topologi.',['Benar','Salah'],1,'Harus sesuai kebutuhan dan Next Hop harus dapat dijangkau.'],
+ ['Kasus: R1 punya rute ke Gedung B, ping timeout. Penyebab paling mungkin:',['R2 tidak punya rute kembali','Layar PC rusak','Mask /24 salah','Kabel putus total'],0,'Rute balik belum ada.'],
+ ['Kasus: show ip interface brief: G0/1 administratively down.',['Ganti Next Hop','no shutdown','Tambah Default Route','Reset PC'],1,'Aktifkan interface.'],
+ ['Kasus: tidak ada rute cocok dan tidak ada Default Route. Hasilnya:',['Paket dikirim ke semua port','Paket dibuang (unreachable)','Router reboot','Dipakai rute connected'],1,'Paket dibuang.']
+];
+(function(){
+  let sc=0,ans=0,box=$('quizBox');
+  box.innerHTML='<p class="prose">Pilihan ganda, benar/salah, dan studi kasus (14 soal).</p>'+QZ.map((q,i)=>'<div class="card static" style="margin-bottom:.8rem" data-i="'+i+'"><p style="margin-top:0"><strong>'+(i+1)+'. '+q[0]+'</strong></p>'+q[1].map((o,j)=>'<button class="quiz-option" data-j="'+j+'">'+o+'</button>').join('')+'<p class="fb" style="margin:.5rem 0 0"></p></div>').join('')+'<div class="card static" id="qRes">Skor: 0/'+QZ.length+'</div>';
+  box.querySelectorAll('.card[data-i]').forEach(card=>{
+    const q=QZ[+card.dataset.i];
+    card.querySelectorAll('.quiz-option').forEach(b=>b.addEventListener('click',()=>{
+      const ok=+b.dataset.j===q[2]; b.classList.add(ok?'correct':'wrong');
+      card.querySelectorAll('.quiz-option').forEach(x=>{ x.disabled=true; if(+x.dataset.j===q[2]) x.classList.add('correct'); });
+      card.querySelector('.fb').textContent=(ok?'Benar. ':'Kurang tepat. ')+q[3];
+      ans++; if(ok) sc++; $('qRes').textContent='Skor: '+sc+'/'+QZ.length+' ('+ans+' terjawab)';
+      if(ans===QZ.length){ const o=store.get(KEYS.quiz,null); store.set(KEYS.quiz,{done:true,total:QZ.length,best:Math.max(sc,o?o.best:0)}); markDone('quiz'); }
+    }));
+  });
+})();
+
+/* ===== Glosarium, refleksi, tombol selesai ===== */
+$('glos').innerHTML=[['Routing','Proses memilih jalur paket antarjaringan'],['Routing Table','Tabel jaringan tujuan dan jalur di router'],['Static Route','Rute yang diatur manual'],['Default Route','Rute 0.0.0.0/0 untuk tujuan tanpa rute spesifik'],['Next Hop','IP router berikutnya'],['Connected Route','Rute jaringan yang terhubung langsung'],['Longest Prefix Match','Pemilihan rute dengan prefix terpanjang'],['Metric','Nilai biaya sebuah jalur'],['Gateway','Router yang menjadi jalan keluar LAN'],['Ping','Uji jangkauan dengan ICMP echo']].map(g=>'<div class="card static"><strong>'+g[0]+'</strong><p class="prose" style="margin:.3rem 0 0">'+g[1]+'</p></div>').join('');
+(function(){
+  const Q=['Apa hal paling penting yang kamu pelajari di BAB 5?','Bagian mana yang masih membingungkan?','Bagaimana kamu menjelaskan Next Hop kepada temanmu?'];
+  const sv=store.get('tlj_bab5_reflection',{});
+  $('refl').innerHTML=Q.map((q,i)=>'<label style="display:block;margin-bottom:.8rem">'+q+'<textarea class="search-box rf" data-i="'+i+'" rows="3" style="margin-top:.3rem">'+esc(sv[i]||'')+'</textarea></label>').join('');
+  $('rSave').addEventListener('click',()=>{ const o={}; document.querySelectorAll('.rf').forEach(t=>o[t.dataset.i]=t.value); store.set('tlj_bab5_reflection',o); markDone('refleksi'); showToast('Refleksi tersimpan','fa-floppy-disk'); });
+  $('rClr').addEventListener('click',()=>{ document.querySelectorAll('.rf').forEach(t=>t.value=''); store.del('tlj_bab5_reflection'); });
+})();
+document.addEventListener('click',e=>{ const b=e.target.closest('.mark-done'); if(b){ markDone(b.dataset.id); b.innerHTML='<i class="fas fa-circle-check"></i> Selesai'; } });
+document.head.insertAdjacentHTML('beforeend','<style>.result-box{padding:1rem 1.2rem;border-radius:var(--radius-md);font-weight:600}.result-box.ok{background:var(--ok-bg);color:var(--ok-tx)}.result-box.bad{background:var(--bad-bg);color:var(--bad-tx)}.quiz-option{margin-bottom:.5rem}</style>');
+updateProgressUI();
+</script></body></html>
